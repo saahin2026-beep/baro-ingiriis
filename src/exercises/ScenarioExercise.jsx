@@ -1,0 +1,104 @@
+import { useState } from 'react';
+import { useData } from '../utils/DataContext';
+import { ChatCircle } from '@phosphor-icons/react';
+import OptionCard from '../components/OptionCard';
+import FeedbackBanner from '../components/FeedbackBanner';
+
+export default function ScenarioExercise({ data, onComplete, practiceMode = false }) {
+  const { getRandomPhrase } = useData();
+  const [answered, setAnswered] = useState(false);
+  const [wrongIndex, setWrongIndex] = useState(null);
+  const [showCorrect, setShowCorrect] = useState(false);
+  const [bannerPhrase, setBannerPhrase] = useState(null);
+  const [bannerType, setBannerType] = useState(null);
+  const [bannerVisible, setBannerVisible] = useState(false);
+
+  const handleTap = (index) => {
+    if (answered || bannerVisible || showCorrect) return;
+
+    if (index === data.correctIndex) {
+      setAnswered(true);
+      if (practiceMode) {
+        setShowCorrect(true);
+        setTimeout(() => onComplete(true), 1000);
+      } else {
+        setBannerType('correct');
+        setBannerPhrase(getRandomPhrase('encouragement'));
+        setBannerVisible(true);
+      }
+    } else {
+      if (practiceMode) {
+        setWrongIndex(index);
+        setShowCorrect(true);
+        setTimeout(() => onComplete(false), 1500);
+      } else {
+        setWrongIndex(index);
+        setBannerType('wrong');
+        setBannerPhrase(getRandomPhrase('feedback'));
+        setBannerVisible(true);
+      }
+    }
+  };
+
+  const getCorrectProp = (i) => {
+    if (showCorrect && i === data.correctIndex) return true;
+    if (i === data.correctIndex && answered && !practiceMode) return true;
+    if (i === wrongIndex) return false;
+    return null;
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+      {/* Scenario card */}
+      <div style={{
+        background: 'linear-gradient(180deg, #FFF9E8 0%, #FFF3CC 100%)', border: '1.5px solid #FFDF80', borderRadius: 16,
+        borderBottom: '3px solid #FFCA28', boxShadow: '0 2px 12px rgba(255,193,7,0.1)',
+        padding: '16px 18px', marginBottom: 16,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+          <ChatCircle size={18} weight="fill" color="#F57F17" />
+          <span style={{ fontSize: 12, fontWeight: 800, color: '#F57F17', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+            XAALAD
+          </span>
+        </div>
+        <p style={{ fontSize: 14, color: '#333', fontFamily: 'Nunito, sans-serif', lineHeight: 1.6 }}>
+          {data.scenario}
+        </p>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {data.options.map((opt, i) => (
+          <OptionCard
+            key={i}
+            text={opt}
+            number={i + 1}
+            selected={i === data.correctIndex && (answered || showCorrect)}
+            correct={getCorrectProp(i)}
+            onClick={() => handleTap(i)}
+            disabled={answered || bannerVisible || showCorrect}
+          />
+        ))}
+      </div>
+
+      {practiceMode && showCorrect && wrongIndex !== null && (
+        <div style={{ marginTop: 12, padding: '12px 16px', borderRadius: 12, background: '#E8F5E9', textAlign: 'center' }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: '#2E7D32', fontFamily: 'Nunito, sans-serif' }}>
+            Jawaabta saxda: {data.options[data.correctIndex]}
+          </p>
+        </div>
+      )}
+
+      {!practiceMode && (
+        <FeedbackBanner
+          type={bannerType === 'correct' ? 'correct' : 'wrong'}
+          phrase={bannerPhrase}
+          visible={bannerVisible}
+          onContinue={() => {
+            if (bannerType === 'correct') onComplete(true);
+            else { setWrongIndex(null); setBannerPhrase(null); setBannerType(null); setBannerVisible(false); }
+          }}
+        />
+      )}
+    </div>
+  );
+}
