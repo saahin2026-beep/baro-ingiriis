@@ -57,7 +57,7 @@ export default function Home() {
           const id = lesson.id;
           const isCompleted = (lessonsCompleted || []).includes(id);
           const isCurrent = id === currentLesson && !isCompleted;
-          const isLocked = id > currentLesson;
+          const _isLocked = id > currentLesson; // used implicitly as default case
 
           // ── COMPLETED ──
           if (isCompleted) {

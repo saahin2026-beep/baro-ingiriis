@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Fire, Confetti as ConfettiIcon, CurrencyCircleDollar } from '@phosphor-icons/react';
+import { X, Fire, Confetti as ConfettiIcon, CurrencyCircleDollar, Timer } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
+import { calculateDahabTimed } from '../utils/speedScore';
+import SpeedBonusPopup from '../components/SpeedBonusPopup';
 import { useLanguage } from '../utils/useLanguage';
 import practiceFeatures from '../data/practiceFeatures';
 import ChooseExercise from '../exercises/ChooseExercise';
@@ -58,6 +60,11 @@ export default function DailyPractice() {
   const [completed, setCompleted] = useState(false);
   const [dahabResult, setDahabResult] = useState(null);
   const [showDahabAnimation, setShowDahabAnimation] = useState(false);
+  const [sessionDahab, setSessionDahab] = useState(0);
+  const [lastReward, setLastReward] = useState(null);
+  const [elapsed, setElapsed] = useState(0);
+  const exerciseStartRef = useRef(Date.now());
+  const timerIntervalRef = useRef(null);
 
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
@@ -100,7 +107,34 @@ export default function DailyPractice() {
     setExercises(shuffledAll);
   }, []);
 
+  // Start timer
+  useEffect(() => {
+    if (exercises.length === 0) return;
+    exerciseStartRef.current = Date.now();
+    timerIntervalRef.current = setInterval(() => {
+      setElapsed(Date.now() - exerciseStartRef.current);
+    }, 100);
+    return () => clearInterval(timerIntervalRef.current);
+  }, [exercises.length]);
+
+  const getTimerColor = () => {
+    if (elapsed < 2000) return '#8B5CF6';
+    if (elapsed < 4000) return '#F59E0B';
+    if (elapsed < 6000) return '#10B981';
+    if (elapsed < 8000) return '#0891B2';
+    return '#94A3B8';
+  };
+
   const handleExerciseComplete = (wasCorrect) => {
+    const responseTime = Date.now() - exerciseStartRef.current;
+    const reward = calculateDahabTimed(responseTime, wasCorrect);
+
+    if (reward.total > 0) {
+      setLastReward(reward);
+      setSessionDahab((prev) => prev + reward.total);
+      setTimeout(() => setLastReward(null), 1500);
+    }
+
     const newCorrect = wasCorrect ? correctCount + 1 : correctCount;
     setCorrectCount(newCorrect);
     const nextIndex = currentIndex + 1;
@@ -114,8 +148,12 @@ export default function DailyPractice() {
     });
 
     if (nextIndex >= exercises.length) {
+      clearInterval(timerIntervalRef.current);
+      // Store session dahab in the completion result
       const result = storage.completeDailyPractice(newCorrect);
-      setDahabResult(result);
+      // Override dahab with speed-based total
+      storage.update({ dahab: (storage.get().dahab || 0) + sessionDahab + reward.total });
+      setDahabResult({ ...result, dahabEarned: sessionDahab + reward.total });
       setShowDahabAnimation(true);
       setTimeout(() => {
         setShowDahabAnimation(false);
@@ -123,6 +161,9 @@ export default function DailyPractice() {
       }, 2000);
     } else {
       setCurrentIndex(nextIndex);
+      // Reset timer for next exercise
+      exerciseStartRef.current = Date.now();
+      setElapsed(0);
     }
   };
 
@@ -277,9 +318,27 @@ export default function DailyPractice() {
             transition: 'width 0.4s ease, background 0.3s ease',
           }} />
         </div>
-        <span style={{ fontSize: 13, fontWeight: 800, color: featureColor, fontFamily: 'Nunito, sans-serif', transition: 'color 0.3s ease' }}>
-          {currentIndex + 1}/{TOTAL_EXERCISES}
-        </span>
+        {/* Timer */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 4,
+          fontSize: 14, fontWeight: 600, fontFamily: 'Nunito, sans-serif',
+          color: getTimerColor(), transition: 'color 0.3s ease',
+          marginRight: 6,
+        }}>
+          <Timer size={14} weight="fill" />
+          {(elapsed / 1000).toFixed(1)}s
+        </div>
+        {/* Dahab counter */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <CurrencyCircleDollar size={16} weight="fill" color="#F59E0B" />
+          <span style={{
+            fontSize: 14, fontWeight: 800, fontFamily: 'Nunito, sans-serif',
+            color: sessionDahab > 0 ? '#D97706' : '#94A3B8',
+            minWidth: 24, textAlign: 'right', transition: 'color 0.3s',
+          }}>
+            {sessionDahab}
+          </span>
+        </div>
       </div>
 
       <div style={{ padding: '8px 20px 0', display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, position: 'relative', zIndex: 1 }}>
@@ -300,6 +359,11 @@ export default function DailyPractice() {
           {exercise.featureKey}
         </span>
       </div>
+
+      {/* Speed bonus popup */}
+      {lastReward && lastReward.total > 0 && (
+        <SpeedBonusPopup dahab={lastReward.total} label={lastReward.label} color={lastReward.color} />
+      )}
 
       <div style={{ padding: '0 20px 8px', position: 'relative', zIndex: 1 }}>
         <p style={{ fontSize: 15, fontWeight: 700, color: '#F1F5F9', fontFamily: 'Nunito, sans-serif' }}>

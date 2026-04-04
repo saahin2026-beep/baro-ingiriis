@@ -8,6 +8,8 @@ import { useLanguage } from '../utils/useLanguage';
 import Geel from '../components/Geel';
 import PrimaryButton from '../components/PrimaryButton';
 import Confetti from '../components/Confetti';
+import StreakMilestoneModal from '../components/StreakMilestoneModal';
+import { recordLessonCompletion } from '../utils/streak';
 
 export default function LessonComplete() {
   const { id } = useParams();
@@ -21,12 +23,20 @@ export default function LessonComplete() {
   const state = storage.get();
   const [countdown, setCountdown] = useState(5);
   const [skipped, setSkipped] = useState(false);
+  const [streakMilestone, setStreakMilestone] = useState(null);
   const nextLessonId = Number(id) + 1;
   const nextLesson = lessonData?.[nextLessonId];
   const nextChunkWord = nextLesson?.chunks?.[0]?.en || '';
 
   useEffect(() => {
-    if (id) storage.completeLesson(Number(id), dahabEarned);
+    if (id) {
+      storage.completeLesson(Number(id), dahabEarned);
+      const result = recordLessonCompletion();
+      if (result.milestone) {
+        storage.update({ dahab: (storage.get().dahab || 0) + result.milestone.dahab });
+        setStreakMilestone(result.milestone);
+      }
+    }
   }, [id]);
 
   useEffect(() => {
@@ -167,6 +177,10 @@ export default function LessonComplete() {
           <PrimaryButton onClick={() => navigate('/home')}>{t('complete.continue')}</PrimaryButton>
         )}
       </div>
+
+      {streakMilestone && (
+        <StreakMilestoneModal milestone={streakMilestone} onClose={() => setStreakMilestone(null)} />
+      )}
     </div>
   );
 }

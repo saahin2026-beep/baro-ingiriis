@@ -8,6 +8,8 @@ import BottomNav from '../components/BottomNav';
 import { getDailyWordSync, fetchDailyWords, getWordAudioPath } from '../data/wordOfTheDay';
 import { getDailyFact, getCategoryColor } from '../data/dailyFacts';
 import { playAudio } from '../utils/audio';
+import { getStreakData, purchaseStreakFreeze, getNextMilestone, getStreakTier, MILESTONES } from '../utils/streak';
+import { Snowflake, Flame } from '@phosphor-icons/react';
 
 function press3D(borderColor = '#155E75', depth = 6) {
   return {
@@ -28,10 +30,9 @@ function press3D(borderColor = '#155E75', depth = 6) {
 
 export default function GeelWorld() {
   const navigate = useNavigate();
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
   const state = storage.get();
-  const { lessonsList, lessonData } = useData();
-  const lessons = lessonsList || [];
+  const { lessonData } = useData();
   const { lessonsCompleted = [], currentLesson = 1, xp = 0, streak = 0, dahab = 0 } = state;
 
   const currentLessonData = lessonData?.[currentLesson];
@@ -48,7 +49,7 @@ export default function GeelWorld() {
   const handlePlayWord = async () => {
     if (isPlayingWord) return;
     setIsPlayingWord(true);
-    try { await playAudio(getWordAudioPath(dailyWord.en)); } catch (e) { console.log('Audio not available'); }
+    try { await playAudio(getWordAudioPath(dailyWord.en)); } catch (_) { /* audio not available */ }
     setIsPlayingWord(false);
   };
 
@@ -321,6 +322,83 @@ export default function GeelWorld() {
             GO
           </button>
         </div>
+
+        {/* ═══ 7. STREAK CARD ═══ */}
+        {(() => {
+          const streakData = getStreakData();
+          const { label, color, icon } = getStreakTier(streakData.currentStreak);
+          const next = getNextMilestone(streakData.currentStreak);
+          const prevDay = next ? Object.keys(MILESTONES).map(Number).filter(d => d < next.day).pop() || 0 : 0;
+          const progress = next ? ((streakData.currentStreak - prevDay) / (next.day - prevDay)) * 100 : 100;
+
+          return (
+            <div style={{
+              background: 'linear-gradient(180deg, #FFFFFF 0%, #FCFCFC 100%)',
+              border: '1px solid rgba(0,0,0,0.05)', borderBottom: '3px solid rgba(0,0,0,0.06)',
+              borderRadius: 20, padding: 'clamp(14px, 3.5vw, 20px)',
+              marginTop: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                <div>
+                  <p style={{ fontSize: 13, color: '#64748B', fontFamily: 'Nunito, sans-serif', margin: '0 0 4px' }}>Streak-kaaga</p>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                    <span style={{ fontSize: 36, fontWeight: 800, color, fontFamily: 'Nunito, sans-serif', lineHeight: 1 }}>{streakData.currentStreak}</span>
+                    <span style={{ fontSize: 14, color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>maalmood</span>
+                  </div>
+                </div>
+                <span style={{ fontSize: 32 }}>{icon}</span>
+              </div>
+
+              <div style={{ display: 'inline-block', padding: '4px 12px', background: `${color}15`, borderRadius: 20, marginBottom: 12 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color, fontFamily: 'Nunito, sans-serif' }}>{label}</span>
+              </div>
+
+              {next && (
+                <div style={{ marginBottom: 16 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                    <span style={{ fontSize: 12, color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>Xiga: Maalin {next.day}</span>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: '#334155', fontFamily: 'Nunito, sans-serif' }}>{next.daysLeft} maalin</span>
+                  </div>
+                  <div style={{ height: 8, background: '#F1F5F9', borderRadius: 4, overflow: 'hidden' }}>
+                    <div style={{ width: `${progress}%`, height: '100%', background: `linear-gradient(90deg, ${color}, ${color}CC)`, borderRadius: 4, transition: 'width 0.3s ease' }} />
+                  </div>
+                  <p style={{ fontSize: 11, color: '#64748B', fontFamily: 'Nunito, sans-serif', margin: '6px 0 0' }}>
+                    +{next.reward.dahab} Dahab {next.reward.xpMultiplier ? `+ ${next.reward.xpMultiplier}x XP` : ''}
+                  </p>
+                </div>
+              )}
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #F1F5F9', paddingTop: 12, marginBottom: 12 }}>
+                <div>
+                  <p style={{ fontSize: 11, color: '#94A3B8', margin: 0, fontFamily: 'Nunito, sans-serif' }}>Ugu dheer</p>
+                  <p style={{ fontSize: 16, fontWeight: 700, color: '#334155', margin: '2px 0 0', fontFamily: 'Nunito, sans-serif' }}>{streakData.longestStreak} maalin</p>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <p style={{ fontSize: 11, color: '#94A3B8', margin: 0, fontFamily: 'Nunito, sans-serif' }}>Freeze</p>
+                  <p style={{ fontSize: 16, fontWeight: 700, color: '#0891B2', margin: '2px 0 0', fontFamily: 'Nunito, sans-serif' }}>
+                    <Snowflake size={14} weight="fill" style={{ verticalAlign: 'middle', marginRight: 4 }} />{streakData.freezesOwned}/2
+                  </p>
+                </div>
+              </div>
+
+              {streakData.freezesOwned < 2 && (
+                <button onClick={() => {
+                  const s = storage.get();
+                  const result = purchaseStreakFreeze(s.dahab || 0, (amount) => storage.update({ dahab: (s.dahab || 0) - amount }));
+                  if (!result.success) alert(result.message);
+                  else alert(result.message);
+                }} style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  width: '100%', padding: '12px 16px', background: '#E0F2FE', color: '#0891B2',
+                  border: 'none', borderRadius: 12, fontSize: 14, fontWeight: 700,
+                  fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
+                }}>
+                  <Snowflake size={18} weight="fill" /> Freeze iibso (50 Dahab)
+                </button>
+              )}
+            </div>
+          );
+        })()}
 
       </div>
 
