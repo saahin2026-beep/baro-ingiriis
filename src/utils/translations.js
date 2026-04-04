@@ -27,10 +27,10 @@ const translations = {
     'home.completed': 'La dhammaystiray',
 
     // Onboarding (hardcoded fallbacks — Supabase overrides these)
-    'onboarding.splash_title': 'Baro Ingiriis',
+    'onboarding.splash_title': 'Hadaling',
     'onboarding.splash_subtitle': 'Kalsooni ku baro, daqiiqado yar gudaheed',
     'onboarding.splash_button': 'BILOW →',
-    'onboarding.splash_footer': 'Baro Ingiriis si fudud',
+    'onboarding.splash_footer': 'Hadaling — Ingiriis si fudud',
     'onboarding.intent_question': 'Maxaad Ingiriis u baranaysaa?',
     'onboarding.intent_daily': 'Nolol maalmeed',
     'onboarding.intent_work': 'Shaqo',
@@ -147,7 +147,7 @@ const translations = {
     'astaanta.security': 'Xisaabta & amniga',
     'astaanta.security_guest': 'Habka martida',
     'astaanta.security_verified': 'La xaqiijiyay',
-    'astaanta.about': 'Ku saabsan Baro Ingiriis',
+    'astaanta.about': 'Ku saabsan Hadaling',
     'astaanta.about_sub': 'Version 1.0.0 · MVP',
     'astaanta.reset': 'Dib u deji horumarkayga',
     'astaanta.reset_sub': 'Tirtir dhammaan xogta',
@@ -189,7 +189,7 @@ const translations = {
 
     // About page
     'about.title': 'Ku saabsan',
-    'about.description': 'Baro Ingiriis waa app-ka ugu fudud ee lagu barto Ingiriisiga. Loogu talagalay dadka Soomaalida ah ee rabta inay Ingiriis bartaan si kalsooni leh.',
+    'about.description': 'Hadaling waa app-ka ugu fudud ee lagu barto Ingiriisiga. Loogu talagalay dadka Soomaalida ah ee rabta inay Ingiriis bartaan si kalsooni leh.',
     'about.language_label': 'Luuqadda waxbarashada',
     'about.language_value': 'Soomaali → Ingiriis',
     'about.lessons_label': 'Tirada casharrada',
@@ -239,10 +239,10 @@ const translations = {
     'home.completed': 'Completed',
 
     // Onboarding
-    'onboarding.splash_title': 'Baro Ingiriis',
+    'onboarding.splash_title': 'Hadaling',
     'onboarding.splash_subtitle': 'Learn with confidence, in just a few minutes',
     'onboarding.splash_button': 'START →',
-    'onboarding.splash_footer': 'Learn English the easy way',
+    'onboarding.splash_footer': 'Hadaling — Learn English the easy way',
     'onboarding.intent_question': 'Why are you learning English?',
     'onboarding.intent_daily': 'Daily life',
     'onboarding.intent_work': 'Work',
@@ -359,7 +359,7 @@ const translations = {
     'astaanta.security': 'Account & Security',
     'astaanta.security_guest': 'Guest mode',
     'astaanta.security_verified': 'Verified',
-    'astaanta.about': 'About Baro Ingiriis',
+    'astaanta.about': 'About Hadaling',
     'astaanta.about_sub': 'Version 1.0.0 · MVP',
     'astaanta.reset': 'Reset My Progress',
     'astaanta.reset_sub': 'Delete all data',
@@ -401,7 +401,7 @@ const translations = {
 
     // About page
     'about.title': 'About',
-    'about.description': 'Baro Ingiriis is the easiest app to learn English. Built for Somali speakers who want to learn English with confidence.',
+    'about.description': 'Hadaling is the easiest app to learn English. Built for Somali speakers who want to learn English with confidence.',
     'about.language_label': 'Learning language',
     'about.language_value': 'Somali → English',
     'about.lessons_label': 'Total lessons',

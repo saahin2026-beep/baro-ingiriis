@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useData } from '../utils/DataContext';
 import { ChatCircle } from '@phosphor-icons/react';
 import OptionCard from '../components/OptionCard';
 import FeedbackBanner from '../components/FeedbackBanner';
 
-export default function ScenarioExercise({ data, onComplete, practiceMode = false }) {
+export default function ScenarioExercise({ data, onComplete, practiceMode = false, dark = false }) {
   const { getRandomPhrase } = useData();
   const [answered, setAnswered] = useState(false);
   const [wrongIndex, setWrongIndex] = useState(null);
@@ -12,6 +12,15 @@ export default function ScenarioExercise({ data, onComplete, practiceMode = fals
   const [bannerPhrase, setBannerPhrase] = useState(null);
   const [bannerType, setBannerType] = useState(null);
   const [bannerVisible, setBannerVisible] = useState(false);
+  const [autoAdvance, setAutoAdvance] = useState(false);
+
+  useEffect(() => {
+    if (!autoAdvance || practiceMode) return;
+    const timer = setTimeout(() => {
+      onComplete(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [autoAdvance, practiceMode]);
 
   const handleTap = (index) => {
     if (answered || bannerVisible || showCorrect) return;
@@ -25,6 +34,7 @@ export default function ScenarioExercise({ data, onComplete, practiceMode = fals
         setBannerType('correct');
         setBannerPhrase(getRandomPhrase('encouragement'));
         setBannerVisible(true);
+        setAutoAdvance(true);
       }
     } else {
       if (practiceMode) {
@@ -51,17 +61,20 @@ export default function ScenarioExercise({ data, onComplete, practiceMode = fals
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       {/* Scenario card */}
       <div style={{
-        background: 'linear-gradient(180deg, #FFF9E8 0%, #FFF3CC 100%)', border: '1.5px solid #FFDF80', borderRadius: 16,
-        borderBottom: '3px solid #FFCA28', boxShadow: '0 2px 12px rgba(255,193,7,0.1)',
+        background: dark ? '#1E293B' : 'linear-gradient(180deg, #FFF9E8 0%, #FFF3CC 100%)',
+        border: dark ? '1.5px solid #334155' : '1.5px solid #FFDF80',
+        borderRadius: 16,
+        borderBottom: dark ? '1.5px solid #334155' : '3px solid #FFCA28',
+        boxShadow: dark ? 'none' : '0 2px 12px rgba(255,193,7,0.1)',
         padding: '16px 18px', marginBottom: 16,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-          <ChatCircle size={18} weight="fill" color="#F57F17" />
-          <span style={{ fontSize: 12, fontWeight: 800, color: '#F57F17', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+          <ChatCircle size={18} weight="fill" color="#F59E0B" />
+          <span style={{ fontSize: 12, fontWeight: 800, color: '#F59E0B', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: 0.5 }}>
             XAALAD
           </span>
         </div>
-        <p style={{ fontSize: 14, color: '#333', fontFamily: 'Nunito, sans-serif', lineHeight: 1.6 }}>
+        <p style={{ fontSize: 14, color: dark ? '#F1F5F9' : '#333', fontFamily: 'Nunito, sans-serif', lineHeight: 1.6 }}>
           {data.scenario}
         </p>
       </div>
@@ -76,13 +89,18 @@ export default function ScenarioExercise({ data, onComplete, practiceMode = fals
             correct={getCorrectProp(i)}
             onClick={() => handleTap(i)}
             disabled={answered || bannerVisible || showCorrect}
+            dark={dark}
           />
         ))}
       </div>
 
       {practiceMode && showCorrect && wrongIndex !== null && (
-        <div style={{ marginTop: 12, padding: '12px 16px', borderRadius: 12, background: '#E8F5E9', textAlign: 'center' }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: '#2E7D32', fontFamily: 'Nunito, sans-serif' }}>
+        <div style={{
+          marginTop: 12, padding: '12px 16px', borderRadius: 12, textAlign: 'center',
+          background: dark ? 'rgba(16, 185, 129, 0.1)' : '#E8F5E9',
+          border: dark ? '1px solid rgba(16, 185, 129, 0.2)' : 'none',
+        }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: dark ? '#6EE7B7' : '#2E7D32', fontFamily: 'Nunito, sans-serif' }}>
             Jawaabta saxda: {data.options[data.correctIndex]}
           </p>
         </div>
@@ -93,6 +111,8 @@ export default function ScenarioExercise({ data, onComplete, practiceMode = fals
           type={bannerType === 'correct' ? 'correct' : 'wrong'}
           phrase={bannerPhrase}
           visible={bannerVisible}
+          dark={dark}
+          autoAdvance={bannerType === 'correct'}
           onContinue={() => {
             if (bannerType === 'correct') onComplete(true);
             else { setWrongIndex(null); setBannerPhrase(null); setBannerType(null); setBannerVisible(false); }

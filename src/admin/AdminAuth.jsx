@@ -21,7 +21,7 @@ export default function AdminAuth({ onLogin }) {
       if (dbError) throw dbError;
 
       if (data.value === password) {
-        sessionStorage.setItem('baro-admin', 'true');
+        sessionStorage.setItem('hadaling-admin', 'true');
         onLogin();
       } else {
         setError('Password incorrect');
@@ -43,7 +43,7 @@ export default function AdminAuth({ onLogin }) {
         boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
       }}>
         <h1 style={{ fontSize: 22, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>
-          Baro Admin
+          Hadaling Admin
         </h1>
         <p style={{ fontSize: 13, color: '#999', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 4 }}>
           Enter admin password to continue

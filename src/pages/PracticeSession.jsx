@@ -45,32 +45,32 @@ export default function PracticeSession() {
 
   if (completed) {
     return (
-      <div style={{ background: 'white', minHeight: '100dvh', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ background: '#0F172A', minHeight: '100dvh', position: 'relative', overflow: 'hidden', animation: 'darkFadeIn 0.3s ease-out' }}>
         <Confetti />
         <div style={{ padding: '60px 24px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{
-            width: 110, height: 110, borderRadius: '50%', background: feature.bg,
-            border: `3px solid ${feature.color}`, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            width: 110, height: 110, borderRadius: '50%', background: '#1E293B',
+            border: '3px solid #334155', display: 'flex', alignItems: 'center', justifyContent: 'center',
             boxShadow: `0 4px 16px ${feature.color}33`,
           }}>
             <Geel size={75} expression="celebrating" />
           </div>
-          <h1 style={{ fontSize: 24, fontWeight: 900, color: '#333', fontFamily: 'Nunito, sans-serif', marginTop: 20, textAlign: 'center' }}>
+          <h1 style={{ fontSize: 24, fontWeight: 900, color: '#F1F5F9', fontFamily: 'Nunito, sans-serif', marginTop: 20, textAlign: 'center' }}>
             Hambalyo! <ConfettiIcon size={24} weight="fill" color="#FFC107" style={{ display: 'inline', verticalAlign: 'middle' }} />
           </h1>
-          <p style={{ fontSize: 15, color: '#757575', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 8 }}>
+          <p style={{ fontSize: 15, color: '#94A3B8', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 8 }}>
             Waxaad dhammaysay {feature.title}
           </p>
 
           {/* Accuracy stats */}
           <div style={{ display: 'flex', gap: 12, marginTop: 24, width: '100%' }}>
-            <div style={{ flex: 1, background: '#E8F5E9', borderRadius: 14, padding: '16px 10px', textAlign: 'center' }}>
+            <div style={{ flex: 1, background: '#1E293B', borderRadius: 14, padding: '16px 10px', textAlign: 'center' }}>
               <p style={{ fontSize: 28, fontWeight: 800, color: '#4CAF50', fontFamily: 'Nunito, sans-serif' }}>{correctCount}/{feature.exercises.length}</p>
-              <p style={{ fontSize: 11, color: '#757575', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>Sax</p>
+              <p style={{ fontSize: 11, color: '#94A3B8', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>Sax</p>
             </div>
-            <div style={{ flex: 1, background: accuracyPct >= 70 ? '#E8F5E9' : '#FFF3E0', borderRadius: 14, padding: '16px 10px', textAlign: 'center' }}>
+            <div style={{ flex: 1, background: '#1E293B', borderRadius: 14, padding: '16px 10px', textAlign: 'center' }}>
               <p style={{ fontSize: 28, fontWeight: 800, color: accuracyPct >= 70 ? '#4CAF50' : '#FF9800', fontFamily: 'Nunito, sans-serif' }}>{accuracyPct}%</p>
-              <p style={{ fontSize: 11, color: '#757575', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>Saxnaan</p>
+              <p style={{ fontSize: 11, color: '#94A3B8', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>Saxnaan</p>
             </div>
           </div>
 
@@ -101,7 +101,7 @@ export default function PracticeSession() {
   }
 
   const renderExercise = () => {
-    const baseProps = { data: exercise, onComplete: handleExerciseComplete, practiceMode: true };
+    const baseProps = { data: exercise, onComplete: handleExerciseComplete, practiceMode: true, dark: true };
 
     switch (exercise.type) {
       case 'choose':
@@ -111,22 +111,22 @@ export default function PracticeSession() {
       case 'scenario':
         return <ScenarioExercise key={currentIndex} {...baseProps} />;
       case 'scramble':
-        return <ScrambleExercise key={currentIndex} data={exercise} featureColor={feature.color} onComplete={handleExerciseComplete} practiceMode />;
+        return <ScrambleExercise key={currentIndex} data={exercise} featureColor={feature.color} onComplete={handleExerciseComplete} practiceMode dark={true} />;
       case 'sentenceBuilder':
-        return <SentenceBuilderExercise key={currentIndex} data={exercise} featureColor={feature.color} onComplete={handleExerciseComplete} practiceMode />;
+        return <SentenceBuilderExercise key={currentIndex} data={exercise} featureColor={feature.color} onComplete={handleExerciseComplete} practiceMode dark={true} />;
       default:
         return <ChooseExercise key={currentIndex} {...baseProps} />;
     }
   };
 
   return (
-    <div style={{ background: 'white', minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ background: '#0F172A', minHeight: '100dvh', display: 'flex', flexDirection: 'column', animation: 'darkFadeIn 0.3s ease-out' }}>
       <div style={{ padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
         <button onClick={() => navigate('/progress')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
-          <X size={22} weight="bold" color="#757575" />
+          <X size={22} weight="bold" color="#94A3B8" />
         </button>
-        <div style={{ flex: 1, height: 8, borderRadius: 4, background: '#E0E0E0', overflow: 'hidden' }}>
-          <div style={{ height: '100%', borderRadius: 4, background: feature.color, width: `${progress}%`, transition: 'width 0.4s ease' }} />
+        <div style={{ flex: 1, height: 8, borderRadius: 4, background: '#334155', overflow: 'hidden' }}>
+          <div style={{ height: '100%', borderRadius: 4, background: feature.color, width: `${progress}%`, transition: 'width 0.4s ease', boxShadow: `0 0 8px ${feature.color}30` }} />
         </div>
         <span style={{ fontSize: 13, fontWeight: 800, color: feature.color, fontFamily: 'Nunito, sans-serif' }}>
           {currentIndex + 1}/{feature.exercises.length}
@@ -137,13 +137,13 @@ export default function PracticeSession() {
         <div style={{ width: 28, height: 28, borderRadius: 8, background: feature.color, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 13, fontWeight: 800, fontFamily: 'Nunito, sans-serif' }}>
           {currentIndex + 1}
         </div>
-        <span style={{ fontSize: 12, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+        <span style={{ fontSize: 12, fontWeight: 700, color: '#64748B', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: 0.5 }}>
           {exercise.type}
         </span>
       </div>
 
       <div style={{ padding: '0 20px 8px' }}>
-        <p style={{ fontSize: 15, fontWeight: 700, color: '#333', fontFamily: 'Nunito, sans-serif' }}>{exercise.instruction}</p>
+        <p style={{ fontSize: 15, fontWeight: 700, color: '#F1F5F9', fontFamily: 'Nunito, sans-serif' }}>{exercise.instruction}</p>
       </div>
 
       <div style={{ flex: 1, padding: '0 20px 120px', display: 'flex', flexDirection: 'column' }}>

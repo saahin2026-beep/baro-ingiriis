@@ -5,9 +5,9 @@ export default function GreenTopBar({ leftIcon, leftOnClick, title, rightContent
   return (
     <div>
       <div style={{
-        background: 'linear-gradient(180deg, #56C45A 0%, #4CAF50 40%, #3D9142 100%)', padding: '10px 16px',
+        background: 'linear-gradient(180deg, #22D3EE 0%, #0891B2 40%, #0E7490 100%)', padding: '10px 16px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: 48,
-        boxShadow: '0 4px 20px rgba(56,142,60,0.3)',
+        boxShadow: '0 4px 20px rgba(8,145,178,0.3)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {leftIcon && (

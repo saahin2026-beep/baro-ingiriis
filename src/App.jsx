@@ -15,6 +15,8 @@ import AuthGate from './pages/AuthGate';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import ProfileSetup from './pages/ProfileSetup';
+import GeelWorld from './pages/GeelWorld';
+import DailyPractice from './pages/DailyPractice';
 import AdminPage from './admin/AdminPage';
 
 function LessonGuard({ children }) {
@@ -22,10 +24,10 @@ function LessonGuard({ children }) {
   const lessonId = parseInt(id, 10);
   const state = storage.get();
 
-  if (lessonId >= 2 && !state.authComplete) {
+  if (lessonId >= 4 && !state.authComplete) {
     return <Navigate to="/auth-gate" replace />;
   }
-  if (lessonId >= 2 && state.authComplete && !state.profileComplete) {
+  if (lessonId >= 4 && state.authComplete && !state.profileComplete) {
     return <Navigate to="/profile-setup/0" replace />;
   }
   return children;
@@ -53,8 +55,10 @@ export default function App() {
       <Route path="/astaanta" element={<Astaanta />} />
       <Route path="/progress" element={<PracticeHub />} />
       <Route path="/progress/stats" element={<Progress />} />
+      <Route path="/practice/daily" element={<DailyPractice />} />
       <Route path="/practice/:featureKey" element={<PracticeSession />} />
       <Route path="/about" element={<About />} />
+      <Route path="/geel-world" element={<GeelWorld />} />
       <Route path="/admin" element={<AdminPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useData } from '../utils/DataContext';
 import Geel from '../components/Geel';
 import SpeechBubble from '../components/SpeechBubble';
 import OptionCard from '../components/OptionCard';
 import FeedbackBanner from '../components/FeedbackBanner';
 
-export default function FillGapExercise({ data, onComplete, practiceMode = false }) {
+export default function FillGapExercise({ data, onComplete, practiceMode = false, dark = false }) {
   const { getRandomPhrase } = useData();
   const [answered, setAnswered] = useState(false);
   const [wrongIndex, setWrongIndex] = useState(null);
@@ -14,6 +14,15 @@ export default function FillGapExercise({ data, onComplete, practiceMode = false
   const [bannerType, setBannerType] = useState(null);
   const [bannerVisible, setBannerVisible] = useState(false);
   const [filledWord, setFilledWord] = useState(null);
+  const [autoAdvance, setAutoAdvance] = useState(false);
+
+  useEffect(() => {
+    if (!autoAdvance || practiceMode) return;
+    const timer = setTimeout(() => {
+      onComplete(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [autoAdvance, practiceMode]);
 
   const handleTap = (index) => {
     if (answered || bannerVisible || showCorrect) return;
@@ -28,6 +37,7 @@ export default function FillGapExercise({ data, onComplete, practiceMode = false
         setBannerType('correct');
         setBannerPhrase(getRandomPhrase('encouragement'));
         setBannerVisible(true);
+        setAutoAdvance(true);
       }
     } else {
       if (practiceMode) {
@@ -56,14 +66,18 @@ export default function FillGapExercise({ data, onComplete, practiceMode = false
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 12 }}>
         <Geel size={90} expression={answered ? 'celebrating' : 'happy'} />
         <div style={{ marginTop: 8 }}>
-          <SpeechBubble color={answered || showCorrect ? '#E8F5E9' : '#FFFFFF'}>
+          <SpeechBubble dark={dark} color={!dark && (answered || showCorrect) ? '#E8F5E9' : '#FFFFFF'}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'baseline' }}>
               {data.sentence.map((word, i) => (
                 <span key={i} style={{
                   fontSize: 18, fontWeight: i === data.blankIndex ? 800 : 700,
-                  color: i === data.blankIndex ? (filledWord ? '#2E7D32' : '#4CAF50') : '#333',
+                  color: dark
+                    ? (i === data.blankIndex ? (filledWord ? '#6EE7B7' : '#22D3EE') : '#F1F5F9')
+                    : (i === data.blankIndex ? (filledWord ? '#2E7D32' : '#4CAF50') : '#333'),
                   fontFamily: 'Nunito, sans-serif',
-                  borderBottom: i === data.blankIndex && !filledWord ? '2px dashed #4CAF50' : 'none',
+                  borderBottom: i === data.blankIndex && !filledWord
+                    ? (dark ? '2px dashed #22D3EE' : '2px dashed #4CAF50')
+                    : 'none',
                   padding: i === data.blankIndex ? '0 4px' : 0,
                 }}>
                   {i === data.blankIndex ? (filledWord || '___') : word}
@@ -83,13 +97,18 @@ export default function FillGapExercise({ data, onComplete, practiceMode = false
             correct={getCorrectProp(i)}
             onClick={() => handleTap(i)}
             disabled={answered || bannerVisible || showCorrect}
+            dark={dark}
           />
         ))}
       </div>
 
       {practiceMode && showCorrect && wrongIndex !== null && (
-        <div style={{ marginTop: 12, padding: '12px 16px', borderRadius: 12, background: '#E8F5E9', textAlign: 'center' }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: '#2E7D32', fontFamily: 'Nunito, sans-serif' }}>
+        <div style={{
+          marginTop: 12, padding: '12px 16px', borderRadius: 12, textAlign: 'center',
+          background: dark ? 'rgba(16, 185, 129, 0.1)' : '#E8F5E9',
+          border: dark ? '1px solid rgba(16, 185, 129, 0.2)' : 'none',
+        }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: dark ? '#6EE7B7' : '#2E7D32', fontFamily: 'Nunito, sans-serif' }}>
             Jawaabta saxda: {data.options[data.correctIndex]}
           </p>
         </div>
@@ -100,6 +119,8 @@ export default function FillGapExercise({ data, onComplete, practiceMode = false
           type={bannerType === 'correct' ? 'correct' : 'wrong'}
           phrase={bannerPhrase}
           visible={bannerVisible}
+          dark={dark}
+          autoAdvance={bannerType === 'correct'}
           onContinue={() => {
             if (bannerType === 'correct') onComplete(true);
             else { setWrongIndex(null); setFilledWord(null); setBannerPhrase(null); setBannerType(null); setBannerVisible(false); }

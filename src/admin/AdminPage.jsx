@@ -3,10 +3,10 @@ import AdminAuth from './AdminAuth';
 import AdminDashboard from './AdminDashboard';
 
 export default function AdminPage() {
-  const [authed, setAuthed] = useState(() => sessionStorage.getItem('baro-admin') === 'true');
+  const [authed, setAuthed] = useState(() => sessionStorage.getItem('hadaling-admin') === 'true');
 
   const handleLogout = () => {
-    sessionStorage.removeItem('baro-admin');
+    sessionStorage.removeItem('hadaling-admin');
     setAuthed(false);
   };
 

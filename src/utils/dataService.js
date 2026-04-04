@@ -1,6 +1,6 @@
 import { supabase } from './supabase';
 
-const CACHE_KEY = 'baro-data-cache';
+const CACHE_KEY = 'hadaling-data-cache';
 
 function getCache() {
   try {
@@ -117,12 +117,12 @@ export async function fetchPhrases() {
       celebration: data.filter((p) => p.category === 'celebration').map((p) => ({ text: p.text_so, emoji: p.emoji })),
     };
 
-    localStorage.setItem('baro-phrases-cache', JSON.stringify(phrases));
+    localStorage.setItem('hadaling-phrases-cache', JSON.stringify(phrases));
     return phrases;
   } catch (err) {
     console.warn('Failed to fetch phrases, using cache:', err);
     try {
-      const cached = localStorage.getItem('baro-phrases-cache');
+      const cached = localStorage.getItem('hadaling-phrases-cache');
       if (cached) return JSON.parse(cached);
     } catch {}
 
@@ -146,12 +146,12 @@ export async function fetchOnboardingContent() {
     const content = {};
     data.forEach((row) => { content[row.screen_key] = row.content; });
 
-    localStorage.setItem('baro-onboarding-cache', JSON.stringify(content));
+    localStorage.setItem('hadaling-onboarding-cache', JSON.stringify(content));
     return content;
   } catch (err) {
     console.warn('Failed to fetch onboarding content, using cache:', err);
     try {
-      const cached = localStorage.getItem('baro-onboarding-cache');
+      const cached = localStorage.getItem('hadaling-onboarding-cache');
       if (cached) return JSON.parse(cached);
     } catch {}
     return null;

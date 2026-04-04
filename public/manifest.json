@@ -1,11 +1,11 @@
 {
-  "name": "Baro Ingiriis",
-  "short_name": "Baro",
-  "description": "Baro Ingiriis si fudud - Learn English the easy way",
+  "name": "Hadaling",
+  "short_name": "Hadaling",
+  "description": "Learn English with confidence — built for Somali speakers",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#4CAF50",
+  "background_color": "#0891B2",
+  "theme_color": "#0891B2",
   "orientation": "portrait",
   "icons": [
     {

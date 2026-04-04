@@ -6,7 +6,7 @@ import PrimaryButton from '../components/PrimaryButton';
 import FeedbackBanner from '../components/FeedbackBanner';
 import { useData } from '../utils/DataContext';
 
-export default function OrderExercise({ data, onComplete }) {
+export default function OrderExercise({ data, onComplete, dark = false }) {
   const { t } = useLanguage();
   const { getRandomPhrase } = useData();
   const [placedWords, setPlacedWords] = useState([]);
@@ -34,17 +34,30 @@ export default function OrderExercise({ data, onComplete }) {
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 12 }}>
         <Geel size={90} expression={isCorrect ? 'celebrating' : 'happy'} />
-        <div style={{ marginTop: 8 }}><SpeechBubble><p style={{ fontSize: 13, color: '#757575', fontFamily: 'Nunito, sans-serif' }}>Isku habee:</p></SpeechBubble></div>
+        <div style={{ marginTop: 8 }}>
+          <SpeechBubble dark={dark}>
+            <p style={{ fontSize: 13, color: dark ? '#94A3B8' : '#757575', fontFamily: 'Nunito, sans-serif' }}>Isku habee:</p>
+          </SpeechBubble>
+        </div>
       </div>
       <div style={{
         minHeight: 60, borderRadius: 14, padding: '12px 14px', display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center', marginBottom: 16, transition: 'all 0.3s',
-        background: placedWords.length > 0 ? '#F5F5F5' : '#FAFAFA',
-        border: shakeArea ? '2px solid #F44336' : placedWords.length > 0 ? '2px solid #E0E0E0' : '2px dashed #E0E0E0',
+        background: dark
+          ? (placedWords.length > 0 ? '#1E293B' : '#1E293B')
+          : (placedWords.length > 0 ? '#F5F5F5' : '#FAFAFA'),
+        border: shakeArea
+          ? '2px solid #F44336'
+          : dark
+            ? (placedWords.length > 0 ? '2px solid #334155' : '2px dashed #334155')
+            : (placedWords.length > 0 ? '2px solid #E0E0E0' : '2px dashed #E0E0E0'),
       }}>
-        {placedWords.length === 0 && <span style={{ fontSize: 13, fontStyle: 'italic', color: '#BDBDBD', fontFamily: 'Nunito, sans-serif' }}>Halkan ku dhig erayada...</span>}
+        {placedWords.length === 0 && <span style={{ fontSize: 13, fontStyle: 'italic', color: dark ? '#64748B' : '#BDBDBD', fontFamily: 'Nunito, sans-serif' }}>Halkan ku dhig erayada...</span>}
         {placedWords.map((w, i) => (
           <button key={`${w}-${i}`} onClick={() => removeWord(w, i)} className="animate-pop-in" style={{
-            padding: '8px 16px', borderRadius: 10, background: '#E8F5E9', border: '1px solid #C8E6C9', color: '#2E7D32',
+            padding: '8px 16px', borderRadius: 10,
+            background: dark ? '#0891B2' : '#E8F5E9',
+            border: dark ? '1px solid #0E7490' : '1px solid #C8E6C9',
+            color: dark ? 'white' : '#2E7D32',
             fontSize: 15, fontWeight: 700, fontFamily: 'Nunito, sans-serif', cursor: isCorrect ? 'default' : 'pointer',
           }}>{w}</button>
         ))}
@@ -52,17 +65,21 @@ export default function OrderExercise({ data, onComplete }) {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
         {availableWords.map((w, i) => (
           <button key={`${w}-${i}`} onClick={() => placeWord(w, i)} style={{
-            padding: '10px 20px', borderRadius: 12, border: '2px solid #E0E0E0', background: 'white', color: '#333',
-            fontWeight: 700, fontSize: 15, fontFamily: 'Nunito, sans-serif', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.04)',
+            padding: '10px 20px', borderRadius: 12,
+            border: dark ? '1.5px solid #475569' : '2px solid #E0E0E0',
+            background: dark ? '#334155' : 'white',
+            color: dark ? '#F1F5F9' : '#333',
+            fontWeight: 700, fontSize: 15, fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
+            boxShadow: dark ? 'none' : '0 2px 4px rgba(0,0,0,0.04)',
           }}>{w}</button>
         ))}
       </div>
       {allPlaced && !isCorrect && !bannerVisible && (
         <div style={{ marginTop: 'auto', paddingTop: 20 }}><PrimaryButton onClick={checkAnswer}>{t('btn.check')}</PrimaryButton></div>
       )}
-      <FeedbackBanner type={bannerType === 'correct' ? 'correct' : 'wrong'} phrase={bannerPhrase} visible={bannerVisible}
+      <FeedbackBanner type={bannerType === 'correct' ? 'correct' : 'wrong'} phrase={bannerPhrase} visible={bannerVisible} dark={dark}
         onContinue={() => {
-          if (bannerType === 'correct') onComplete();
+          if (bannerType === 'correct') onComplete(true);
           else { setShakeArea(false); setAvailableWords([...data.words]); setPlacedWords([]); setBannerPhrase(null); setBannerType(null); setBannerVisible(false); setIsCorrect(null); }
         }} />
     </div>

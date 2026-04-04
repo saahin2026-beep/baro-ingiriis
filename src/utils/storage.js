@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'baro-ingiriisi';
+const STORAGE_KEY = 'hadaling';
 
 function defaultState() {
   return {
@@ -9,6 +9,7 @@ function defaultState() {
     currentLesson: 1,
     lessonsCompleted: [],
     xp: 0,
+    dahab: 0,
     streak: 0,
     lastActiveDate: null,
     longestStreak: 0,
@@ -23,6 +24,17 @@ function defaultState() {
     userBirthday: '',
     userCity: '',
     practiceCompleted: {},
+    dailyPractice: {
+      date: null,
+      progress: 0,
+      completed: false,
+      exercises: [],
+      correctCount: 0,
+    },
+    dailyStreak: 0,
+    longestDailyStreak: 0,
+    lastDailyDate: null,
+    yaabViewedDate: null,
   };
 }
 
@@ -63,7 +75,7 @@ export const storage = {
     localStorage.removeItem(STORAGE_KEY);
   },
 
-  completeLesson(lessonId) {
+  completeLesson(lessonId, dahabEarned = 0) {
     const current = this.get();
     const completed = current.lessonsCompleted || [];
     if (!completed.includes(lessonId)) {
@@ -94,10 +106,69 @@ export const storage = {
       lessonsCompleted: completed,
       currentLesson: Math.min(Math.max(current.currentLesson, lessonId + 1), 10),
       xp: (current.xp || 0) + 10,
+      dahab: (current.dahab || 0) + dahabEarned,
       streak,
       lastActiveDate: today,
       longestStreak,
     });
+  },
+
+  checkDailyReset() {
+    const current = this.get();
+    const today = getToday();
+
+    if (current.dailyPractice?.date !== today) {
+      const yesterday = getYesterday();
+      const streakBroken = current.lastDailyDate !== yesterday && current.lastDailyDate !== today;
+
+      this.update({
+        dailyPractice: {
+          date: today,
+          progress: 0,
+          completed: false,
+          exercises: [],
+          correctCount: 0,
+        },
+        dailyStreak: streakBroken ? 0 : current.dailyStreak,
+      });
+    }
+  },
+
+  completeDailyPractice(correctCount) {
+    const current = this.get();
+    const today = getToday();
+    const newStreak = (current.dailyStreak || 0) + 1;
+
+    const roll = Math.random() * 100;
+    let dahabEarned;
+    let dahabTier;
+    if (roll < 2) {
+      dahabEarned = Math.floor(Math.random() * 31) + 50;
+      dahabTier = 'jackpot';
+    } else if (roll < 20) {
+      dahabEarned = Math.floor(Math.random() * 21) + 20;
+      dahabTier = 'mid';
+    } else {
+      dahabEarned = Math.floor(Math.random() * 11) + 5;
+      dahabTier = 'normal';
+    }
+
+    this.update({
+      dailyPractice: {
+        ...current.dailyPractice,
+        completed: true,
+        correctCount,
+        dahabEarned,
+        dahabTier,
+      },
+      dailyStreak: newStreak,
+      longestDailyStreak: Math.max(newStreak, current.longestDailyStreak || 0),
+      lastDailyDate: today,
+      xp: (current.xp || 0) + (correctCount * 10),
+      dahab: (current.dahab || 0) + dahabEarned,
+    });
+
+    return { dahabEarned, dahabTier };
   },
 
   // Call this on app load to check if streak should reset

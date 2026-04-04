@@ -3,20 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#4CAF50" />
-    <meta name="description" content="Baro Ingiriis si fudud - Learn English the easy way" />
+    <meta name="theme-color" content="#0891B2" />
+    <meta name="description" content="Hadaling — Learn English with confidence. Built for Somali speakers." />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Baro Ingiriis" />
+    <meta name="apple-mobile-web-app-title" content="Hadaling" />
     <link rel="manifest" href="/manifest.json" />
     <link rel="apple-touch-icon" href="/mascot/geel-happy.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <title>Baro Ingiriis</title>
+    <title>Hadaling</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+<div id="hadaling-splash" style="min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,#ECFEFF 0%,#FFFFFF 100%);font-family:Nunito,system-ui,sans-serif;overflow:hidden">
+  <style>
+    @keyframes hd-bubble{0%{transform:scale(0) rotate(-10deg);opacity:0}60%{transform:scale(1.1) rotate(2deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+    @keyframes hd-letter{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
+    @keyframes hd-dot{0%{transform:scale(0)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
+    @keyframes hd-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    @keyframes hd-word{0%{opacity:0;transform:translateY(10px);letter-spacing:8px}100%{opacity:1;transform:translateY(0);letter-spacing:2px}}
+    @keyframes hd-fade{0%{opacity:0}100%{opacity:1}}
+    @keyframes hd-ripple{0%{transform:scale(0.8);opacity:0.4}100%{transform:scale(2.5);opacity:0}}
+    @keyframes hd-pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+    @keyframes hd-shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+  </style>
+  <div style="position:relative;width:140px;height:140px;display:flex;align-items:center;justify-content:center">
+    <div style="position:absolute;width:100px;height:100px;border-radius:50%;background:rgba(8,145,178,0.12);animation:hd-ripple 2s ease-out infinite"></div>
+    <div style="position:absolute;width:100px;height:100px;border-radius:50%;background:rgba(8,145,178,0.08);animation:hd-ripple 2s ease-out 0.6s infinite"></div>
+    <div style="position:relative;animation:hd-float 3s ease-in-out 1.2s infinite">
+      <svg width="100" height="88" viewBox="0 0 100 88" style="animation:hd-bubble 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards;opacity:0">
+        <defs><linearGradient id="hd-cyan" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22D3EE"/><stop offset="100%" stop-color="#0891B2"/></linearGradient></defs>
+        <path d="M0 12 Q0 0 12 0 L88 0 Q100 0 100 12 L100 56 Q100 68 88 68 L34 68 L17 86 L21 68 L12 68 Q0 68 0 56 Z" fill="url(#hd-cyan)"/>
+      </svg>
+      <div style="position:absolute;top:8px;left:0;right:0;display:flex;justify-content:center;animation:hd-letter 0.5s ease-out 0.4s forwards;opacity:0">
+        <span style="font-size:48px;font-weight:900;color:white;text-shadow:0 2px 8px rgba(8,145,178,0.3)">H</span>
+      </div>
+      <div style="position:absolute;top:6px;right:4px;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#FBBF24 0%,#F59E0B 100%);box-shadow:0 2px 8px rgba(245,158,11,0.4);animation:hd-dot 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.7s forwards;transform:scale(0)"></div>
+    </div>
+  </div>
+  <div style="margin-top:28px;animation:hd-word 0.8s ease-out 0.9s forwards;opacity:0">
+    <span style="font-size:32px;font-weight:800;background:linear-gradient(90deg,#0891B2,#22D3EE,#0891B2);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:hd-shimmer 3s linear 1.5s infinite">Hadaling</span>
+  </div>
+  <p style="margin-top:10px;font-size:13px;color:#64748B;font-weight:500;animation:hd-fade 0.6s ease-out 1.3s forwards;opacity:0">Ingiriis si kalsooni leh</p>
+  <div style="display:flex;gap:6px;margin-top:28px">
+    <div style="width:7px;height:7px;border-radius:50%;background:#0891B2;animation:hd-pulse 1s ease-in-out infinite"></div>
+    <div style="width:7px;height:7px;border-radius:50%;background:#0891B2;animation:hd-pulse 1s ease-in-out 0.15s infinite"></div>
+    <div style="width:7px;height:7px;border-radius:50%;background:#0891B2;animation:hd-pulse 1s ease-in-out 0.3s infinite"></div>
+  </div>
+</div>
+</div>
     <script type="module" src="/src/main.jsx"></script>
     <script>
       if ('serviceWorker' in navigator) {

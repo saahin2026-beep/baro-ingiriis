@@ -1,7 +1,7 @@
-export default function ExerciseWrapper({ children, instruction }) {
+export default function ExerciseWrapper({ children, instruction, dark = false }) {
   return (
     <div className="animate-slide-in" style={{ display: 'flex', flexDirection: 'column', padding: '20px 20px 140px 20px', flex: 1 }}>
-      <p style={{ fontSize: 15, fontWeight: 600, fontFamily: 'Nunito, sans-serif', color: '#333', marginBottom: 14 }}>
+      <p style={{ fontSize: 15, fontWeight: 600, fontFamily: 'Nunito, sans-serif', color: dark ? '#F1F5F9' : '#333', marginBottom: 14 }}>
         {instruction}
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>

@@ -12,7 +12,7 @@ export default function AuthGate() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 24px 20px' }}>
         <Geel size={120} expression="celebrating" />
         <h1 style={{ fontSize: 28, fontWeight: 900, color: '#333', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 16 }}>
-          Baro Ingiriis
+          Hadaling
         </h1>
         <p style={{ fontSize: 14, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginTop: 6 }}>
           {t('auth.continue_learning')}

@@ -26,7 +26,7 @@ const COMFORT_COLORS = [
 
 // Hardcoded defaults (fallback if Supabase not loaded yet)
 const DEFAULTS = {
-  screen0: { title: 'Baro Ingiriis', subtitle: 'Kalsooni ku baro, daqiiqado yar gudaheed', buttonText: 'BILOW →', footer: 'Baro Ingiriis si fudud' },
+  screen0: { title: 'Hadaling', subtitle: 'Kalsooni ku baro, daqiiqado yar gudaheed', buttonText: 'BILOW →', footer: 'Hadaling — Ingiriis si fudud' },
   screen1: { question: 'Maxaad Ingiriis u baranaysaa?', options: [{ text: 'Nolol maalmeed' }, { text: 'Shaqo' }, { text: 'Iskuul' }, { text: 'Kalsooni' }] },
   screen2: { question: 'Sidee ayaad Ingiriis u dareemaysaa hadda?', options: [{ text: 'Waan fahmaa wax yar' }, { text: 'Waan fahmaa caadi' }, { text: 'Waan rabaa inaan is hagaajiyo' }], helperText: 'Ma aha imtixaan.' },
   screen3: { label: 'Ingiriis', instruction: 'Dooro micnaha saxda ah:', prompt: "Hi, I'm Ahmed.", options: ['Salaan, magacaygu waa Ahmed', 'Nabad gelyo', 'Sidee tahay?'], correctIndex: 0 },
@@ -63,17 +63,33 @@ export default function Onboarding() {
 
 function Screen0({ goNext, c }) {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px 40px', background: 'linear-gradient(180deg, #E8F5E9 0%, #FFFFFF 50%)' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px 40px', background: 'linear-gradient(180deg, #ECFEFF 0%, #FFFFFF 50%)' }}>
       <div style={{ height: 70 }} />
-      <div style={{ width: 110, height: 110, borderRadius: 28, background: '#E8F5E9', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 16px rgba(76,175,80,0.2)', animation: 'scaleIn 0.5s ease-out 0.2s both' }}>
-        <Geel size={85} />
+      <div style={{
+        width: 120, height: 120, borderRadius: 28,
+        background: 'linear-gradient(180deg, #22D3EE 0%, #0891B2 100%)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        boxShadow: '0 8px 24px rgba(8,145,178,0.3)',
+        animation: 'scaleIn 0.5s ease-out 0.2s both',
+        position: 'relative',
+      }}>
+        <svg width="80" height="70" viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 11 Q0 0 11 0 L79 0 Q90 0 90 11 L90 50 Q90 61 79 61 L30 61 L15 76 L18 61 L11 61 Q0 61 0 50 Z" fill="white"/>
+          <text x="45" y="44" fontFamily="Nunito, sans-serif" fontSize="38" fontWeight="900" fill="#0891B2" textAnchor="middle">H</text>
+        </svg>
+        <div style={{
+          position: 'absolute', top: 20, right: 18,
+          width: 18, height: 18, borderRadius: '50%',
+          background: 'linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%)',
+          boxShadow: '0 2px 6px rgba(245,158,11,0.4)',
+        }} />
       </div>
       <div style={{ height: 24 }} />
-      <h1 style={{ fontSize: 28, fontWeight: 900, color: '#333', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>{c.title}</h1>
-      <p style={{ fontSize: 15, color: '#757575', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 6, lineHeight: 1.5 }}>{c.subtitle}</p>
+      <h1 style={{ fontSize: 32, fontWeight: 900, color: '#0891B2', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>{c.title}</h1>
+      <p style={{ fontSize: 15, color: '#64748B', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 8, lineHeight: 1.5 }}>{c.subtitle}</p>
       <div style={{ flex: 1 }} />
       <PrimaryButton onClick={goNext}>{c.buttonText}</PrimaryButton>
-      <p style={{ fontSize: 12, color: '#BDBDBD', fontFamily: 'Nunito, sans-serif', marginTop: 16 }}>{c.footer}</p>
+      <p style={{ fontSize: 12, color: '#94A3B8', fontFamily: 'Nunito, sans-serif', marginTop: 16 }}>{c.footer}</p>
     </div>
   );
 }

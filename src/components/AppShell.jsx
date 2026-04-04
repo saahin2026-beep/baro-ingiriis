@@ -2,13 +2,12 @@ export default function AppShell({ children }) {
   return (
     <div
       style={{
-        maxWidth: 430,
+        width: '100%',
+        maxWidth: 520,
         margin: '0 auto',
         minHeight: '100dvh',
         position: 'relative',
-        background: '#FFFFFF',
-        boxShadow: '0 0 40px rgba(0,0,0,0.1)',
-        overflow: 'hidden',
+        background: '#FBF7F0',
       }}
     >
       {children}

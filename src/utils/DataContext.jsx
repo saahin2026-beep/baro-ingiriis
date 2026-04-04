@@ -13,7 +13,7 @@ const DataContext = createContext(null);
 
 function getInitialLessons() {
   try {
-    const cached = localStorage.getItem('baro-data-cache');
+    const cached = localStorage.getItem('hadaling-data-cache');
     if (cached) {
       const parsed = JSON.parse(cached);
       if (parsed.lessonData && Object.keys(parsed.lessonData).length > 0) return parsed;
@@ -24,7 +24,7 @@ function getInitialLessons() {
 
 function getInitialPhrases() {
   try {
-    const cached = localStorage.getItem('baro-phrases-cache');
+    const cached = localStorage.getItem('hadaling-phrases-cache');
     if (cached) {
       const parsed = JSON.parse(cached);
       if (parsed.feedback && parsed.feedback.length > 0) return parsed;

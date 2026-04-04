@@ -2,7 +2,7 @@ import { useState } from 'react';
 import FeedbackBanner from '../components/FeedbackBanner';
 import { useData } from '../utils/DataContext';
 
-export default function ScrambleExercise({ data, featureColor, onComplete, practiceMode = false }) {
+export default function ScrambleExercise({ data, featureColor, onComplete, practiceMode = false, dark = false }) {
   const { getRandomPhrase } = useData();
   const [placed, setPlaced] = useState([]);
   const [available, setAvailable] = useState(() =>
@@ -56,9 +56,13 @@ export default function ScrambleExercise({ data, featureColor, onComplete, pract
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       {/* Hint */}
-      <div style={{ background: '#F7F7F7', borderRadius: 12, padding: '10px 14px', marginBottom: 14, textAlign: 'center' }}>
-        <p style={{ fontSize: 12, color: '#999', fontFamily: 'Nunito, sans-serif', margin: 0 }}>Micnaha Soomaaliga:</p>
-        <p style={{ fontSize: 20, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', margin: '4px 0 0' }}>{data.hint}</p>
+      <div style={{
+        background: dark ? '#1E293B' : '#F7F7F7',
+        border: dark ? '1px solid #334155' : 'none',
+        borderRadius: 12, padding: '10px 14px', marginBottom: 14, textAlign: 'center',
+      }}>
+        <p style={{ fontSize: 12, color: dark ? '#64748B' : '#999', fontFamily: 'Nunito, sans-serif', margin: 0 }}>Micnaha Soomaaliga:</p>
+        <p style={{ fontSize: 20, fontWeight: 800, color: dark ? '#F1F5F9' : '#333', fontFamily: 'Nunito, sans-serif', margin: '4px 0 0' }}>{data.hint}</p>
         <span style={{
           display: 'inline-block', marginTop: 6, padding: '2px 10px', borderRadius: 6,
           background: `${featureColor}15`, fontSize: 11, fontWeight: 700, color: featureColor,
@@ -72,19 +76,31 @@ export default function ScrambleExercise({ data, featureColor, onComplete, pract
         minHeight: 56, borderRadius: 14, padding: '12px 14px',
         display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center', justifyContent: 'center',
         marginBottom: 14, transition: 'all 0.2s',
-        background: isCorrect ? '#E8F5E9' : '#FAFAFA',
-        border: isCorrect ? '2px solid #4CAF50' : placed.length > 0 ? '2px solid #E0E0E0' : '2px dashed #D0D0D0',
+        background: dark
+          ? (isCorrect ? 'rgba(16, 185, 129, 0.1)' : '#1E293B')
+          : (isCorrect ? '#E8F5E9' : '#FAFAFA'),
+        border: dark
+          ? (isCorrect ? '2px solid #10B981' : placed.length > 0 ? '2px solid #334155' : '2px dashed #334155')
+          : (isCorrect ? '2px solid #4CAF50' : placed.length > 0 ? '2px solid #E0E0E0' : '2px dashed #D0D0D0'),
       }}>
         {placed.length === 0 && (
-          <span style={{ fontSize: 13, color: '#bbb', fontFamily: 'Nunito, sans-serif', fontStyle: 'italic' }}>
+          <span style={{ fontSize: 13, color: dark ? '#64748B' : '#bbb', fontFamily: 'Nunito, sans-serif', fontStyle: 'italic' }}>
             Halkan ku dhig {data.mode === 'letters' ? 'xarfaha' : 'qeybaha'}...
           </span>
         )}
         {placed.map((p) => (
           <button key={p.id} onClick={() => handleRemove(p)} style={{
             padding: data.mode === 'letters' ? '8px 14px' : '8px 16px', borderRadius: 10,
-            background: isCorrect ? '#C8E6C9' : '#E8F5E9', border: '1.5px solid #A5D6A7',
-            color: '#2E7D32', fontSize: data.mode === 'letters' ? 20 : 16,
+            background: dark
+              ? (isCorrect ? 'rgba(16, 185, 129, 0.2)' : '#0891B2')
+              : (isCorrect ? '#C8E6C9' : '#E8F5E9'),
+            border: dark
+              ? (isCorrect ? '1.5px solid #10B981' : '1.5px solid #0E7490')
+              : '1.5px solid #A5D6A7',
+            color: dark
+              ? (isCorrect ? '#6EE7B7' : 'white')
+              : '#2E7D32',
+            fontSize: data.mode === 'letters' ? 20 : 16,
             fontWeight: 800, fontFamily: 'Nunito, sans-serif', cursor: isCorrect ? 'default' : 'pointer',
           }}>{p.text}</button>
         ))}
@@ -92,7 +108,7 @@ export default function ScrambleExercise({ data, featureColor, onComplete, pract
 
       {/* Formed word preview */}
       {placed.length > 0 && (
-        <p style={{ textAlign: 'center', fontSize: 22, fontWeight: 900, color: isCorrect ? '#2E7D32' : featureColor, fontFamily: 'Nunito, sans-serif', marginBottom: 12, letterSpacing: 1 }}>
+        <p style={{ textAlign: 'center', fontSize: 22, fontWeight: 900, color: isCorrect ? (dark ? '#6EE7B7' : '#2E7D32') : featureColor, fontFamily: 'Nunito, sans-serif', marginBottom: 12, letterSpacing: 1 }}>
           {formed}
         </p>
       )}
@@ -102,9 +118,11 @@ export default function ScrambleExercise({ data, featureColor, onComplete, pract
         {available.map((p) => (
           <button key={p.id} onClick={() => handlePlace(p)} style={{
             padding: data.mode === 'letters' ? '10px 16px' : '10px 18px', borderRadius: 12,
-            border: '2px solid #E0E0E0', background: 'white', color: '#333',
+            border: dark ? '1.5px solid #475569' : '2px solid #E0E0E0',
+            background: dark ? '#334155' : 'white',
+            color: dark ? '#F1F5F9' : '#333',
             fontSize: data.mode === 'letters' ? 20 : 16, fontWeight: 800, fontFamily: 'Nunito, sans-serif',
-            cursor: 'pointer', boxShadow: '0 2px 6px rgba(0,0,0,0.06)',
+            cursor: 'pointer', boxShadow: dark ? 'none' : '0 2px 6px rgba(0,0,0,0.06)',
           }}>{p.text}</button>
         ))}
       </div>
@@ -113,8 +131,11 @@ export default function ScrambleExercise({ data, featureColor, onComplete, pract
       <div style={{ display: 'flex', gap: 8, marginTop: 'auto', paddingTop: 12 }}>
         {!isCorrect && (
           <button onClick={handleReset} style={{
-            flex: 1, padding: '14px', borderRadius: 14, border: '2px solid #E0E0E0',
-            background: 'white', color: '#666', fontSize: 14, fontWeight: 700,
+            flex: 1, padding: '14px', borderRadius: 14,
+            border: dark ? '2px solid #334155' : '2px solid #E0E0E0',
+            background: dark ? '#1E293B' : 'white',
+            color: dark ? '#94A3B8' : '#666',
+            fontSize: 14, fontWeight: 700,
             fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
           }}>DIB U BILOW</button>
         )}
@@ -128,7 +149,7 @@ export default function ScrambleExercise({ data, featureColor, onComplete, pract
         )}
       </div>
 
-      <FeedbackBanner type={bannerType === 'correct' ? 'correct' : 'wrong'} phrase={bannerPhrase} visible={bannerVisible}
+      <FeedbackBanner type={bannerType === 'correct' ? 'correct' : 'wrong'} phrase={bannerPhrase} visible={bannerVisible} dark={dark}
         onContinue={() => {
           if (bannerType === 'correct') onComplete(true);
           else if (practiceMode) onComplete(false);
