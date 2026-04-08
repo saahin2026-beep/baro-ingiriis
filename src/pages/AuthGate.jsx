@@ -7,7 +7,7 @@ export default function AuthGate() {
   const { t } = useLanguage();
 
   return (
-    <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', background: '#FFFFFF' }}>
+    <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', background: '#FBF7F0' }}>
       {/* White top */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 24px 20px' }}>
         <Geel size={120} expression="celebrating" />
@@ -21,7 +21,7 @@ export default function AuthGate() {
 
       {/* Dark green bottom */}
       <div style={{
-        background: 'linear-gradient(180deg, #1A5C1F 0%, #2E7D32 40%, #1B5E20 100%)',
+        background: 'linear-gradient(165deg, #064E5E 0%, #0E7490 40%, #0891B2 100%)',
         borderRadius: '28px 28px 0 0',
         padding: '36px 24px 48px',
         display: 'flex', flexDirection: 'column', gap: 12,
@@ -33,9 +33,9 @@ export default function AuthGate() {
           onClick={() => navigate('/signup')}
           style={{
             width: '100%', padding: '16px 0', borderRadius: 14, border: 'none',
-            background: 'linear-gradient(180deg, #5CBF60 0%, #4CAF50 40%, #45A049 100%)', fontSize: 16, fontWeight: 800, color: 'white',
+            background: 'linear-gradient(180deg, #06B6D4 0%, #0891B2 40%, #0E7490 100%)', fontSize: 16, fontWeight: 800, color: 'white',
             fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
-            borderBottom: '4px solid #2E7D32', boxShadow: '0 4px 12px rgba(76,175,80,0.4)',
+            borderBottom: '4px solid #0E7490', boxShadow: '0 4px 12px rgba(8,145,178,0.4)',
             textTransform: 'uppercase', letterSpacing: 1,
             transform: 'translateY(0)', transition: 'all 0.08s ease',
           }}

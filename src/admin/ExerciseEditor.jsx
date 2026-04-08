@@ -92,7 +92,7 @@ export default function ExerciseEditor({ lessonId }) {
             {ex.instruction}
           </span>
           <button onClick={() => setEditing({ ...ex })} style={miniBtn('#1E88E5')}>Edit</button>
-          <button onClick={() => toggleActive(ex)} style={miniBtn(ex.is_active ? '#FF9800' : '#4CAF50')}>
+          <button onClick={() => toggleActive(ex)} style={miniBtn(ex.is_active ? '#FF9800' : '#0891B2')}>
             {ex.is_active ? 'Hide' : 'Show'}
           </button>
           <button onClick={() => handleDelete(ex.id)} style={miniBtn('#E53935')}>Del</button>

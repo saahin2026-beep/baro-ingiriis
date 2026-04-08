@@ -1,24 +1,29 @@
 {
   "name": "Hadaling",
   "short_name": "Hadaling",
-  "description": "Learn English with confidence — built for Somali speakers",
+  "description": "Baro Ingiriisiga — Learn English in Somali",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0891B2",
+  "background_color": "#FBF7F0",
   "theme_color": "#0891B2",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/mascot/geel-happy.png",
+      "src": "/branding/favicon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/mascot/geel-happy.png",
+      "src": "/branding/favicon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/branding/app-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
     }
   ]
 }

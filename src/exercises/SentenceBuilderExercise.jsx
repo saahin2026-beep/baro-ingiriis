@@ -71,10 +71,10 @@ export default function SentenceBuilderExercise({ data, featureColor, onComplete
         marginBottom: 14, transition: 'all 0.2s',
         background: dark
           ? (isCorrect ? 'rgba(16, 185, 129, 0.1)' : '#1E293B')
-          : (isCorrect ? '#E8F5E9' : '#FAFAFA'),
+          : (isCorrect ? '#D1FAE5' : '#FAFAFA'),
         border: dark
           ? (isCorrect ? '2px solid #10B981' : placed.length > 0 ? '2px solid #334155' : '2px dashed #334155')
-          : (isCorrect ? '2px solid #4CAF50' : placed.length > 0 ? '2px solid #E0E0E0' : '2px dashed #D0D0D0'),
+          : (isCorrect ? '2px solid #10B981' : placed.length > 0 ? '2px solid #E0E0E0' : '2px dashed #D0D0D0'),
       }}>
         {placed.length === 0 && (
           <span style={{ fontSize: 13, color: dark ? '#64748B' : '#bbb', fontFamily: 'Nunito, sans-serif', fontStyle: 'italic' }}>
@@ -86,13 +86,13 @@ export default function SentenceBuilderExercise({ data, featureColor, onComplete
             padding: '8px 16px', borderRadius: 10,
             background: dark
               ? (isCorrect ? 'rgba(16, 185, 129, 0.2)' : '#0891B2')
-              : (isCorrect ? '#C8E6C9' : '#E3F2FD'),
+              : (isCorrect ? '#A7F3D0' : '#E3F2FD'),
             border: dark
               ? (isCorrect ? '1.5px solid #10B981' : '1.5px solid #0E7490')
               : (isCorrect ? '1.5px solid #A5D6A7' : '1.5px solid #90CAF9'),
             color: dark
               ? (isCorrect ? '#6EE7B7' : 'white')
-              : (isCorrect ? '#2E7D32' : '#1565C0'),
+              : (isCorrect ? '#059669' : '#1565C0'),
             fontSize: 15, fontWeight: 700, fontFamily: 'Nunito, sans-serif',
             cursor: isCorrect ? 'default' : 'pointer',
           }}>{p.text}</button>

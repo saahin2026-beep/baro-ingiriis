@@ -67,9 +67,9 @@ export default function PracticeManager() {
             border: '1px solid #EEEEEE', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12,
           }}>
             <div style={{
-              width: 40, height: 40, borderRadius: 10, background: f.bg || '#E8F5E9',
-              border: `2px solid ${f.color || '#4CAF50'}`, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 14, fontWeight: 800, color: f.color || '#4CAF50',
+              width: 40, height: 40, borderRadius: 10, background: f.bg || '#ECFEFF',
+              border: `2px solid ${f.color || '#0891B2'}`, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 14, fontWeight: 800, color: f.color || '#0891B2',
             }}>
               {f.sort_order}
             </div>
@@ -78,7 +78,7 @@ export default function PracticeManager() {
               <p style={{ fontSize: 12, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', margin: '2px 0 0' }}>{f.title_en} — {f.key}</p>
             </div>
             <div style={{
-              padding: '4px 10px', borderRadius: 8, background: f.color || '#4CAF50',
+              padding: '4px 10px', borderRadius: 8, background: f.color || '#0891B2',
               fontSize: 11, fontWeight: 700, color: 'white',
             }}>
               EDIT
@@ -94,13 +94,13 @@ export default function PracticeManager() {
     <div>
       <button onClick={() => { setSelectedFeature(null); setEditingExercise(null); }} style={{
         background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700,
-        color: '#4CAF50', fontFamily: 'Nunito, sans-serif', padding: 0, marginBottom: 12,
+        color: '#0891B2', fontFamily: 'Nunito, sans-serif', padding: 0, marginBottom: 12,
       }}>
         ← Back to features
       </button>
 
       <div style={{
-        background: selectedFeature.bg || '#E8F5E9', borderRadius: 14, padding: '14px 16px',
+        background: selectedFeature.bg || '#ECFEFF', borderRadius: 14, padding: '14px 16px',
         border: `2px solid ${selectedFeature.color}`, marginBottom: 16,
       }}>
         <h2 style={{ fontSize: 18, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', margin: 0 }}>
@@ -173,7 +173,7 @@ export default function PracticeManager() {
 function FeatureEditor({ feature, onSave }) {
   const [title, setTitle] = useState(feature.title);
   const [titleEn, setTitleEn] = useState(feature.title_en || '');
-  const [color, setColor] = useState(feature.color || '#4CAF50');
+  const [color, setColor] = useState(feature.color || '#0891B2');
   const [saving, setSaving] = useState(false);
 
   const handleSave = async () => {
@@ -194,7 +194,7 @@ function FeatureEditor({ feature, onSave }) {
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         <input type="color" value={color} onChange={(e) => setColor(e.target.value)} style={{ width: 40, height: 32, border: 'none', borderRadius: 6, cursor: 'pointer' }} />
         <button onClick={handleSave} disabled={saving} style={{
-          background: '#4CAF50', color: 'white', border: 'none', borderRadius: 8, padding: '8px 16px',
+          background: '#0891B2', color: 'white', border: 'none', borderRadius: 8, padding: '8px 16px',
           fontSize: 12, fontWeight: 800, cursor: 'pointer', fontFamily: 'Nunito, sans-serif', opacity: saving ? 0.6 : 1,
         }}>
           {saving ? 'SAVING...' : 'SAVE'}

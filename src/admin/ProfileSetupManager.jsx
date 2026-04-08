@@ -38,7 +38,7 @@ export default function ProfileSetupManager() {
           Profile Setup Steps ({steps.length})
         </h2>
         <button onClick={() => setEditing({ step: steps.length, field_type: 'text', required: false })} style={{
-          background: '#4CAF50', color: 'white', border: 'none', borderRadius: 10,
+          background: '#0891B2', color: 'white', border: 'none', borderRadius: 10,
           padding: '8px 16px', fontSize: 13, fontWeight: 800, cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
         }}>
           + ADD STEP
@@ -48,13 +48,13 @@ export default function ProfileSetupManager() {
       {steps.map((s) => (
         <div key={s.id} onClick={() => setEditing(s)} style={{
           background: 'white', borderRadius: 14, padding: '14px 16px', marginBottom: 8,
-          border: editing?.id === s.id ? '2px solid #4CAF50' : '1px solid #EEEEEE',
+          border: editing?.id === s.id ? '2px solid #0891B2' : '1px solid #EEEEEE',
           cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12,
         }}>
           <div style={{
-            width: 36, height: 36, borderRadius: 10, background: '#E8F5E9',
+            width: 36, height: 36, borderRadius: 10, background: '#ECFEFF',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 16, fontWeight: 800, color: '#4CAF50',
+            fontSize: 16, fontWeight: 800, color: '#0891B2',
           }}>
             {s.step}
           </div>
@@ -97,7 +97,7 @@ function ProfileStepEditor({ step, onSave, onCancel }) {
   return (
     <div style={{
       background: 'white', borderRadius: 14, padding: 16, marginTop: 12,
-      border: '2px solid #4CAF50', boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+      border: '2px solid #0891B2', boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
     }}>
       <p style={{ fontSize: 14, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', marginBottom: 12 }}>
         {step.id ? 'Edit Step' : 'New Step'}
@@ -156,7 +156,7 @@ function ProfileStepEditor({ step, onSave, onCancel }) {
 
       <div style={{ display: 'flex', gap: 8 }}>
         <button onClick={handleSave} disabled={saving} style={{
-          flex: 1, padding: '12px', borderRadius: 10, border: 'none', background: '#4CAF50',
+          flex: 1, padding: '12px', borderRadius: 10, border: 'none', background: '#0891B2',
           color: 'white', fontSize: 14, fontWeight: 800, cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
           opacity: saving ? 0.6 : 1,
         }}>

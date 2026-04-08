@@ -1,9 +1,10 @@
-const CACHE_NAME = 'baro-ingiriisi-v2';
+const CACHE_NAME = 'hadaling-v3';
 
 const PRECACHE_URLS = [
   '/',
   '/index.html',
-  '/mascot/geel-happy.png',
+  '/branding/geel-head-color.png',
+  '/branding/favicon-192.png',
 ];
 
 self.addEventListener('install', (event) => {

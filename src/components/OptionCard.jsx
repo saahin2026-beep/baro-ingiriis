@@ -43,10 +43,10 @@ export default function OptionCard({ icon: IconComponent, iconColor, iconBg, emo
     circleIconColor = iconColor || '#999';
 
     if (correct === true) {
-      bg = 'linear-gradient(180deg, #E8F5E9, #C8E6C9)';
-      border = '#4CAF50'; borderBot = '4px solid #2E7D32'; color = '#2E7D32';
-      shadow = '0 2px 12px rgba(76,175,80,0.2)';
-      circleBg = '#4CAF50'; circleBorder = '#2E7D32';
+      bg = 'linear-gradient(180deg, #D1FAE5, #A7F3D0)';
+      border = '#10B981'; borderBot = '4px solid #059669'; color = '#059669';
+      shadow = '0 2px 12px rgba(16,185,129,0.2)';
+      circleBg = '#10B981'; circleBorder = '#059669';
       circleContent = <CheckCircle size={18} weight="fill" color="white" />;
     } else if (correct === false) {
       bg = 'linear-gradient(180deg, #FFEBEE, #FFCDD2)';

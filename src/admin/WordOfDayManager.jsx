@@ -148,7 +148,7 @@ export default function WordOfDayManager() {
             {word.category}
           </span>
           <button onClick={() => setEditing({ ...word })} style={miniBtn('#1E88E5')}>Edit</button>
-          <button onClick={() => toggleActive(word)} style={miniBtn(word.is_active ? '#FF9800' : '#4CAF50')}>
+          <button onClick={() => toggleActive(word)} style={miniBtn(word.is_active ? '#FF9800' : '#0891B2')}>
             {word.is_active ? 'Hide' : 'Show'}
           </button>
           <button onClick={() => handleDelete(word.id)} style={miniBtn('#E53935')}>Del</button>

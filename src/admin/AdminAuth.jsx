@@ -59,7 +59,7 @@ export default function AdminAuth({ onLogin }) {
             fontSize: 15, fontFamily: 'Nunito, sans-serif', marginTop: 24, outline: 'none',
             boxSizing: 'border-box',
           }}
-          onFocus={(e) => { e.target.style.borderColor = '#4CAF50'; }}
+          onFocus={(e) => { e.target.style.borderColor = '#0891B2'; }}
           onBlur={(e) => { e.target.style.borderColor = '#E0E0E0'; }}
         />
 
@@ -71,7 +71,7 @@ export default function AdminAuth({ onLogin }) {
 
         <button type="submit" disabled={loading || !password} style={{
           width: '100%', padding: '14px 0', borderRadius: 12, border: 'none',
-          background: loading || !password ? '#C8E6C9' : '#4CAF50',
+          background: loading || !password ? '#CFFAFE' : '#0891B2',
           fontSize: 15, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif',
           cursor: loading || !password ? 'not-allowed' : 'pointer', marginTop: 16,
         }}>

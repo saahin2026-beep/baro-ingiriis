@@ -91,7 +91,7 @@ export default function ProfileSetup() {
   const StepIcon = stepConfig.icon;
 
   return (
-    <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', background: '#FFFFFF' }}>
+    <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', background: '#FBF7F0' }}>
       <div style={{ padding: '20px 24px 0' }}>
         <ProgressDots total={STEP_CONFIGS.length} current={currentStep} />
       </div>
@@ -103,11 +103,11 @@ export default function ProfileSetup() {
 
         {/* Icon badge */}
         <div style={{
-          width: 56, height: 56, borderRadius: '50%', background: '#E8F5E9',
+          width: 56, height: 56, borderRadius: '50%', background: '#ECFEFF',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          marginBottom: 16, boxShadow: '0 2px 8px rgba(76,175,80,0.15)',
+          marginBottom: 16, boxShadow: '0 2px 8px rgba(8,145,178,0.15)',
         }}>
-          <StepIcon size={26} weight="fill" color="#4CAF50" />
+          <StepIcon size={26} weight="fill" color="#0891B2" />
         </div>
 
         {/* Question */}
@@ -134,15 +134,15 @@ export default function ProfileSetup() {
                   onClick={() => updateField(city)}
                   style={{
                     width: '100%', padding: '14px 16px', borderRadius: 12, textAlign: 'left',
-                    border: formData.city === city ? '2px solid #4CAF50' : '2px solid #E0E0E0',
-                    background: formData.city === city ? '#E8F5E9' : 'white',
-                    color: formData.city === city ? '#2E7D32' : '#333',
+                    border: formData.city === city ? '2px solid #0891B2' : '2px solid #E0E0E0',
+                    background: formData.city === city ? '#ECFEFF' : 'white',
+                    color: formData.city === city ? '#0E7490' : '#333',
                     fontSize: 15, fontWeight: formData.city === city ? 700 : 600,
                     fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
                     transition: 'all 0.2s',
                   }}
                 >
-                  {formData.city === city && <MapPin size={16} weight="fill" color="#4CAF50" style={{ marginRight: 8, verticalAlign: 'middle' }} />}
+                  {formData.city === city && <MapPin size={16} weight="fill" color="#0891B2" style={{ marginRight: 8, verticalAlign: 'middle' }} />}
                   {city}
                 </button>
               ))}

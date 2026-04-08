@@ -93,8 +93,8 @@ button, a, [role="button"] {
 }
 
 @keyframes pulse-border {
-  0%, 100% { border-color: #4CAF50; }
-  50% { border-color: rgba(76, 175, 80, 0.3); }
+  0%, 100% { border-color: #0891B2; }
+  50% { border-color: rgba(8, 145, 178, 0.3); }
 }
 .animate-pulse-border {
   animation: pulse-border 1.5s ease-in-out infinite;

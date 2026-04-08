@@ -3,8 +3,8 @@ const practiceFeatures = {
     title: 'Erayo Cusub',
     titleEn: 'Vocabulary',
     icon: 'BookOpen',
-    color: '#4CAF50',
-    bg: '#E8F5E9',
+    color: '#0891B2',
+    bg: '#ECFEFF',
     description: 'Baro erayo cusub oo kala duwan',
     descriptionEn: 'Learn new words by category',
     exercises: [

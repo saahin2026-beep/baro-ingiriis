@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-const COLORS = ['#4CAF50', '#FFC107', '#2196F3', '#F44336', '#9C27B0', '#FF9800'];
+const COLORS = ['#0891B2', '#FFC107', '#2196F3', '#F44336', '#9C27B0', '#FF9800'];
 
 export default function Confetti() {
   const particles = useMemo(() => {

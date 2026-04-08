@@ -66,17 +66,17 @@ export default function FillGapExercise({ data, onComplete, practiceMode = false
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 12 }}>
         <Geel size={90} expression={answered ? 'celebrating' : 'happy'} />
         <div style={{ marginTop: 8 }}>
-          <SpeechBubble dark={dark} color={!dark && (answered || showCorrect) ? '#E8F5E9' : '#FFFFFF'}>
+          <SpeechBubble dark={dark} color={!dark && (answered || showCorrect) ? '#D1FAE5' : '#FFFFFF'}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'baseline' }}>
               {data.sentence.map((word, i) => (
                 <span key={i} style={{
                   fontSize: 18, fontWeight: i === data.blankIndex ? 800 : 700,
                   color: dark
                     ? (i === data.blankIndex ? (filledWord ? '#6EE7B7' : '#22D3EE') : '#F1F5F9')
-                    : (i === data.blankIndex ? (filledWord ? '#2E7D32' : '#4CAF50') : '#333'),
+                    : (i === data.blankIndex ? (filledWord ? '#059669' : '#10B981') : '#333'),
                   fontFamily: 'Nunito, sans-serif',
                   borderBottom: i === data.blankIndex && !filledWord
-                    ? (dark ? '2px dashed #22D3EE' : '2px dashed #4CAF50')
+                    ? (dark ? '2px dashed #22D3EE' : '2px dashed #10B981')
                     : 'none',
                   padding: i === data.blankIndex ? '0 4px' : 0,
                 }}>
@@ -105,10 +105,10 @@ export default function FillGapExercise({ data, onComplete, practiceMode = false
       {practiceMode && showCorrect && wrongIndex !== null && (
         <div style={{
           marginTop: 12, padding: '12px 16px', borderRadius: 12, textAlign: 'center',
-          background: dark ? 'rgba(16, 185, 129, 0.1)' : '#E8F5E9',
+          background: dark ? 'rgba(16, 185, 129, 0.1)' : '#D1FAE5',
           border: dark ? '1px solid rgba(16, 185, 129, 0.2)' : 'none',
         }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: dark ? '#6EE7B7' : '#2E7D32', fontFamily: 'Nunito, sans-serif' }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: dark ? '#6EE7B7' : '#059669', fontFamily: 'Nunito, sans-serif' }}>
             Jawaabta saxda: {data.options[data.correctIndex]}
           </p>
         </div>

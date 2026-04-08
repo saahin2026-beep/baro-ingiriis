@@ -77,7 +77,7 @@ export default function OnboardingManager() {
       </h2>
 
       {message && (
-        <div style={{ padding: '10px 16px', borderRadius: 8, background: '#E8F5E9', color: '#2E7D32', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>
+        <div style={{ padding: '10px 16px', borderRadius: 8, background: '#ECFEFF', color: '#0E7490', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>
           {message}
         </div>
       )}
@@ -87,9 +87,9 @@ export default function OnboardingManager() {
         {SCREENS.map((s) => (
           <button key={s.key} onClick={() => setActiveScreen(s.key)} style={{
             padding: '8px 14px', borderRadius: 8, fontSize: 12, fontWeight: 700,
-            border: activeScreen === s.key ? '2px solid #4CAF50' : '1px solid #E0E0E0',
-            background: activeScreen === s.key ? '#E8F5E9' : 'white',
-            color: activeScreen === s.key ? '#2E7D32' : '#757575',
+            border: activeScreen === s.key ? '2px solid #0891B2' : '1px solid #E0E0E0',
+            background: activeScreen === s.key ? '#ECFEFF' : 'white',
+            color: activeScreen === s.key ? '#0E7490' : '#757575',
             cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
           }}>{s.label}</button>
         ))}
@@ -141,7 +141,7 @@ export default function OnboardingManager() {
             <label style={labelStyle}>Somali Options (first one is correct)</label>
             {(content.options || []).map((opt, i) => (
               <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'center' }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: i === (content.correctIndex || 0) ? '#4CAF50' : '#BDBDBD', width: 20 }}>{i === (content.correctIndex || 0) ? 'OK' : i}</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: i === (content.correctIndex || 0) ? '#0891B2' : '#BDBDBD', width: 20 }}>{i === (content.correctIndex || 0) ? 'OK' : i}</span>
                 <input value={opt} onChange={(e) => updateNestedField('screen3', 'options', i, null, e.target.value)} style={{ ...inputStyle, flex: 1 }} />
               </div>
             ))}
@@ -204,6 +204,6 @@ const inputStyle = {
   fontSize: 14, fontFamily: 'Nunito, sans-serif', outline: 'none', boxSizing: 'border-box',
 };
 const greenBtn = {
-  padding: '10px 20px', borderRadius: 8, border: 'none', background: '#4CAF50',
+  padding: '10px 20px', borderRadius: 8, border: 'none', background: '#0891B2',
   color: 'white', fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
 };

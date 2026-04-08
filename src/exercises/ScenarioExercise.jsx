@@ -97,10 +97,10 @@ export default function ScenarioExercise({ data, onComplete, practiceMode = fals
       {practiceMode && showCorrect && wrongIndex !== null && (
         <div style={{
           marginTop: 12, padding: '12px 16px', borderRadius: 12, textAlign: 'center',
-          background: dark ? 'rgba(16, 185, 129, 0.1)' : '#E8F5E9',
+          background: dark ? 'rgba(16, 185, 129, 0.1)' : '#D1FAE5',
           border: dark ? '1px solid rgba(16, 185, 129, 0.2)' : 'none',
         }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: dark ? '#6EE7B7' : '#2E7D32', fontFamily: 'Nunito, sans-serif' }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: dark ? '#6EE7B7' : '#059669', fontFamily: 'Nunito, sans-serif' }}>
             Jawaabta saxda: {data.options[data.correctIndex]}
           </p>
         </div>

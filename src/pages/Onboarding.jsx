@@ -19,9 +19,9 @@ const INTENT_COLORS = [
 ];
 const COMFORT_ICONS = [Plant, Leaf, Tree];
 const COMFORT_COLORS = [
-  { iconColor: '#66BB6A', iconBg: '#E8F5E9' },
-  { iconColor: '#43A047', iconBg: '#E8F5E9' },
-  { iconColor: '#2E7D32', iconBg: '#E8F5E9' },
+  { iconColor: '#22D3EE', iconBg: '#ECFEFF' },
+  { iconColor: '#06B6D4', iconBg: '#ECFEFF' },
+  { iconColor: '#0E7490', iconBg: '#ECFEFF' },
 ];
 
 // Hardcoded defaults (fallback if Supabase not loaded yet)
@@ -163,9 +163,9 @@ function Screen3({ goNext, c, getRandomPhrase }) {
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 12 }}>
         <Geel size={100} expression={answered ? 'celebrating' : 'happy'} />
         <div style={{ marginTop: 8 }}>
-          <SpeechBubble color={answered ? '#E8F5E9' : '#FFFFFF'}>
+          <SpeechBubble color={answered ? '#ECFEFF' : '#FFFFFF'}>
             <p style={{ fontSize: 13, color: '#757575', fontFamily: 'Nunito, sans-serif', marginBottom: 2 }}>{c.label}</p>
-            <p style={{ fontSize: 18, fontWeight: 800, color: answered ? '#2E7D32' : '#333', fontFamily: 'Nunito, sans-serif' }}>{c.prompt}</p>
+            <p style={{ fontSize: 18, fontWeight: 800, color: answered ? '#0E7490' : '#333', fontFamily: 'Nunito, sans-serif' }}>{c.prompt}</p>
           </SpeechBubble>
         </div>
       </div>
@@ -221,7 +221,7 @@ function Screen6({ goNext, c }) {
       <div style={{ flex: 1 }} />
       <Geel size={140} expression="celebrating" />
       <div style={{ height: 16 }} />
-      <div style={{ width: 52, height: 52, borderRadius: '50%', background: '#4CAF50', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(76,175,80,0.3)' }}>
+      <div style={{ width: 52, height: 52, borderRadius: '50%', background: '#0891B2', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(8,145,178,0.3)' }}>
         <span style={{ fontSize: 20, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>1</span>
       </div>
       <div style={{ height: 12 }} />

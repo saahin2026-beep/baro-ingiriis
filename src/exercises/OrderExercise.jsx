@@ -55,9 +55,9 @@ export default function OrderExercise({ data, onComplete, dark = false }) {
         {placedWords.map((w, i) => (
           <button key={`${w}-${i}`} onClick={() => removeWord(w, i)} className="animate-pop-in" style={{
             padding: '8px 16px', borderRadius: 10,
-            background: dark ? '#0891B2' : '#E8F5E9',
-            border: dark ? '1px solid #0E7490' : '1px solid #C8E6C9',
-            color: dark ? 'white' : '#2E7D32',
+            background: dark ? '#0891B2' : '#D1FAE5',
+            border: dark ? '1px solid #0E7490' : '1px solid #A7F3D0',
+            color: dark ? 'white' : '#059669',
             fontSize: 15, fontWeight: 700, fontFamily: 'Nunito, sans-serif', cursor: isCorrect ? 'default' : 'pointer',
           }}>{w}</button>
         ))}

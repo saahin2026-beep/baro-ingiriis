@@ -28,14 +28,12 @@ export default function About() {
       <div style={{ padding: '24px 16px' }}>
         {/* App icon + name */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24 }}>
-          <div style={{
-            width: 80, height: 80, borderRadius: 20, background: '#ECFEFF',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 4px 16px rgba(8,145,178,0.2)',
-          }}>
-            <Geel size={60} />
-          </div>
-          <h1 style={{ fontSize: 22, fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif', marginTop: 12 }}>
+          <img
+            src="/branding/geel-head-color.png"
+            alt="Geel"
+            style={{ width: 80, height: 80, objectFit: 'contain' }}
+          />
+          <h1 style={{ fontSize: 22, fontWeight: 800, color: '#0891B2', fontFamily: 'Nunito, sans-serif', marginTop: 12 }}>
             Hadaling
           </h1>
           <p style={{ fontSize: 13, color: '#64748B', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>

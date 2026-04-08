@@ -161,9 +161,9 @@ export default function PracticeHub() {
           </div>
         ) : (
           <div style={{
-            background: 'linear-gradient(135deg, #4CAF50, #81C784)',
+            background: 'linear-gradient(135deg, #0891B2, #22D3EE)',
             borderRadius: 20, padding: 18,
-            boxShadow: '0 4px 16px rgba(76,175,80,0.25)',
+            boxShadow: '0 4px 16px rgba(8,145,178,0.25)',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

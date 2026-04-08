@@ -67,7 +67,7 @@ export default function LessonManager() {
         <button onClick={() => setEditing({
           title_so: '', title_en: '', ability: '', explanation: [], chunks: [], sort_order: lessons.length + 1, is_active: true,
         })} style={{
-          background: '#4CAF50', border: 'none', borderRadius: 8, padding: '8px 16px',
+          background: '#0891B2', border: 'none', borderRadius: 8, padding: '8px 16px',
           fontSize: 13, fontWeight: 700, color: 'white', fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
         }}>
           + Add Lesson
@@ -98,7 +98,7 @@ export default function LessonManager() {
               <SmallBtn
                 label={lesson.is_active ? 'Hide' : 'Show'}
                 onClick={() => toggleActive(lesson)}
-                color={lesson.is_active ? '#FF9800' : '#4CAF50'}
+                color={lesson.is_active ? '#FF9800' : '#0891B2'}
               />
               <SmallBtn
                 label="Exercises"
@@ -188,7 +188,7 @@ function LessonEditModal({ lesson, onSave, onClose }) {
             }}>Cancel</button>
             <button type="submit" style={{
               flex: 1, padding: '12px 0', borderRadius: 10, border: 'none',
-              background: '#4CAF50', fontSize: 14, fontWeight: 700, color: 'white',
+              background: '#0891B2', fontSize: 14, fontWeight: 700, color: 'white',
               fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
             }}>Save</button>
           </div>

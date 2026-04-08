@@ -8,7 +8,7 @@ export default function ProgressDots({ total, current }) {
             width: i === current ? 24 : 8,
             height: 8,
             borderRadius: 4,
-            background: i <= current ? '#4CAF50' : '#E0E0E0',
+            background: i <= current ? '#0891B2' : '#E0E0E0',
             transition: 'all 0.3s ease',
           }}
         />

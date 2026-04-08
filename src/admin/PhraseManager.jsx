@@ -68,7 +68,7 @@ export default function PhraseManager() {
             onClick={() => setCategory(cat)}
             style={{
               padding: '6px 14px', borderRadius: 20, border: 'none',
-              background: category === cat ? '#4CAF50' : '#E0E0E0',
+              background: category === cat ? '#0891B2' : '#E0E0E0',
               color: category === cat ? 'white' : '#666',
               fontSize: 12, fontWeight: 700, fontFamily: 'Nunito, sans-serif',
               cursor: 'pointer', textTransform: 'capitalize',
@@ -83,7 +83,7 @@ export default function PhraseManager() {
         <button onClick={() => setEditing({
           category, text_so: '', emoji: '', sort_order: filtered.length + 1, is_active: true,
         })} style={{
-          background: '#4CAF50', border: 'none', borderRadius: 6, padding: '6px 14px',
+          background: '#0891B2', border: 'none', borderRadius: 6, padding: '6px 14px',
           fontSize: 12, fontWeight: 700, color: 'white', fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
         }}>
           + Add Phrase
@@ -101,7 +101,7 @@ export default function PhraseManager() {
             {phrase.text_so}
           </span>
           <button onClick={() => setEditing({ ...phrase })} style={miniBtn('#1E88E5')}>Edit</button>
-          <button onClick={() => toggleActive(phrase)} style={miniBtn(phrase.is_active ? '#FF9800' : '#4CAF50')}>
+          <button onClick={() => toggleActive(phrase)} style={miniBtn(phrase.is_active ? '#FF9800' : '#0891B2')}>
             {phrase.is_active ? 'Hide' : 'Show'}
           </button>
           <button onClick={() => handleDelete(phrase.id)} style={miniBtn('#E53935')}>Del</button>
@@ -171,7 +171,7 @@ function PhraseEditModal({ phrase, onSave, onClose }) {
             }}>Cancel</button>
             <button type="submit" style={{
               flex: 1, padding: '12px 0', borderRadius: 10, border: 'none',
-              background: '#4CAF50', fontSize: 14, fontWeight: 700, color: 'white',
+              background: '#0891B2', fontSize: 14, fontWeight: 700, color: 'white',
               fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
             }}>Save</button>
           </div>

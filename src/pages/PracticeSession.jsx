@@ -65,11 +65,11 @@ export default function PracticeSession() {
           {/* Accuracy stats */}
           <div style={{ display: 'flex', gap: 12, marginTop: 24, width: '100%' }}>
             <div style={{ flex: 1, background: '#1E293B', borderRadius: 14, padding: '16px 10px', textAlign: 'center' }}>
-              <p style={{ fontSize: 28, fontWeight: 800, color: '#4CAF50', fontFamily: 'Nunito, sans-serif' }}>{correctCount}/{feature.exercises.length}</p>
+              <p style={{ fontSize: 28, fontWeight: 800, color: '#10B981', fontFamily: 'Nunito, sans-serif' }}>{correctCount}/{feature.exercises.length}</p>
               <p style={{ fontSize: 11, color: '#94A3B8', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>Sax</p>
             </div>
             <div style={{ flex: 1, background: '#1E293B', borderRadius: 14, padding: '16px 10px', textAlign: 'center' }}>
-              <p style={{ fontSize: 28, fontWeight: 800, color: accuracyPct >= 70 ? '#4CAF50' : '#FF9800', fontFamily: 'Nunito, sans-serif' }}>{accuracyPct}%</p>
+              <p style={{ fontSize: 28, fontWeight: 800, color: accuracyPct >= 70 ? '#10B981' : '#FF9800', fontFamily: 'Nunito, sans-serif' }}>{accuracyPct}%</p>
               <p style={{ fontSize: 11, color: '#94A3B8', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>Saxnaan</p>
             </div>
           </div>

@@ -58,7 +58,7 @@ export default function LessonPlay() {
           <X size={22} weight="bold" color="#94A3B8" />
         </button>
         <div style={{ flex: 1 }}>
-          <ProgressBar current={currentExercise + 1} total={5} dark={true} color="#4CAF50" />
+          <ProgressBar current={currentExercise + 1} total={5} dark={true} color="#0891B2" />
         </div>
         {/* Dahab counter — no timer in lessons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
