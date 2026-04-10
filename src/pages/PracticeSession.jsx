@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Confetti as ConfettiIcon } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
@@ -11,6 +11,7 @@ import SentenceBuilderExercise from '../exercises/SentenceBuilderExercise';
 import Geel from '../components/Geel';
 import Confetti from '../components/Confetti';
 import ExerciseLayout from '../components/ExerciseLayout';
+import { shuffleOptions } from '../utils/shuffleOptions';
 
 export default function PracticeSession() {
   const { featureKey } = useParams();
@@ -20,16 +21,21 @@ export default function PracticeSession() {
   const [correctCount, setCorrectCount] = useState(0);
   const [completed, setCompleted] = useState(false);
 
+  const shuffledExercises = useMemo(() => {
+    if (!feature) return [];
+    return feature.exercises.map(ex => shuffleOptions(ex));
+  }, [feature]);
+
   if (!feature) { navigate('/progress'); return null; }
 
-  const exercise = feature.exercises[currentIndex];
+  const exercise = shuffledExercises[currentIndex];
 
   const handleExerciseComplete = (wasCorrect) => {
     if (wasCorrect) setCorrectCount((c) => c + 1);
     const nextIndex = currentIndex + 1;
     storage.update({ [`practice_${featureKey}_progress`]: nextIndex });
 
-    if (nextIndex >= feature.exercises.length) {
+    if (nextIndex >= shuffledExercises.length) {
       const state = storage.get();
       const pc = state.practiceCompleted || {};
       pc[featureKey] = true;

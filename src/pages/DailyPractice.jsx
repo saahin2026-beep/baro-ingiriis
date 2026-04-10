@@ -4,6 +4,7 @@ import { Fire, Confetti as ConfettiIcon, CurrencyCircleDollar, Timer } from '@ph
 import { storage } from '../utils/storage';
 import { calculateDahabTimed } from '../utils/speedScore';
 import { generateDailyMix, saveChunkStats } from '../utils/dailyMix';
+import { shuffleOptions } from '../utils/shuffleOptions';
 import SpeedBonusPopup from '../components/SpeedBonusPopup';
 import { useLanguage } from '../utils/useLanguage';
 import ChooseExercise from '../exercises/ChooseExercise';
@@ -49,7 +50,7 @@ export default function DailyPractice() {
       return;
     }
 
-    const mix = generateDailyMix();
+    const mix = generateDailyMix().map(ex => shuffleOptions(ex));
     if (mix.length === 0) { setNoLessons(true); return; }
 
     storage.update({ dailyMix: { date: today, progress: 0, completed: false, exercises: mix, correctCount: 0 } });

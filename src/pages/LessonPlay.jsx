@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useData } from '../utils/DataContext';
 import { calculateDahabLesson } from '../utils/speedScore';
 import { saveChunkStats } from '../utils/dailyMix';
+import { shuffleOptions } from '../utils/shuffleOptions';
 import PremiumChooseExercise from '../exercises/PremiumChooseExercise';
 import FillGapExercise from '../exercises/FillGapExercise';
 import OrderExercise from '../exercises/OrderExercise';
@@ -20,10 +21,16 @@ export default function LessonPlay() {
   const [sessionDahab, setSessionDahab] = useState(0);
   const [chunkResults, setChunkResults] = useState([]);
 
+  // Shuffle all exercise options once when lesson loads
+  const shuffledExercises = useMemo(() => {
+    if (!data) return [];
+    return data.exercises.map(ex => shuffleOptions(ex));
+  }, [data]);
+
   if (!data) { navigate('/home'); return null; }
 
-  const totalExercises = data.exercises.length;
-  const exercise = data.exercises[currentExercise];
+  const totalExercises = shuffledExercises.length;
+  const exercise = shuffledExercises[currentExercise];
   const enrichedData = { ...exercise, lessonId: Number(id) };
 
   const handleNext = (wasCorrect = true) => {
