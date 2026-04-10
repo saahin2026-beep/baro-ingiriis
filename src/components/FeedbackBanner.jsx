@@ -1,9 +1,18 @@
+import { useEffect } from 'react';
 import { CheckCircle, XCircle } from '@phosphor-icons/react';
 import { useLanguage } from '../utils/useLanguage';
 import PhraseIcon from '../utils/PhraseIcon';
 
 export default function FeedbackBanner({ type, phrase, onContinue, visible, dark = false, premium = false, autoAdvance = false }) {
   const { t } = useLanguage();
+
+  // Auto-advance: call onContinue when timer bar finishes
+  useEffect(() => {
+    if (!visible || !autoAdvance || type !== 'correct') return;
+    const timer = setTimeout(() => { if (onContinue) onContinue(); }, 1500);
+    return () => clearTimeout(timer);
+  }, [visible, autoAdvance, type]);
+
   if (!visible || !phrase) return null;
   const isCorrect = type === 'correct';
 
