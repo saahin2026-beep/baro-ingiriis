@@ -37,7 +37,7 @@ export default function OrderExercise({ data, onComplete, dark = false, premium 
         <Geel size={90} expression={isCorrect ? 'celebrating' : 'happy'} />
         <div style={{ marginTop: 8 }}>
           <SpeechBubble dark={useDark} premium={premium}>
-            <p style={{ fontSize: 13, color: useDark ? '#94A3B8' : '#757575', fontFamily: 'Nunito, sans-serif' }}>Isku habee:</p>
+            <p style={{ fontSize: 13, color: premium ? '#666' : (useDark ? '#94A3B8' : '#757575'), fontFamily: 'Nunito, sans-serif' }}>Isku habee:</p>
           </SpeechBubble>
         </div>
       </div>

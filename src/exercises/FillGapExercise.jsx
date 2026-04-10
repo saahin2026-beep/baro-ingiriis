@@ -72,12 +72,14 @@ export default function FillGapExercise({ data, onComplete, practiceMode = false
               {data.sentence.map((word, i) => (
                 <span key={i} style={{
                   fontSize: 18, fontWeight: i === data.blankIndex ? 800 : 700,
-                  color: useDark
-                    ? (i === data.blankIndex ? (filledWord ? '#6EE7B7' : '#22D3EE') : '#F1F5F9')
-                    : (i === data.blankIndex ? (filledWord ? '#059669' : '#10B981') : '#333'),
+                  color: premium
+                    ? (i === data.blankIndex ? (filledWord ? '#059669' : '#0891B2') : '#333')
+                    : (useDark
+                      ? (i === data.blankIndex ? (filledWord ? '#6EE7B7' : '#22D3EE') : '#F1F5F9')
+                      : (i === data.blankIndex ? (filledWord ? '#059669' : '#10B981') : '#333')),
                   fontFamily: 'Nunito, sans-serif',
                   borderBottom: i === data.blankIndex && !filledWord
-                    ? (useDark ? '2px dashed #22D3EE' : '2px dashed #10B981')
+                    ? (premium ? '2px dashed #0891B2' : (useDark ? '2px dashed #22D3EE' : '2px dashed #10B981'))
                     : 'none',
                   padding: i === data.blankIndex ? '0 4px' : 0,
                 }}>
