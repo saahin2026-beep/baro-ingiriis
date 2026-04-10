@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { X, Confetti as ConfettiIcon } from '@phosphor-icons/react';
+import { Confetti as ConfettiIcon } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
 import practiceFeatures from '../data/practiceFeatures';
 import ChooseExercise from '../exercises/ChooseExercise';
@@ -10,7 +10,7 @@ import ScrambleExercise from '../exercises/ScrambleExercise';
 import SentenceBuilderExercise from '../exercises/SentenceBuilderExercise';
 import Geel from '../components/Geel';
 import Confetti from '../components/Confetti';
-import PrimaryButton from '../components/PrimaryButton';
+import ExerciseLayout from '../components/ExerciseLayout';
 
 export default function PracticeSession() {
   const { featureKey } = useParams();
@@ -40,60 +40,72 @@ export default function PracticeSession() {
     }
   };
 
-  const progress = (currentIndex / feature.exercises.length) * 100;
   const accuracyPct = completed ? Math.round((correctCount / feature.exercises.length) * 100) : 0;
 
   if (completed) {
     return (
-      <div style={{ background: '#0F172A', minHeight: '100dvh', position: 'relative', overflow: 'hidden', animation: 'darkFadeIn 0.3s ease-out' }}>
+      <div style={{
+        background: 'linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%)',
+        minHeight: '100dvh', position: 'relative', overflow: 'hidden',
+      }}>
         <Confetti />
-        <div style={{ padding: '60px 24px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ padding: '60px 24px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 1 }}>
           <div style={{
-            width: 110, height: 110, borderRadius: '50%', background: '#1E293B',
-            border: '3px solid #334155', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: `0 4px 16px ${feature.color}33`,
+            width: 110, height: 110, borderRadius: '50%',
+            background: 'linear-gradient(180deg, #FDE68A 0%, #FCD34D 30%, #F59E0B 70%, #D97706 100%)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 12px 40px rgba(245,158,11,0.4), 0 0 0 4px rgba(255,255,255,0.9), 0 0 0 8px rgba(245,158,11,0.2)',
           }}>
             <Geel size={75} expression="celebrating" />
           </div>
-          <h1 style={{ fontSize: 24, fontWeight: 900, color: '#F1F5F9', fontFamily: 'Nunito, sans-serif', marginTop: 20, textAlign: 'center' }}>
+          <h1 style={{ fontSize: 24, fontWeight: 900, color: '#1E293B', fontFamily: 'Nunito, sans-serif', marginTop: 20, textAlign: 'center' }}>
             Hambalyo! <ConfettiIcon size={24} weight="fill" color="#FFC107" style={{ display: 'inline', verticalAlign: 'middle' }} />
           </h1>
-          <p style={{ fontSize: 15, color: '#94A3B8', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 8 }}>
+          <p style={{ fontSize: 15, color: '#64748B', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 8 }}>
             Waxaad dhammaysay {feature.title}
           </p>
 
-          {/* Accuracy stats */}
           <div style={{ display: 'flex', gap: 12, marginTop: 24, width: '100%' }}>
-            <div style={{ flex: 1, background: '#1E293B', borderRadius: 14, padding: '16px 10px', textAlign: 'center' }}>
-              <p style={{ fontSize: 28, fontWeight: 800, color: '#10B981', fontFamily: 'Nunito, sans-serif' }}>{correctCount}/{feature.exercises.length}</p>
-              <p style={{ fontSize: 11, color: '#94A3B8', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>Sax</p>
+            <div style={{ flex: 1, background: 'linear-gradient(180deg, #FFFFFF, #ECFDF5)', border: '1.5px solid rgba(16,185,129,0.2)', borderRadius: 18, padding: '16px 10px', textAlign: 'center', boxShadow: '0 4px 16px rgba(16,185,129,0.1)' }}>
+              <p style={{ fontSize: 28, fontWeight: 800, color: '#059669', fontFamily: 'Nunito, sans-serif' }}>{correctCount}/{feature.exercises.length}</p>
+              <p style={{ fontSize: 11, fontWeight: 700, color: '#10B981', fontFamily: 'Nunito, sans-serif', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sax</p>
             </div>
-            <div style={{ flex: 1, background: '#1E293B', borderRadius: 14, padding: '16px 10px', textAlign: 'center' }}>
-              <p style={{ fontSize: 28, fontWeight: 800, color: accuracyPct >= 70 ? '#10B981' : '#FF9800', fontFamily: 'Nunito, sans-serif' }}>{accuracyPct}%</p>
-              <p style={{ fontSize: 11, color: '#94A3B8', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>Saxnaan</p>
+            <div style={{ flex: 1, background: 'linear-gradient(180deg, #FFFFFF, #ECFEFF)', border: '1.5px solid rgba(8,145,178,0.2)', borderRadius: 18, padding: '16px 10px', textAlign: 'center', boxShadow: '0 4px 16px rgba(8,145,178,0.1)' }}>
+              <p style={{ fontSize: 28, fontWeight: 800, color: accuracyPct >= 70 ? '#0E7490' : '#D97706', fontFamily: 'Nunito, sans-serif' }}>{accuracyPct}%</p>
+              <p style={{ fontSize: 11, fontWeight: 700, color: '#0891B2', fontFamily: 'Nunito, sans-serif', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Saxnaan</p>
             </div>
           </div>
 
           {accuracyPct < 70 && (
-            <p style={{ fontSize: 13, color: '#FF9800', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 12 }}>
+            <p style={{ fontSize: 13, color: '#D97706', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 12 }}>
               Isku day mar kale si aad u hesho 70%+
             </p>
           )}
 
           <div style={{ height: 24 }} />
-          <PrimaryButton onClick={() => navigate('/progress')}>KU NOQO XIRFADAHA</PrimaryButton>
+          <button onClick={() => navigate('/progress')} style={{
+            width: '100%', height: '60px', background: 'linear-gradient(145deg, #0891B2 0%, #0E7490 50%, #064E5E 100%)',
+            border: 'none', borderRadius: '18px', fontSize: '18px', fontWeight: 800, color: 'white',
+            fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
+            boxShadow: '0 8px 28px rgba(8,145,178,0.4), inset 0 1px 0 rgba(255,255,255,0.2)',
+          }}>
+            KU NOQO XIRFADAHA
+          </button>
           {accuracyPct < 100 && (
-            <>
-              <div style={{ height: 10 }} />
-              <PrimaryButton variant="secondary" onClick={() => {
-                setCurrentIndex(0); setCorrectCount(0); setCompleted(false);
-                storage.update({ [`practice_${featureKey}_progress`]: 0 });
-                const state = storage.get();
-                const pc = state.practiceCompleted || {};
-                delete pc[featureKey];
-                storage.update({ practiceCompleted: pc });
-              }}>MAR KALE KU CELI</PrimaryButton>
-            </>
+            <button onClick={() => {
+              setCurrentIndex(0); setCorrectCount(0); setCompleted(false);
+              storage.update({ [`practice_${featureKey}_progress`]: 0 });
+              const state = storage.get();
+              const pc = state.practiceCompleted || {};
+              delete pc[featureKey];
+              storage.update({ practiceCompleted: pc });
+            }} style={{
+              width: '100%', height: '54px', marginTop: 10,
+              background: 'transparent', border: '2px solid #E2E8F0', borderRadius: '18px',
+              fontSize: '16px', fontWeight: 800, color: '#64748B', fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
+            }}>
+              MAR KALE KU CELI
+            </button>
           )}
         </div>
       </div>
@@ -101,54 +113,28 @@ export default function PracticeSession() {
   }
 
   const renderExercise = () => {
-    const baseProps = { data: exercise, onComplete: handleExerciseComplete, practiceMode: true, dark: true };
+    const baseProps = { data: exercise, onComplete: handleExerciseComplete, practiceMode: true };
 
     switch (exercise.type) {
-      case 'choose':
-        return <ChooseExercise key={currentIndex} {...baseProps} />;
-      case 'fillgap':
-        return <FillGapExercise key={currentIndex} {...baseProps} />;
-      case 'scenario':
-        return <ScenarioExercise key={currentIndex} {...baseProps} />;
-      case 'scramble':
-        return <ScrambleExercise key={currentIndex} data={exercise} featureColor={feature.color} onComplete={handleExerciseComplete} practiceMode dark={true} />;
-      case 'sentenceBuilder':
-        return <SentenceBuilderExercise key={currentIndex} data={exercise} featureColor={feature.color} onComplete={handleExerciseComplete} practiceMode dark={true} />;
-      default:
-        return <ChooseExercise key={currentIndex} {...baseProps} />;
+      case 'choose': return <ChooseExercise key={currentIndex} {...baseProps} />;
+      case 'fillgap': return <FillGapExercise key={currentIndex} {...baseProps} />;
+      case 'scenario': return <ScenarioExercise key={currentIndex} {...baseProps} />;
+      case 'scramble': return <ScrambleExercise key={currentIndex} data={exercise} featureColor={feature.color} onComplete={handleExerciseComplete} practiceMode />;
+      case 'sentenceBuilder': return <SentenceBuilderExercise key={currentIndex} data={exercise} featureColor={feature.color} onComplete={handleExerciseComplete} practiceMode />;
+      default: return <ChooseExercise key={currentIndex} {...baseProps} />;
     }
   };
 
   return (
-    <div style={{ background: '#0F172A', minHeight: '100dvh', display: 'flex', flexDirection: 'column', animation: 'darkFadeIn 0.3s ease-out' }}>
-      <div style={{ padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
-        <button onClick={() => navigate('/progress')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
-          <X size={22} weight="bold" color="#94A3B8" />
-        </button>
-        <div style={{ flex: 1, height: 8, borderRadius: 4, background: '#334155', overflow: 'hidden' }}>
-          <div style={{ height: '100%', borderRadius: 4, background: feature.color, width: `${progress}%`, transition: 'width 0.4s ease', boxShadow: `0 0 8px ${feature.color}30` }} />
-        </div>
-        <span style={{ fontSize: 13, fontWeight: 800, color: feature.color, fontFamily: 'Nunito, sans-serif' }}>
-          {currentIndex + 1}/{feature.exercises.length}
-        </span>
-      </div>
-
-      <div style={{ padding: '8px 20px 0', display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-        <div style={{ width: 28, height: 28, borderRadius: 8, background: feature.color, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 13, fontWeight: 800, fontFamily: 'Nunito, sans-serif' }}>
-          {currentIndex + 1}
-        </div>
-        <span style={{ fontSize: 12, fontWeight: 700, color: '#64748B', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-          {exercise.type}
-        </span>
-      </div>
-
-      <div style={{ padding: '0 20px 8px' }}>
-        <p style={{ fontSize: 15, fontWeight: 700, color: '#F1F5F9', fontFamily: 'Nunito, sans-serif' }}>{exercise.instruction}</p>
-      </div>
-
-      <div style={{ flex: 1, padding: '0 20px 120px', display: 'flex', flexDirection: 'column' }}>
-        {renderExercise()}
-      </div>
-    </div>
+    <ExerciseLayout
+      current={currentIndex + 1}
+      total={feature.exercises.length}
+      onClose={() => navigate('/progress')}
+    >
+      <p style={{ fontSize: 15, fontWeight: 600, fontFamily: 'Nunito, sans-serif', color: '#333', marginBottom: 14 }}>
+        {exercise.instruction}
+      </p>
+      {renderExercise()}
+    </ExerciseLayout>
   );
 }
