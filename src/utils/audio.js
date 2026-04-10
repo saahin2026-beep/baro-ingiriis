@@ -63,8 +63,57 @@ export function stopAllAudio() {
 }
 
 /**
- * Generate the expected audio path for a lesson chunk.
- * Convention: /audio/lesson-{id}/{slug}.mp3
+ * Generate the audio path for a lesson chunk.
+ * @param {number} lessonId - Lesson number (1-10)
+ * @param {string} chunkId - Chunk ID like "1-A", "2-B", etc.
+ * @returns {string} Path like /audio/lessons/lesson-1/1-a.mp3
+ */
+export function getChunkAudioPath(lessonId, chunkId) {
+  return `/audio/lessons/lesson-${lessonId}/${chunkId.toLowerCase()}.mp3`;
+}
+
+/**
+ * Generate the audio path for a listen exercise.
+ * @param {number} lessonId - Lesson number (1-10)
+ * @param {number} exerciseIndex - Exercise index (1-based, usually 5)
+ * @returns {string} Path like /audio/lessons/lesson-1/listen-5.mp3
+ */
+export function getListenAudioPath(lessonId, exerciseIndex = 5) {
+  return `/audio/lessons/lesson-${lessonId}/listen-${exerciseIndex}.mp3`;
+}
+
+/**
+ * Generate the audio path for Word of the Day.
+ * @param {string} englishWord - The English word/phrase
+ * @returns {string} Path like /audio/wotd/hello.mp3
+ */
+export function getWotdAudioPath(englishWord) {
+  const slug = englishWord
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+  return `/audio/wotd/${slug}.mp3`;
+}
+
+/**
+ * Generate the audio path for practice exercises.
+ * @param {string} module - Practice module: 'vocabulary', 'word-formation', 'sentence-builder'
+ * @param {string} text - The English text or sentence number
+ * @returns {string} Path like /audio/practice/vocabulary/mother.mp3
+ */
+export function getPracticeAudioPath(module, text) {
+  const slug = text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+  return `/audio/practice/${module}/${slug}.mp3`;
+}
+
+/**
+ * Legacy function - maps to new chunk audio path.
+ * @deprecated Use getChunkAudioPath instead
  */
 export function getAudioPath(lessonId, englishText) {
   const slug = englishText
@@ -72,5 +121,5 @@ export function getAudioPath(lessonId, englishText) {
     .replace(/[^a-z0-9\s]/g, '')
     .trim()
     .replace(/\s+/g, '-');
-  return `/audio/lesson-${lessonId}/${slug}.mp3`;
+  return `/audio/lessons/lesson-${lessonId}/${slug}.mp3`;
 }

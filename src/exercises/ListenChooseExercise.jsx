@@ -4,7 +4,7 @@ import Geel from '../components/Geel';
 import OptionCard from '../components/OptionCard';
 import FeedbackBanner from '../components/FeedbackBanner';
 import { useData } from '../utils/DataContext';
-import { playAudio, getAudioPath } from '../utils/audio';
+import { playAudio, getChunkAudioPath } from '../utils/audio';
 
 export default function ListenChooseExercise({ data, onComplete, dark = false, premium = false }) {
   const useDark = premium || dark;
@@ -16,7 +16,10 @@ export default function ListenChooseExercise({ data, onComplete, dark = false, p
   const { getRandomPhrase } = useData();
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const audioSrc = data.lessonId ? getAudioPath(data.lessonId, data.prompt) : null;
+  // Use chunkId for audio path (new unified audio system)
+  const audioSrc = data.lessonId && data.chunkId
+    ? getChunkAudioPath(data.lessonId, data.chunkId)
+    : null;
 
   const handlePlayAudio = async () => {
     if (isPlaying || !audioSrc) return;

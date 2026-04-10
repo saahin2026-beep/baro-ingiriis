@@ -356,5 +356,5 @@ export const allChunks = Object.values(lessonData).flatMap(lesson =>
 export const audioManifest = allChunks.map(chunk => ({
   id: chunk.id,
   text: chunk.en,
-  path: `/audio/lesson-${chunk.lessonId}/${chunk.en.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '-')}.mp3`
+  path: `/audio/lessons/lesson-${chunk.lessonId}/${chunk.id.toLowerCase()}.mp3`
 }));

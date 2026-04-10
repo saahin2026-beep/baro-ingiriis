@@ -9,7 +9,9 @@
       "Bash(md5 /Users/saahin/Desktop/baro-ingiriisi/public/mascot/geel-happy.png)",
       "Bash(npm run:*)",
       "Bash(node:*)",
-      "Bash(xargs kill:*)"
+      "Bash(xargs kill:*)",
+      "Bash(pip3 install:*)",
+      "Bash(python3:*)"
     ]
   }
 }
