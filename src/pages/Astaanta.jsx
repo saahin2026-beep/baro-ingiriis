@@ -81,7 +81,7 @@ export default function Astaanta() {
         </span>
       </div>
 
-      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 100, position: 'relative', zIndex: 2 }}>
+      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', paddingBottom: 100, position: 'relative', zIndex: 2 }}>
         {/* Banner */}
         <div style={{ padding: '16px 16px 0' }}>
           <div style={{

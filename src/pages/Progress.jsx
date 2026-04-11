@@ -22,7 +22,6 @@ export default function Progress() {
     <div className="page-scroll" style={{
       background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
       position: 'relative',
-      overflow: 'hidden'
     }}>
       {/* Ambient light blobs */}
       <div style={{
