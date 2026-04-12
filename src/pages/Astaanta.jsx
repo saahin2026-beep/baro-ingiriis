@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Trash, Warning, Bell, ChartBar,
-  ShieldCheck, BookOpen, Info, Crown, SignOut, CaretRight, Globe, Heart
+  ShieldCheck, Crown, SignOut, CaretRight, Globe, Heart
 } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
@@ -132,7 +132,6 @@ export default function Astaanta() {
 
         {/* Menu */}
         <div style={{ padding: 'clamp(6px, 1.2vh, 10px) clamp(12px, 2.5vh, 20px) 0' }}>
-          <MenuItem icon={BookOpen} glow="cyan" label={t('astaanta.manage_courses')} sublabel={t('astaanta.manage_courses_sub')} onClick={() => navigate('/home')} />
           <MenuItem icon={ChartBar} glow="cyan" label={t('astaanta.progress')} sublabel={`${state.xp || 0} XP · ${state.lessonsCompleted?.length || 0}/10`} onClick={() => navigate('/progress/stats')} />
           {/* Language toggle — white card */}
           <div style={{
@@ -183,8 +182,6 @@ export default function Astaanta() {
           </div>
           <MenuItem icon={Bell} glow="gold" label={t('astaanta.notifications')} sublabel={t('astaanta.notifications_sub')} onClick={() => setShowComingSoon(true)} />
           <MenuItem icon={ShieldCheck} glow="green" label={t('astaanta.security')} sublabel={state.guestMode ? t('astaanta.security_guest') : t('astaanta.security_verified')} onClick={() => setShowComingSoon(true)} />
-          <MenuItem icon={Info} glow="neutral" label={t('astaanta.about')} sublabel={t('astaanta.about_sub')} onClick={() => navigate('/about')} />
-
           <div style={{ height: 'clamp(3px, 0.8vh, 6px)' }} />
 
           <MenuItem icon={Trash} glow="red" label={t('astaanta.reset')} sublabel={t('astaanta.reset_sub')} danger onClick={() => setShowResetConfirm(true)} />
