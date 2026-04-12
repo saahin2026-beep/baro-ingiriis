@@ -54,15 +54,9 @@ export function DataProvider({ children }) {
   const [onboardingContent, setOnboardingContent] = useState(null);
 
   // Silent background sync from Supabase
+  // Lessons use hardcoded data only — Supabase exercises table was cleared
   useEffect(() => {
     async function syncFromSupabase() {
-      try {
-        const lessonsResult = await fetchLessons();
-        if (lessonsResult?.lessonData && Object.keys(lessonsResult.lessonData).length > 0) {
-          setLessonData(lessonsResult.lessonData);
-          setLessonsList(lessonsResult.lessonsList);
-        }
-      } catch {}
 
       try {
         const phrasesResult = await fetchPhrases();

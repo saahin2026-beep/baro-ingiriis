@@ -77,7 +77,9 @@ body {
   height: -webkit-fill-available;
   max-height: 100dvh;
   max-height: -webkit-fill-available;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   position: fixed;
   top: 0;
   left: 50%;
