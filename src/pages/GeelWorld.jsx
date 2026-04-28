@@ -11,6 +11,7 @@ import { getDailyFact, getCategoryColor } from '../data/dailyFacts';
 import { playAudio, stopAllAudio } from '../utils/audio';
 import { getStreakData, purchaseStreakFreeze, getNextMilestone, getStreakTier, MILESTONES } from '../utils/streak';
 import { Snowflake, Flame } from '@phosphor-icons/react';
+import Toast from '../components/Toast';
 
 function press3D(borderColor = '#155E75', depth = 6) {
   return {
@@ -42,6 +43,7 @@ export default function GeelWorld() {
   const [dailyWord, setDailyWord] = useState(getDailyWordSync());
   const [isPlayingWord, setIsPlayingWord] = useState(false);
   const [yaabRevealed, setYaabRevealed] = useState(() => storage.get().yaabViewedDate === new Date().toDateString());
+  const [toast, setToast] = useState(null);
   const dailyFact = getDailyFact();
 
   useEffect(() => {
@@ -72,6 +74,8 @@ export default function GeelWorld() {
       paddingBottom: 'max(100px, calc(80px + env(safe-area-inset-bottom)))',
       position: 'relative',
     }}>
+      <Toast {...(toast || {})} onDismiss={() => setToast(null)} />
+
       {/* Ambient light blobs */}
       <div style={{
         position: 'absolute',
@@ -494,8 +498,7 @@ export default function GeelWorld() {
                 <button onClick={() => {
                   const s = storage.get();
                   const result = purchaseStreakFreeze(s.dahab || 0, (amount) => storage.update({ dahab: (s.dahab || 0) - amount }));
-                  if (!result.success) alert(result.message);
-                  else alert(result.message);
+                  setToast({ message: result.message, type: result.success ? 'success' : 'error' });
                 }} style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(6px, 1.2vh, 10px)',
                   width: '100%', padding: 'clamp(8px, 1.8vh, 14px) clamp(12px, 2.5vh, 20px)',

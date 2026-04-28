@@ -20,7 +20,7 @@ function defaultState() {
     userId: null,
     userName: '',
     username: '',
-    userEmail: '',
+    profileDraft: null,
     practiceCompleted: {},
     chunkStats: {},
     weakChunks: [],

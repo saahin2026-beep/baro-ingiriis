@@ -188,11 +188,13 @@ function miniBtn(color) {
 
 function WordEditModal({ word, onSave, onClose }) {
   const [form, setForm] = useState({ ...word });
+  const [formError, setFormError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setFormError('');
     if (!form.english.trim() || !form.somali.trim()) {
-      alert('Both English and Somali are required');
+      setFormError('Both English and Somali are required');
       return;
     }
     onSave(form);
@@ -214,6 +216,11 @@ function WordEditModal({ word, onSave, onClose }) {
         <h3 style={{ fontSize: 16, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', marginBottom: 16 }}>
           {word.id ? 'Edit Word' : 'Add New Word'}
         </h3>
+        {formError && (
+          <div role="alert" style={{ background: '#FEE2E2', color: '#991B1B', padding: '8px 12px', borderRadius: 8, fontSize: 12, fontWeight: 700, fontFamily: 'Nunito, sans-serif', marginBottom: 12 }}>
+            {formError}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <label style={{ fontSize: 12, fontWeight: 700, color: '#666', fontFamily: 'Nunito, sans-serif', display: 'block', marginBottom: 4 }}>
             English

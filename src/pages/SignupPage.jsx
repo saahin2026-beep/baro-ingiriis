@@ -51,7 +51,7 @@ export default function SignupPage() {
         return;
       }
 
-      storage.update({ authComplete: true, userId: data.user?.id, userName: name, userEmail: email });
+      storage.update({ authComplete: true, userId: data.user?.id, userName: name });
       navigate('/profile-setup/0');
     } catch (e) { setError(t('signup.error_generic')); console.error(e); }
     setLoading(false);

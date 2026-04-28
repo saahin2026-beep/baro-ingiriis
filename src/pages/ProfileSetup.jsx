@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { User, Phone, Calendar, MapPin, At } from '@phosphor-icons/react';
 import { supabase } from '../utils/supabase';
@@ -19,24 +19,35 @@ export default function ProfileSetup() {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const currentStep = parseInt(step, 10);
-  const [formData, setFormData] = useState({ username: '', phone: '', birthday: '', city: '' });
+  const [formData, setFormData] = useState(() => ({
+    username: '', phone: '', birthday: '', city: '',
+    ...(storage.get().profileDraft || {}),
+  }));
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [focusedField, setFocusedField] = useState(false);
 
   const stepConfig = STEP_CONFIGS[currentStep];
-  if (!stepConfig) { navigate('/home'); return null; }
+
+  useEffect(() => {
+    if (!stepConfig) navigate('/home');
+  }, [stepConfig, navigate]);
+
+  if (!stepConfig) return null;
 
   const updateField = (value) => {
-    setFormData((f) => ({ ...f, [stepConfig.key]: value }));
+    const next = { ...formData, [stepConfig.key]: value };
+    setFormData(next);
+    storage.update({ profileDraft: next });
     setError('');
   };
 
   const validate = () => {
     const val = formData[stepConfig.key];
     if (stepConfig.key === 'username') {
-      if (!val.trim() || val.trim().length < 3) return t('profile.error_username_length');
-      if (!/^[a-zA-Z0-9_]+$/.test(val.trim())) return t('profile.error_username_chars');
+      const normalized = (val || '').trim().toLowerCase();
+      if (!normalized || normalized.length < 3) return t('profile.error_username_length');
+      if (!/^[a-z0-9_]+$/.test(normalized)) return t('profile.error_username_chars');
     }
     if (stepConfig.key === 'phone') {
       const cleaned = (val || '').replace(/[\s-]+/g, '');
@@ -78,6 +89,7 @@ export default function ProfileSetup() {
         storage.update({
           profileComplete: true,
           username: formData.username.trim().toLowerCase(),
+          profileDraft: null,
         });
         navigate('/geel-world');
       } catch (e) {

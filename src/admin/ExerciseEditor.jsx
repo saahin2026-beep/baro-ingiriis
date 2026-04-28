@@ -124,9 +124,11 @@ function ExerciseEditModal({ exercise, onSave, onClose }) {
     options: Array.isArray(exercise.options) ? JSON.stringify(exercise.options) : (exercise.options || '[]'),
     words: Array.isArray(exercise.words) ? JSON.stringify(exercise.words) : (exercise.words || '[]'),
   });
+  const [formError, setFormError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setFormError('');
 
     let parsedOptions, parsedWords;
     try {
@@ -137,7 +139,7 @@ function ExerciseEditModal({ exercise, onSave, onClose }) {
         parsedWords = parseStringArray(form.words, 'Words');
       }
     } catch (err) {
-      alert(err.message);
+      setFormError(err.message);
       return;
     }
 
@@ -187,6 +189,11 @@ function ExerciseEditModal({ exercise, onSave, onClose }) {
         <h3 style={{ fontSize: 16, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', marginBottom: 16 }}>
           {exercise.id ? 'Edit Exercise' : 'New Exercise'}
         </h3>
+        {formError && (
+          <div role="alert" style={{ background: '#FEE2E2', color: '#991B1B', padding: '8px 12px', borderRadius: 8, fontSize: 12, fontWeight: 700, fontFamily: 'Nunito, sans-serif', marginBottom: 12 }}>
+            {formError}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <Label text="Type" />
           <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} style={{ ...fieldStyle, marginBottom: 10 }}>

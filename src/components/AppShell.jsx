@@ -5,9 +5,11 @@ import { purchaseStreakFreeze } from '../utils/streak';
 import StreakBrokenModal from './StreakBrokenModal';
 import StreakFreezeUsedModal from './StreakFreezeUsedModal';
 import IOSInstallPrompt from './IOSInstallPrompt';
+import Toast from './Toast';
 
 export default function AppShell({ children }) {
   const [streakModal, setStreakModal] = useState(null);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     const status = checkStreakStatus();
@@ -24,7 +26,7 @@ export default function AppShell({ children }) {
     const result = purchaseStreakFreeze(state.dahab || 0, (amount) => {
       storage.update({ dahab: (state.dahab || 0) - amount });
     });
-    if (!result.success) alert(result.message);
+    if (!result.success) setToast({ message: result.message, type: 'error' });
     else setStreakModal(null);
   };
 
@@ -33,6 +35,8 @@ export default function AppShell({ children }) {
       {children}
 
       <IOSInstallPrompt />
+
+      <Toast {...(toast || {})} onDismiss={() => setToast(null)} />
 
       {streakModal?.type === 'broken' && (
         <StreakBrokenModal

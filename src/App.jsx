@@ -59,7 +59,6 @@ export default function App() {
       if (!state.awaitingEmailConfirmation) return;
 
       const userId = session.user.id;
-      const email = session.user.email;
       const name = session.user.user_metadata?.name || state.pendingName || '';
 
       let { data: profile } = await supabase
@@ -81,7 +80,6 @@ export default function App() {
         authComplete: true,
         guestMode: false,
         userId,
-        userEmail: email,
         userName: profile.name || name,
         profileComplete: profile.profile_complete || false,
         pendingEmail: null,
