@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { X, ShareNetwork, Heart, Users, Star } from '@phosphor-icons/react';
+import { X, ShareNetwork, Heart, Users, Star, PencilSimple } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
 import { getStreakData, MILESTONES } from '../utils/streak';
 import { useLanguage } from '../utils/useLanguage';
@@ -9,11 +9,11 @@ import Geel from './Geel';
 export default function ProfilePopup({ onClose }) {
   const navigate = useNavigate();
   const ref = useFocusTrap(onClose);
-  const { lang } = useLanguage();
+  const { t, lang } = useLanguage();
   const state = storage.get();
   const streakData = getStreakData();
 
-  const { xp = 0, dahab = 0, userName, username } = state;
+  const { xp = 0, dahab = 0, userName, username, authComplete, profileComplete } = state;
   const streak = streakData.currentStreak || 0;
   const hearts = 5;
 
@@ -66,6 +66,22 @@ export default function ProfilePopup({ onClose }) {
             {userName || (lang === 'en' ? 'Guest' : 'Martida')}
           </p>
           {username && <p style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: '#0891B2', margin: '2px 0 0', fontWeight: 600, fontFamily: 'Nunito, sans-serif' }}>@{username}</p>}
+          {authComplete && profileComplete && (
+            <button
+              type="button"
+              onClick={() => { onClose(); navigate('/profile-edit'); }}
+              style={{
+                marginTop: 6, padding: '4px 10px', borderRadius: 999,
+                background: '#F1F5F9', border: '1px solid #E2E8F0',
+                fontSize: 11, fontWeight: 700, color: '#475569',
+                fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+              }}
+            >
+              <PencilSimple size={11} weight="bold" />
+              {t('profile_edit.button')}
+            </button>
+          )}
         </div>
 
         {/* Stats */}

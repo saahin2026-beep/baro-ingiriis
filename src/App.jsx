@@ -27,6 +27,7 @@ const AdminPage = lazy(() => import('./admin/AdminPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
 const AccountSecurityPage = lazy(() => import('./pages/AccountSecurityPage'));
+const ProfileEditPage = lazy(() => import('./pages/ProfileEditPage'));
 
 const FREE_LESSON_LIMIT = 3;
 
@@ -139,6 +140,7 @@ export default function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/account-security" element={<AccountSecurityPage />} />
+        <Route path="/profile-edit" element={<ProfileEditPage />} />
         <Route path="/astaanta" element={<Astaanta />} />
         <Route path="/progress" element={<PracticeHub />} />
         <Route path="/progress/stats" element={<Progress />} />

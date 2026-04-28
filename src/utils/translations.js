@@ -141,6 +141,13 @@ const translations = {
     'reset.expired_body': 'Link-ku waa la fadhiyay ama mar hore ayaa la isticmaalay. Mar kale codso link cusub.',
     'reset.try_again': 'MAR KALE ISKU DAY',
 
+    // Profile edit
+    'profile_edit.title': 'Wax ka beddel astaantaada',
+    'profile_edit.button': 'Wax ka beddel',
+    'profile_edit.save': 'KAYDI',
+    'profile_edit.saving': 'KAYDINAYA...',
+    'profile_edit.saved': 'Astaantaadu waa la cusboonaysiiyay',
+
     // Profile setup
     'profile.username_question': 'Magacaad ku yaqaanaan?',
     'profile.username_label': 'Username-kaaga',
@@ -407,6 +414,13 @@ const translations = {
     'reset.expired_title': 'Link expired',
     'reset.expired_body': 'This reset link has expired or already been used. Request a new one.',
     'reset.try_again': 'TRY AGAIN',
+
+    // Profile edit
+    'profile_edit.title': 'Edit your profile',
+    'profile_edit.button': 'Edit profile',
+    'profile_edit.save': 'SAVE',
+    'profile_edit.saving': 'SAVING...',
+    'profile_edit.saved': 'Profile updated',
 
     // Profile setup
     'profile.username_question': 'What should we call you?',
