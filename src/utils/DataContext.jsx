@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { fetchLessons, fetchPhrases, fetchOnboardingContent } from './dataService';
+import { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import { fetchPhrases, fetchOnboardingContent } from './dataService';
 
 import hardcodedLessonData from '../data/lessonData';
 import { lessons as hardcodedLessonsList } from '../data/lessons';
@@ -11,13 +11,13 @@ import {
 
 const DataContext = createContext(null);
 const CACHE_VERSION = 'v5'; // Increment when curriculum changes
+const PHRASES_CACHE_VERSION = 'v1'; // Increment when phrase content changes
 
 function getInitialLessons() {
   try {
     const cached = localStorage.getItem('hadaling-data-cache');
     const version = localStorage.getItem('hadaling-cache-version');
 
-    // If version mismatch, clear stale cache and use hardcoded
     if (version !== CACHE_VERSION) {
       localStorage.removeItem('hadaling-data-cache');
       localStorage.setItem('hadaling-cache-version', CACHE_VERSION);
@@ -28,18 +28,28 @@ function getInitialLessons() {
       const parsed = JSON.parse(cached);
       if (parsed.lessonData && Object.keys(parsed.lessonData).length > 0) return parsed;
     }
-  } catch {}
+  } catch (e) {
+    console.warn('Lesson cache read failed:', e);
+  }
   return { lessonData: hardcodedLessonData, lessonsList: hardcodedLessonsList };
 }
 
 function getInitialPhrases() {
   try {
+    const version = localStorage.getItem('hadaling-phrases-cache-version');
+    if (version !== PHRASES_CACHE_VERSION) {
+      localStorage.removeItem('hadaling-phrases-cache');
+      localStorage.setItem('hadaling-phrases-cache-version', PHRASES_CACHE_VERSION);
+      return { feedback: hardcodedFeedback, encouragement: hardcodedEncouragement, celebration: hardcodedCelebration };
+    }
     const cached = localStorage.getItem('hadaling-phrases-cache');
     if (cached) {
       const parsed = JSON.parse(cached);
       if (parsed.feedback && parsed.feedback.length > 0) return parsed;
     }
-  } catch {}
+  } catch (e) {
+    console.warn('Phrases cache read failed:', e);
+  }
   return {
     feedback: hardcodedFeedback,
     encouragement: hardcodedEncouragement,
@@ -48,27 +58,27 @@ function getInitialPhrases() {
 }
 
 export function DataProvider({ children }) {
-  const [lessonData, setLessonData] = useState(() => getInitialLessons().lessonData);
-  const [lessonsList, setLessonsList] = useState(() => getInitialLessons().lessonsList);
+  const lessons = useMemo(() => getInitialLessons(), []);
   const [phrases, setPhrases] = useState(() => getInitialPhrases());
   const [onboardingContent, setOnboardingContent] = useState(null);
 
-  // Silent background sync from Supabase
-  // Lessons use hardcoded data only — Supabase exercises table was cleared
   useEffect(() => {
     async function syncFromSupabase() {
-
       try {
         const phrasesResult = await fetchPhrases();
         if (phrasesResult?.feedback?.length > 0) {
           setPhrases(phrasesResult);
         }
-      } catch {}
+      } catch (e) {
+        console.warn('Phrases sync failed:', e);
+      }
 
       try {
         const onboardingResult = await fetchOnboardingContent();
         if (onboardingResult) setOnboardingContent(onboardingResult);
-      } catch {}
+      } catch (e) {
+        console.warn('Onboarding sync failed:', e);
+      }
     }
 
     syncFromSupabase();
@@ -81,7 +91,14 @@ export function DataProvider({ children }) {
   };
 
   return (
-    <DataContext.Provider value={{ lessonData, lessonsList, phrases, loading: false, getRandomPhrase, onboardingContent }}>
+    <DataContext.Provider value={{
+      lessonData: lessons.lessonData,
+      lessonsList: lessons.lessonsList,
+      phrases,
+      loading: false,
+      getRandomPhrase,
+      onboardingContent,
+    }}>
       {children}
     </DataContext.Provider>
   );

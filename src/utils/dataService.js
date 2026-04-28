@@ -124,7 +124,9 @@ export async function fetchPhrases() {
     try {
       const cached = localStorage.getItem('hadaling-phrases-cache');
       if (cached) return JSON.parse(cached);
-    } catch {}
+    } catch (e) {
+      console.warn('Phrase cache read failed:', e);
+    }
 
     // Fallback to hardcoded (import from phrases.js still works)
     return null;
@@ -153,7 +155,9 @@ export async function fetchOnboardingContent() {
     try {
       const cached = localStorage.getItem('hadaling-onboarding-cache');
       if (cached) return JSON.parse(cached);
-    } catch {}
+    } catch (e) {
+      console.warn('Onboarding cache read failed:', e);
+    }
     return null;
   }
 }

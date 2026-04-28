@@ -37,7 +37,14 @@ function LessonGuard({ children }) {
 }
 
 export default function App() {
-  useEffect(() => { storage.checkStreak(); }, []);
+  useEffect(() => {
+    storage.checkStreak();
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') storage.checkStreak();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, []);
 
   const state = storage.get();
 

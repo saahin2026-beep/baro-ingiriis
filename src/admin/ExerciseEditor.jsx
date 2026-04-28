@@ -127,6 +127,20 @@ function ExerciseEditModal({ exercise, onSave, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    let parsedOptions, parsedWords;
+    try {
+      if (form.type === 'choose' || form.type === 'listen' || form.type === 'fillgap' || form.type === 'scenario') {
+        parsedOptions = parseStringArray(form.options, 'Options');
+      }
+      if (form.type === 'order') {
+        parsedWords = parseStringArray(form.words, 'Words');
+      }
+    } catch (err) {
+      alert(err.message);
+      return;
+    }
+
     const result = {
       ...exercise,
       type: form.type,
@@ -138,19 +152,19 @@ function ExerciseEditModal({ exercise, onSave, onClose }) {
     if (form.type === 'choose' || form.type === 'listen') {
       result.prompt = form.prompt;
       result.correct_index = parseInt(form.correct_index) || 0;
-      result.options = JSON.parse(form.options || '[]');
+      result.options = parsedOptions;
     } else if (form.type === 'fillgap') {
       result.sentence = form.sentence;
       result.blank_index = parseInt(form.blank_index) || 0;
       result.correct_index = parseInt(form.correct_index) || 0;
-      result.options = JSON.parse(form.options || '[]');
+      result.options = parsedOptions;
     } else if (form.type === 'order') {
       result.correct_sentence = form.correct_sentence;
-      result.words = JSON.parse(form.words || '[]');
+      result.words = parsedWords;
     } else if (form.type === 'scenario') {
       result.scenario = form.scenario;
       result.correct_index = parseInt(form.correct_index) || 0;
-      result.options = JSON.parse(form.options || '[]');
+      result.options = parsedOptions;
     }
 
     onSave(result);
@@ -246,6 +260,15 @@ function ExerciseEditModal({ exercise, onSave, onClose }) {
       </div>
     </div>
   );
+}
+
+function parseStringArray(raw, label) {
+  let parsed;
+  try { parsed = JSON.parse(raw || '[]'); }
+  catch { throw new Error(`${label}: not valid JSON`); }
+  if (!Array.isArray(parsed)) throw new Error(`${label}: must be a JSON array`);
+  if (!parsed.every((x) => typeof x === 'string')) throw new Error(`${label}: every entry must be a string`);
+  return parsed;
 }
 
 function Label({ text }) {

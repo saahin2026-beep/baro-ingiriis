@@ -29,12 +29,10 @@ export default function ListenChooseExercise({ data, onComplete, dark = false, p
   };
 
   useEffect(() => {
-    if (audioSrc) {
-      const timer = setTimeout(() => handlePlayAudio(), 500);
-      return () => { clearTimeout(timer); stopAllAudio(); };
-    }
-    return () => stopAllAudio();
-  }, []);
+    if (!audioSrc) return () => stopAllAudio();
+    const timer = setTimeout(() => handlePlayAudio(), 500);
+    return () => { clearTimeout(timer); stopAllAudio(); };
+  }, [audioSrc]);
 
   const handleTap = (index) => {
     if (answered || bannerVisible) return;

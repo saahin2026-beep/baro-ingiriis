@@ -38,7 +38,11 @@ export default function ProfileSetup() {
       if (!val.trim() || val.trim().length < 3) return t('profile.error_username_length');
       if (!/^[a-zA-Z0-9_]+$/.test(val.trim())) return t('profile.error_username_chars');
     }
-    if (stepConfig.key === 'phone' && !val.trim()) return t('profile.error_phone');
+    if (stepConfig.key === 'phone') {
+      const cleaned = (val || '').replace(/[\s-]+/g, '');
+      if (!cleaned) return t('profile.error_phone');
+      if (!/^\+?\d{7,15}$/.test(cleaned)) return t('profile.error_phone');
+    }
     if (stepConfig.key === 'birthday' && !val) return t('profile.error_birthday');
     if (stepConfig.key === 'city' && !val) return t('profile.error_city');
     return null;

@@ -206,13 +206,44 @@ function FeatureEditor({ feature, onSave }) {
 
 function PracticeExerciseEditor({ exercise, featureColor, onSave, onCancel }) {
   const [form, setForm] = useState({ ...exercise });
+  const [rawJson, setRawJson] = useState({
+    options: JSON.stringify(exercise.options || []),
+    letters: JSON.stringify(exercise.letters || []),
+    words: JSON.stringify(exercise.words || []),
+  });
+  const [jsonError, setJsonError] = useState({});
   const [saving, setSaving] = useState(false);
 
   const update = (key, val) => setForm((f) => ({ ...f, [key]: val }));
+  const updateRaw = (key, val) => {
+    setRawJson((r) => ({ ...r, [key]: val }));
+    if (jsonError[key]) setJsonError((e) => ({ ...e, [key]: null }));
+  };
 
   const handleSave = async () => {
+    const errors = {};
+    const parsed = {};
+    const validate = (key, label) => {
+      try {
+        const v = JSON.parse(rawJson[key] || '[]');
+        if (!Array.isArray(v) || !v.every((x) => typeof x === 'string')) {
+          errors[key] = `${label}: must be a JSON array of strings`;
+        } else {
+          parsed[key] = v;
+        }
+      } catch {
+        errors[key] = `${label}: not valid JSON`;
+      }
+    };
+
+    if (form.type === 'choose' || form.type === 'fillgap' || form.type === 'scenario') validate('options', 'Options');
+    if (form.type === 'scramble') validate('letters', 'Letters');
+    if (form.type === 'sentenceBuilder') validate('words', 'Words');
+
+    if (Object.keys(errors).length > 0) { setJsonError(errors); return; }
+
     setSaving(true);
-    const success = await onSave(form);
+    const success = await onSave({ ...form, ...parsed });
     setSaving(false);
     if (success) onCancel();
   };
@@ -271,10 +302,11 @@ function PracticeExerciseEditor({ exercise, featureColor, onSave, onCancel }) {
       {(form.type === 'choose' || form.type === 'fillgap' || form.type === 'scenario') && (
         <>
           <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>OPTIONS (JSON array)</p>
-          <input value={JSON.stringify(form.options || [])} onChange={(e) => { try { update('options', JSON.parse(e.target.value)); } catch {} }}
+          <input value={rawJson.options} onChange={(e) => updateRaw('options', e.target.value)}
             placeholder='["option1", "option2", "option3"]'
-            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'monospace', marginBottom: 8, boxSizing: 'border-box' }} />
-          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>CORRECT INDEX (0-based)</p>
+            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: jsonError.options ? '1px solid #E53935' : '1px solid #E0E0E0', fontSize: 13, fontFamily: 'monospace', marginBottom: 4, boxSizing: 'border-box' }} />
+          {jsonError.options && <p style={{ fontSize: 11, color: '#E53935', fontFamily: 'Nunito, sans-serif', marginBottom: 8 }}>{jsonError.options}</p>}
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginTop: 8, marginBottom: 4 }}>CORRECT INDEX (0-based)</p>
           <input type="number" value={form.correct_index ?? 0} onChange={(e) => update('correct_index', parseInt(e.target.value))}
             style={{ width: 80, padding: '8px 12px', borderRadius: 8, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'Nunito, sans-serif', marginBottom: 12 }} />
         </>
@@ -284,9 +316,10 @@ function PracticeExerciseEditor({ exercise, featureColor, onSave, onCancel }) {
       {form.type === 'scramble' && (
         <>
           <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>LETTERS (JSON array)</p>
-          <input value={JSON.stringify(form.letters || [])} onChange={(e) => { try { update('letters', JSON.parse(e.target.value)); } catch {} }}
+          <input value={rawJson.letters} onChange={(e) => updateRaw('letters', e.target.value)}
             placeholder='["H","E","L","L","O"]'
-            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'monospace', marginBottom: 8, boxSizing: 'border-box' }} />
+            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: jsonError.letters ? '1px solid #E53935' : '1px solid #E0E0E0', fontSize: 13, fontFamily: 'monospace', marginBottom: 4, boxSizing: 'border-box' }} />
+          {jsonError.letters && <p style={{ fontSize: 11, color: '#E53935', fontFamily: 'Nunito, sans-serif', marginBottom: 8 }}>{jsonError.letters}</p>}
           <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>CORRECT ANSWER</p>
           <input value={form.correct_answer || ''} onChange={(e) => update('correct_answer', e.target.value)}
             placeholder="HELLO"
@@ -298,9 +331,10 @@ function PracticeExerciseEditor({ exercise, featureColor, onSave, onCancel }) {
       {form.type === 'sentenceBuilder' && (
         <>
           <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>WORDS (JSON array)</p>
-          <input value={JSON.stringify(form.words || [])} onChange={(e) => { try { update('words', JSON.parse(e.target.value)); } catch {} }}
+          <input value={rawJson.words} onChange={(e) => updateRaw('words', e.target.value)}
             placeholder='["I","am","fine"]'
-            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'monospace', marginBottom: 8, boxSizing: 'border-box' }} />
+            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: jsonError.words ? '1px solid #E53935' : '1px solid #E0E0E0', fontSize: 13, fontFamily: 'monospace', marginBottom: 4, boxSizing: 'border-box' }} />
+          {jsonError.words && <p style={{ fontSize: 11, color: '#E53935', fontFamily: 'Nunito, sans-serif', marginBottom: 8 }}>{jsonError.words}</p>}
           <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>CORRECT SENTENCE</p>
           <input value={form.correct_sentence || ''} onChange={(e) => update('correct_sentence', e.target.value)}
             placeholder="I am fine"
