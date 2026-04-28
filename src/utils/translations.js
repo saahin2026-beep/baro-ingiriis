@@ -147,6 +147,7 @@ const translations = {
     'profile_edit.save': 'KAYDI',
     'profile_edit.saving': 'KAYDINAYA...',
     'profile_edit.saved': 'Astaantaadu waa la cusboonaysiiyay',
+    'profile_edit.username_available': 'Username-kani waa banaan yahay',
 
     // Profile setup
     'profile.username_question': 'Magacaad ku yaqaanaan?',
@@ -421,6 +422,7 @@ const translations = {
     'profile_edit.save': 'SAVE',
     'profile_edit.saving': 'SAVING...',
     'profile_edit.saved': 'Profile updated',
+    'profile_edit.username_available': 'Username is available',
 
     // Profile setup
     'profile.username_question': 'What should we call you?',

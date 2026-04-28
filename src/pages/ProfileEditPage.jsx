@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, At, Phone, Calendar, MapPin } from '@phosphor-icons/react';
+import { ArrowLeft, User, At, Phone, Calendar, MapPin, CheckCircle, XCircle, CircleNotch } from '@phosphor-icons/react';
 import { supabase } from '../utils/supabase';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
@@ -16,6 +16,9 @@ export default function ProfileEditPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [toast, setToast] = useState(null);
+  // 'idle' | 'invalid' | 'checking' | 'available' | 'taken' | 'error'
+  const [usernameStatus, setUsernameStatus] = useState('idle');
+  const checkTimerRef = useRef(null);
 
   useEffect(() => {
     let mounted = true;
@@ -36,9 +39,13 @@ export default function ProfileEditPage() {
         return;
       }
 
+      // Fall back to storage / user_metadata when profile fields are empty
+      // (covers users who signed up before the ProfileSetup data-loss fix).
+      const localState = storage.get();
+      const meta = userData.user.user_metadata || {};
       const initial = {
-        name: profile?.name || '',
-        username: profile?.username || '',
+        name: profile?.name || localState.userName || meta.name || '',
+        username: profile?.username || localState.username || '',
         phone: profile?.phone || '',
         birthday: profile?.birthday || '',
         city: profile?.city || '',
@@ -49,6 +56,32 @@ export default function ProfileEditPage() {
     })();
     return () => { mounted = false; };
   }, [navigate, t]);
+
+  // Live username availability check (debounced 500ms).
+  useEffect(() => {
+    if (checkTimerRef.current) clearTimeout(checkTimerRef.current);
+    if (!original) return;
+
+    const value = form.username.trim().toLowerCase();
+    if (!value) { setUsernameStatus('idle'); return; }
+    if (value === (original.username || '').toLowerCase()) { setUsernameStatus('idle'); return; }
+    if (value.length < 3 || !/^[a-z0-9_]+$/.test(value)) {
+      setUsernameStatus('invalid');
+      return;
+    }
+
+    setUsernameStatus('checking');
+    checkTimerRef.current = setTimeout(async () => {
+      const { data, error: rpcError } = await supabase.rpc('check_username_available', { check_username: value });
+      if (rpcError) {
+        setUsernameStatus('error');
+        return;
+      }
+      setUsernameStatus(data === true ? 'available' : 'taken');
+    }, 500);
+
+    return () => { if (checkTimerRef.current) clearTimeout(checkTimerRef.current); };
+  }, [form.username, original]);
 
   const update = (key, value) => {
     setForm((f) => ({ ...f, [key]: value }));
@@ -74,6 +107,8 @@ export default function ProfileEditPage() {
     e.preventDefault();
     const err = validate();
     if (err) { setError(err); return; }
+    if (usernameStatus === 'taken') { setError(t('profile.error_username_taken')); return; }
+    if (usernameStatus === 'checking') return; // Wait for the check to finish
 
     setSaving(true);
     const { data: userData } = await supabase.auth.getUser();
@@ -150,8 +185,17 @@ export default function ProfileEditPage() {
           </Field>
 
           <Field icon={At} label={t('profile.username_label')}>
-            <input value={form.username} onChange={(e) => update('username', e.target.value.toLowerCase())} autoComplete="username" style={inputStyle} />
+            <input
+              value={form.username}
+              onChange={(e) => update('username', e.target.value.toLowerCase())}
+              autoComplete="username"
+              aria-describedby="username-status"
+              style={inputStyle}
+            />
+            <UsernameStatusIcon status={usernameStatus} />
           </Field>
+          <UsernameStatusMessage status={usernameStatus} t={t} />
+
 
           <Field icon={Phone} label={t('profile.phone_label')}>
             <input value={form.phone} onChange={(e) => update('phone', e.target.value)} autoComplete="tel" inputMode="tel" placeholder={t('profile.phone_placeholder')} style={inputStyle} />
@@ -175,14 +219,15 @@ export default function ProfileEditPage() {
             </select>
           </Field>
 
-          <button type="submit" disabled={saving || !dirty} style={{
+          <button type="submit" disabled={saving || !dirty || usernameStatus === 'taken' || usernameStatus === 'checking'} style={{
             width: '100%', padding: 14, marginTop: 4,
-            background: (saving || !dirty)
+            background: (saving || !dirty || usernameStatus === 'taken' || usernameStatus === 'checking')
               ? 'rgba(245,158,11,0.4)'
               : 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
             border: 'none', borderRadius: 12,
             fontSize: 14, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif',
-            cursor: (saving || !dirty) ? 'not-allowed' : 'pointer', textTransform: 'uppercase', letterSpacing: '0.5px',
+            cursor: (saving || !dirty || usernameStatus === 'taken' || usernameStatus === 'checking') ? 'not-allowed' : 'pointer',
+            textTransform: 'uppercase', letterSpacing: '0.5px',
           }}>
             {saving ? t('profile_edit.saving') : t('profile_edit.save')}
           </button>
@@ -201,6 +246,36 @@ function Field({ icon: Icon, label, children }) {
         {children}
       </div>
     </div>
+  );
+}
+
+function UsernameStatusIcon({ status }) {
+  if (status === 'idle') return null;
+  const wrap = { paddingRight: 10, display: 'flex', alignItems: 'center', flexShrink: 0 };
+  if (status === 'checking') return (
+    <div style={wrap}>
+      <CircleNotch size={16} weight="bold" color="rgba(255,255,255,0.7)" style={{ animation: 'spin 0.8s linear infinite' }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+  if (status === 'available') return <div style={wrap}><CheckCircle size={18} weight="fill" color="#10B981" /></div>;
+  if (status === 'taken' || status === 'invalid') return <div style={wrap}><XCircle size={18} weight="fill" color="#EF4444" /></div>;
+  return null;
+}
+
+function UsernameStatusMessage({ status, t }) {
+  if (status === 'idle' || status === 'checking') return null;
+  const text =
+    status === 'available' ? t('profile_edit.username_available') :
+    status === 'taken' ? t('profile.error_username_taken') :
+    status === 'invalid' ? t('profile.error_username_chars') :
+    null;
+  if (!text) return null;
+  const color = status === 'available' ? '#34D399' : '#FCA5A5';
+  return (
+    <p id="username-status" role="status" style={{ fontSize: 11, fontWeight: 600, color, fontFamily: 'Nunito, sans-serif', marginTop: -6, marginBottom: 8, paddingLeft: 4 }}>
+      {text}
+    </p>
   );
 }
 
