@@ -11,7 +11,8 @@
       "Bash(node:*)",
       "Bash(xargs kill:*)",
       "Bash(pip3 install:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(xargs cat *)"
     ]
   }
 }

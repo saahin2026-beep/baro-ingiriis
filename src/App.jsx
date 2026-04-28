@@ -24,8 +24,15 @@ const ProfileSetup = lazy(() => import('./pages/ProfileSetup'));
 const UpgradePage = lazy(() => import('./pages/UpgradePage'));
 const AdminPage = lazy(() => import('./admin/AdminPage'));
 
+const FREE_LESSON_LIMIT = 3;
+
 function LessonGuard({ children }) {
-  // Auth gate disabled for testing — all lessons accessible
+  const { id } = useParams();
+  const lessonId = parseInt(id, 10);
+  if (Number.isFinite(lessonId) && lessonId > FREE_LESSON_LIMIT) {
+    const { authComplete } = storage.get();
+    if (!authComplete) return <Navigate to="/auth-gate" replace />;
+  }
   return children;
 }
 
