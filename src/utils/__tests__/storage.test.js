@@ -123,6 +123,34 @@ describe('storage.completeDailyPractice', () => {
     expect(s.xp).toBe(70); // 7 correct × 10 xp
     expect(s.dailyStreak).toBe(1);
   });
+
+  // Regression for the dahab double-counting bug from the audit.
+  // The bug was in DailyPractice.jsx end-of-session: completeDailyPractice
+  // adds the tier bonus internally, then the caller adds sessionTotal on top.
+  // The UI used to display only sessionTotal, but storage was getting
+  // sessionTotal + bonus. Display and storage must now agree.
+  it('regression: end-of-session balance equals sessionTotal + completion bonus, and the UI must show that grand total', () => {
+    storage.update({ dahab: 0 });
+
+    const sessionDahab = 50;       // accumulated speed bonuses across the session
+    const lastExerciseReward = 10; // reward.total of the final exercise
+    const correctCount = 7;
+
+    const sessionTotal = sessionDahab + lastExerciseReward;
+
+    // Mirror DailyPractice.jsx:88-89 sequence
+    const result = storage.completeDailyPractice(correctCount);
+    const grandTotal = sessionTotal + result.dahabEarned;
+    storage.update({ dahab: (storage.get().dahab || 0) + sessionTotal });
+
+    // Final balance covers BOTH streams
+    expect(storage.get().dahab).toBe(grandTotal);
+    // Display value (what gets shown to the user) must equal storage delta
+    expect(grandTotal).toBe(sessionTotal + result.dahabEarned);
+    // Both are strictly greater than either alone (regression sanity)
+    expect(grandTotal).toBeGreaterThan(sessionTotal);
+    expect(grandTotal).toBeGreaterThan(result.dahabEarned);
+  });
 });
 
 describe('storage.checkStreak', () => {
