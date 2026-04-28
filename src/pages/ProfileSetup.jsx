@@ -79,7 +79,7 @@ export default function ProfileSetup() {
           profileComplete: true,
           username: formData.username.trim().toLowerCase(),
         });
-        navigate('/home');
+        navigate('/geel-world');
       } catch (e) {
         setError(t('profile.error_generic')); console.error(e);
       }

@@ -86,7 +86,7 @@ export default function App() {
         pendingName: null,
       });
 
-      navigate(profile.profile_complete ? '/home' : '/profile-setup/0');
+      navigate(profile.profile_complete ? '/geel-world' : '/profile-setup/0');
     });
     return () => sub.subscription.unsubscribe();
   }, [navigate]);
@@ -97,7 +97,7 @@ export default function App() {
     <Suspense fallback={null}>
       <Routes>
         <Route path="/" element={
-          state.onboardingComplete ? <Navigate to="/home" replace /> : <Navigate to="/onboarding/0" replace />
+          state.onboardingComplete ? <Navigate to="/geel-world" replace /> : <Navigate to="/onboarding/0" replace />
         } />
         <Route path="/onboarding/:step" element={<Onboarding />} />
         <Route path="/home" element={<Home />} />

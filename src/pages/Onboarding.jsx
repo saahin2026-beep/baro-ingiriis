@@ -344,7 +344,7 @@ export default function Onboarding() {
 
   const goNext = () => {
     if (currentStep < 6) navigate(`/onboarding/${currentStep + 1}`);
-    else { storage.update({ onboardingComplete: true }); navigate('/lesson/1'); }
+    else { storage.update({ onboardingComplete: true }); navigate('/geel-world'); }
   };
 
   return (

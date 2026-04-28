@@ -47,7 +47,7 @@ export default function LoginPage() {
       }
 
       storage.update({ authComplete: true, userId: data.user.id, userName: profile?.name || '', profileComplete: profile?.profile_complete || false });
-      navigate(profile?.profile_complete ? '/home' : '/profile-setup/0');
+      navigate(profile?.profile_complete ? '/geel-world' : '/profile-setup/0');
     } catch (e) { setError(t('login.error_generic')); console.error(e); }
     setLoading(false);
   };
