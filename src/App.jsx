@@ -49,11 +49,12 @@ export default function App() {
     return () => document.removeEventListener('visibilitychange', onVisible);
   }, []);
 
-  // Handle email-confirmation return: when SIGNED_IN fires and we were awaiting
-  // confirmation, create the profile row if missing and route to setup or home.
+  // Handle email-confirmation return: when supabase-js detects the session
+  // (INITIAL_SESSION on page load, or SIGNED_IN), if the awaiting flag is set
+  // create the profile row if missing and route to setup or home.
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event !== 'SIGNED_IN' || !session) return;
+    const { data: sub } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (!session) return;
       const state = storage.get();
       if (!state.awaitingEmailConfirmation) return;
 
@@ -78,6 +79,7 @@ export default function App() {
       storage.update({
         awaitingEmailConfirmation: false,
         authComplete: true,
+        guestMode: false,
         userId,
         userEmail: email,
         userName: profile.name || name,
