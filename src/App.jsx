@@ -99,7 +99,11 @@ export default function App() {
     <Suspense fallback={null}>
       <Routes>
         <Route path="/" element={
-          state.onboardingComplete ? <Navigate to="/geel-world" replace /> : <Navigate to="/onboarding/0" replace />
+          state.awaitingEmailConfirmation
+            ? null
+            : state.onboardingComplete
+              ? <Navigate to="/geel-world" replace />
+              : <Navigate to="/onboarding/0" replace />
         } />
         <Route path="/onboarding/:step" element={<Onboarding />} />
         <Route path="/home" element={<Home />} />
