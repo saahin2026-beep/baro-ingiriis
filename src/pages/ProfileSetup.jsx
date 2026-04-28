@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { User, Phone, Calendar, MapPin, At } from '@phosphor-icons/react';
+import { User, Phone, Calendar, MapPin, At, CheckCircle, XCircle, CircleNotch } from '@phosphor-icons/react';
 import { supabase } from '../utils/supabase';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
@@ -26,12 +26,37 @@ export default function ProfileSetup() {
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [focusedField, setFocusedField] = useState(false);
+  // 'idle' | 'invalid' | 'checking' | 'available' | 'taken' | 'error'
+  const [usernameStatus, setUsernameStatus] = useState('idle');
+  const checkTimerRef = useRef(null);
 
   const stepConfig = STEP_CONFIGS[currentStep];
 
   useEffect(() => {
     if (!stepConfig) navigate('/home');
   }, [stepConfig, navigate]);
+
+  // Live username availability (only on the username step).
+  useEffect(() => {
+    if (stepConfig?.key !== 'username') return;
+    if (checkTimerRef.current) clearTimeout(checkTimerRef.current);
+
+    const value = (formData.username || '').trim().toLowerCase();
+    if (!value) { setUsernameStatus('idle'); return; }
+    if (value.length < 3 || !/^[a-z0-9_]+$/.test(value)) {
+      setUsernameStatus('invalid');
+      return;
+    }
+
+    setUsernameStatus('checking');
+    checkTimerRef.current = setTimeout(async () => {
+      const { data, error: rpcError } = await supabase.rpc('check_username_available', { check_username: value });
+      if (rpcError) { setUsernameStatus('error'); return; }
+      setUsernameStatus(data === true ? 'available' : 'taken');
+    }, 500);
+
+    return () => { if (checkTimerRef.current) clearTimeout(checkTimerRef.current); };
+  }, [formData.username, stepConfig]);
 
   if (!stepConfig) return null;
 
@@ -62,6 +87,10 @@ export default function ProfileSetup() {
   const handleNext = async () => {
     const err = validate();
     if (err) { setError(err); return; }
+    if (stepConfig.key === 'username') {
+      if (usernameStatus === 'taken') { setError(t('profile.error_username_taken')); return; }
+      if (usernameStatus === 'checking') return; // wait for the check
+    }
 
     if (currentStep < STEP_CONFIGS.length - 1) {
       navigate(`/profile-setup/${currentStep + 1}`);
@@ -216,30 +245,36 @@ export default function ProfileSetup() {
               </div>
               <input
                 value={formData[stepConfig.key]}
-                onChange={(e) => updateField(e.target.value)}
+                onChange={(e) => updateField(stepConfig.key === 'username' ? e.target.value.toLowerCase() : e.target.value)}
                 onFocus={() => setFocusedField(true)}
                 onBlur={() => setFocusedField(false)}
                 placeholder={t(stepConfig.placeholderKey)}
+                aria-describedby={stepConfig.key === 'username' ? 'username-status' : undefined}
                 style={{
                   flex: 1, background: 'none', border: 'none', outline: 'none',
                   fontSize: 'clamp(14px, 3.8vw, 17px)', color: 'white', fontFamily: 'Nunito, sans-serif', fontWeight: 600,
                   padding: 'clamp(8px, 1.8vh, 14px) 0',
                 }}
               />
+              {stepConfig.key === 'username' && <UsernameStatusIcon status={usernameStatus} />}
             </div>
           )}
+          {stepConfig.key === 'username' && <UsernameStatusMessage status={usernameStatus} t={t} />}
         </div>
 
         <div style={{ flex: 1 }} />
 
         <button
           onClick={handleNext}
-          disabled={saving}
+          type="button"
+          disabled={saving || (stepConfig.key === 'username' && (usernameStatus === 'taken' || usernameStatus === 'checking'))}
           style={{
             width: '100%', padding: 'clamp(12px, 2.5vh, 20px)', borderRadius: 'clamp(10px, 2.5vw, 16px)', border: 'none',
-            background: saving ? 'rgba(245,158,11,0.5)' : 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+            background: (saving || (stepConfig.key === 'username' && (usernameStatus === 'taken' || usernameStatus === 'checking')))
+              ? 'rgba(245,158,11,0.5)'
+              : 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
             fontSize: 'clamp(14px, 3.8vw, 17px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif',
-            cursor: saving ? 'not-allowed' : 'pointer',
+            cursor: (saving || (stepConfig.key === 'username' && (usernameStatus === 'taken' || usernameStatus === 'checking'))) ? 'not-allowed' : 'pointer',
             boxShadow: '0 8px 30px rgba(245,158,11,0.4)',
             position: 'relative', overflow: 'hidden',
             textTransform: 'uppercase', letterSpacing: '1px',
@@ -258,5 +293,35 @@ export default function ProfileSetup() {
         </button>
       </div>
     </div>
+  );
+}
+
+function UsernameStatusIcon({ status }) {
+  if (status === 'idle') return null;
+  const wrap = { paddingRight: 12, display: 'flex', alignItems: 'center', flexShrink: 0 };
+  if (status === 'checking') return (
+    <div style={wrap}>
+      <CircleNotch size={18} weight="bold" color="rgba(255,255,255,0.7)" style={{ animation: 'spin 0.8s linear infinite' }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+  if (status === 'available') return <div style={wrap}><CheckCircle size={20} weight="fill" color="#10B981" /></div>;
+  if (status === 'taken' || status === 'invalid') return <div style={wrap}><XCircle size={20} weight="fill" color="#EF4444" /></div>;
+  return null;
+}
+
+function UsernameStatusMessage({ status, t }) {
+  if (status === 'idle' || status === 'checking') return null;
+  const text =
+    status === 'available' ? t('profile_edit.username_available') :
+    status === 'taken' ? t('profile.error_username_taken') :
+    status === 'invalid' ? t('profile.error_username_chars') :
+    null;
+  if (!text) return null;
+  const color = status === 'available' ? '#34D399' : '#FCA5A5';
+  return (
+    <p id="username-status" role="status" style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', fontWeight: 600, color, fontFamily: 'Nunito, sans-serif', marginTop: 'clamp(6px, 1.2vh, 10px)', textAlign: 'center' }}>
+      {text}
+    </p>
   );
 }
