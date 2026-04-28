@@ -1,10 +1,10 @@
-# CLAUDE.md — Baro Ingiriis Project Context
+# CLAUDE.md — Hadaling Project Context
 
 ## Project
-Baro Ingiriis — Somali-to-English language learning PWA. Confidence-first pedagogy, Somali before English throughout.
+Hadaling — Somali-to-English language learning PWA. Confidence-first pedagogy, Somali before English throughout.
 
-**Live:** https://baro-ingiriisi.vercel.app
-**Admin:** https://baro-ingiriisi.vercel.app/admin (password in Supabase `admin_settings` table)
+**Live:** https://baro-ingiriisi.vercel.app (Vercel project name still uses old slug)
+**Admin:** https://baro-ingiriisi.vercel.app/admin (Supabase Auth — admin email in `src/admin/adminConfig.js`)
 
 ## Stack
 - React 18 + Vite + Tailwind CSS (using @tailwindcss/vite plugin)
@@ -105,7 +105,7 @@ src/
 
 ## Key Conventions
 1. **All text in Somali by default.** English only appears as the language being taught.
-2. **"Ingiriis" not "Ingiriisi"** — the app uses "Baro Ingiriis" everywhere.
+2. **App name is "Hadaling"** — use it everywhere user-facing. "Baro Ingiriis" / "Baro Ingiriisi" should NOT appear in UI, branding, or copy.
 3. **Inline styles only** — no CSS modules, no styled-components. Every element gets a `style={{}}` prop.
 4. **Phosphor Icons with fill weight** — never use outline weight.
 5. **FeedbackBanner for correct/wrong** — bottom sheet pattern, green for correct, red for wrong.

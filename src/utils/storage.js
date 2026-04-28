@@ -1,4 +1,5 @@
-const STORAGE_KEY = 'hadaling';
+const STORAGE_KEY = 'hadaling:state';
+const LEGACY_STORAGE_KEY = 'hadaling';
 
 function defaultState() {
   return {
@@ -20,9 +21,6 @@ function defaultState() {
     userName: '',
     username: '',
     userEmail: '',
-    userPhone: '',
-    userBirthday: '',
-    userCity: '',
     practiceCompleted: {},
     chunkStats: {},
     weakChunks: [],
@@ -50,10 +48,23 @@ function getYesterday() {
   return d.toISOString().split('T')[0];
 }
 
+function readRaw() {
+  let raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) {
+    const legacy = localStorage.getItem(LEGACY_STORAGE_KEY);
+    if (legacy) {
+      localStorage.setItem(STORAGE_KEY, legacy);
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
+      raw = legacy;
+    }
+  }
+  return raw;
+}
+
 export const storage = {
   get() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = readRaw();
       return raw ? { ...defaultState(), ...JSON.parse(raw) } : defaultState();
     } catch {
       return defaultState();

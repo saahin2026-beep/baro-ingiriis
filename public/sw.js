@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hadaling-v6';
+const CACHE_NAME = '__CACHE_VERSION__';
 
 const PRECACHE_URLS = [
   '/',

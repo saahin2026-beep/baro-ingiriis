@@ -7,5 +7,15 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom'],
+          supabase: ['@supabase/supabase-js'],
+          howler: ['howler'],
+          icons: ['@phosphor-icons/react'],
+        },
+      },
+    },
   },
 })

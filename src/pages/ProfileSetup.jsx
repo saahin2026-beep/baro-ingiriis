@@ -78,9 +78,6 @@ export default function ProfileSetup() {
         storage.update({
           profileComplete: true,
           username: formData.username.trim().toLowerCase(),
-          userPhone: formData.phone.trim(),
-          userBirthday: formData.birthday,
-          userCity: formData.city,
         });
         navigate('/home');
       } catch (e) {
