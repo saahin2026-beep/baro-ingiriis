@@ -22,7 +22,22 @@ export default function LoginPage() {
     try {
       const { data, error: loginError } = await supabase.auth.signInWithPassword({ email: form.email.trim().toLowerCase(), password: form.password });
       if (loginError) { setError(t('login.error_credentials')); setLoading(false); return; }
-      const { data: profile } = await supabase.from('profiles').select('profile_complete, name').eq('id', data.user.id).single();
+
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('profile_complete, name')
+        .eq('id', data.user.id)
+        .maybeSingle();
+
+      if (profileError) { setError(t('login.error_generic')); console.error('Profile fetch failed:', profileError); setLoading(false); return; }
+
+      if (!profile) {
+        const { error: upsertError } = await supabase
+          .from('profiles')
+          .upsert({ id: data.user.id, profile_complete: false }, { onConflict: 'id' });
+        if (upsertError) console.warn('Profile auto-create failed:', upsertError);
+      }
+
       storage.update({ authComplete: true, userId: data.user.id, userName: profile?.name || '', profileComplete: profile?.profile_complete || false });
       navigate(profile?.profile_complete ? '/home' : '/profile-setup/0');
     } catch (e) { setError(t('login.error_generic')); console.error(e); }

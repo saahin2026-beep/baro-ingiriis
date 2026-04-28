@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SpeakerHigh } from '@phosphor-icons/react';
-import { playAudio } from '../utils/audio';
+import { playAudio, stopAllAudio } from '../utils/audio';
 
 export default function QuestionCard({
   instruction = 'Translate this phrase',
@@ -9,6 +9,8 @@ export default function QuestionCard({
   audioSrc = null,
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => () => stopAllAudio(), []);
 
   const handlePlayAudio = async () => {
     if (!hasAudio || !audioSrc || isPlaying) return;

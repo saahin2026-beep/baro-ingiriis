@@ -18,8 +18,7 @@ Baro Ingiriis — Somali-to-English language learning PWA. Confidence-first peda
 - Deployment: Vercel
 
 ## Supabase
-- **URL:** https://vxrgjwmaxueqeledpvem.supabase.co
-- **Anon Key:** eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4cmdqd21heHVlcWVsZWRwdmVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNTk0MTAsImV4cCI6MjA4ODYzNTQxMH0.Pk7H728MPRCn2o4UE66PGf1RpERjjaXvnpprptuItTg
+- **URL/Anon Key:** stored in `.env.local` (see `.env.example`). Vercel env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
 - **Tables:** lessons, exercises, phrases, onboarding_content, profiles, admin_settings
 - **Auth:** Email + password, email confirmations disabled
 - **RLS:** Public read on content tables. Users read/write own profile.

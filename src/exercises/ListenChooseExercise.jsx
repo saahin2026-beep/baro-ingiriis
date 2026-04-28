@@ -4,7 +4,7 @@ import Geel from '../components/Geel';
 import OptionCard from '../components/OptionCard';
 import FeedbackBanner from '../components/FeedbackBanner';
 import { useData } from '../utils/DataContext';
-import { playAudio, getChunkAudioPath } from '../utils/audio';
+import { playAudio, stopAllAudio, getChunkAudioPath } from '../utils/audio';
 
 export default function ListenChooseExercise({ data, onComplete, dark = false, premium = false }) {
   const useDark = premium || dark;
@@ -31,8 +31,9 @@ export default function ListenChooseExercise({ data, onComplete, dark = false, p
   useEffect(() => {
     if (audioSrc) {
       const timer = setTimeout(() => handlePlayAudio(), 500);
-      return () => clearTimeout(timer);
+      return () => { clearTimeout(timer); stopAllAudio(); };
     }
+    return () => stopAllAudio();
   }, []);
 
   const handleTap = (index) => {

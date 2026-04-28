@@ -8,7 +8,7 @@ import BottomNav from '../components/BottomNav';
 import IconContainer from '../components/IconContainer';
 import { getDailyWordSync, fetchDailyWords, getWordAudioPath } from '../data/wordOfTheDay';
 import { getDailyFact, getCategoryColor } from '../data/dailyFacts';
-import { playAudio } from '../utils/audio';
+import { playAudio, stopAllAudio } from '../utils/audio';
 import { getStreakData, purchaseStreakFreeze, getNextMilestone, getStreakTier, MILESTONES } from '../utils/streak';
 import { Snowflake, Flame } from '@phosphor-icons/react';
 
@@ -46,6 +46,7 @@ export default function GeelWorld() {
 
   useEffect(() => {
     fetchDailyWords().then(() => setDailyWord(getDailyWordSync()));
+    return () => stopAllAudio();
   }, []);
 
   const handlePlayWord = async () => {
