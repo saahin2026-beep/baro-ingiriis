@@ -19,7 +19,7 @@ export default function About() {
 
       {/* Header */}
       <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10, position: 'relative', zIndex: 2 }}>
-        <button onClick={() => navigate('/astaanta')} style={{
+        <button type="button" aria-label="Back" onClick={() => navigate('/astaanta')} style={{
           background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 12,
           padding: 10, cursor: 'pointer', display: 'flex', alignItems: 'center',
         }}>

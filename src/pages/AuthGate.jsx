@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../utils/useLanguage';
 import { storage } from '../utils/storage';
@@ -9,6 +10,13 @@ export default function AuthGate() {
   const lessonsDone = storage.get().lessonsCompleted?.length || 0;
   const isMandatoryGate = lessonsDone >= 3;
 
+  const [geelSize, setGeelSize] = useState(() => Math.min(100, (typeof window !== 'undefined' ? window.innerWidth : 360) * 0.22));
+  useEffect(() => {
+    const onResize = () => setGeelSize(Math.min(100, window.innerWidth * 0.22));
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   return (
     <div className="page-fixed" style={{
       background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
@@ -17,7 +25,7 @@ export default function AuthGate() {
       <div style={{ position: 'absolute', bottom: '15%', left: '-50px', width: '160px', height: '160px', background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 clamp(16px, 3vh, 28px)', position: 'relative', zIndex: 1 }}>
-        <Geel size={Math.min(100, window.innerWidth * 0.22)} expression="celebrating" />
+        <Geel size={geelSize} expression="celebrating" />
         <h1 style={{ fontSize: 'clamp(22px, 6vw, 28px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 'clamp(8px, 2vh, 16px)' }}>
           Hadaling
         </h1>

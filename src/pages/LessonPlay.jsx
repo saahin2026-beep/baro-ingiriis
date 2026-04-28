@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useData } from '../utils/DataContext';
 import { calculateDahabLesson } from '../utils/speedScore';
@@ -27,7 +27,8 @@ export default function LessonPlay() {
     return data.exercises.map(ex => shuffleOptions(ex));
   }, [data]);
 
-  if (!data) { navigate('/home'); return null; }
+  useEffect(() => { if (!data) navigate('/home'); }, [data, navigate]);
+  if (!data) return null;
 
   const totalExercises = shuffledExercises.length;
   const exercise = shuffledExercises[currentExercise];

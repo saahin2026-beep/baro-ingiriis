@@ -23,7 +23,7 @@ export default function AdminDashboard({ onLogout }) {
       <div style={{ background: '#0891B2' }}>
         <div style={{ padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <span style={{ fontSize: 20, fontWeight: 800, color: 'white' }}>Hadaling Admin</span>
-          <button onClick={onLogout} style={{
+          <button type="button" onClick={onLogout} style={{
             padding: '8px 16px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.4)',
             background: 'transparent', color: 'white', fontSize: 13, fontWeight: 700, cursor: 'pointer',
             fontFamily: 'Nunito, sans-serif', flexShrink: 0,

@@ -25,7 +25,8 @@ export default function LessonComplete() {
 
   useEffect(() => {
     if (id) { storage.completeLesson(Number(id), dahabEarned); recordLessonCompletion(); }
-    setTimeout(() => setShowStats(true), 400);
+    const timer = setTimeout(() => setShowStats(true), 400);
+    return () => clearTimeout(timer);
   }, [id]);
 
   useEffect(() => {
@@ -35,7 +36,8 @@ export default function LessonComplete() {
     return () => clearTimeout(timer);
   }, [countdown, nextLesson]);
 
-  if (!data) { navigate('/home'); return null; }
+  useEffect(() => { if (!data) navigate('/home'); }, [data, navigate]);
+  if (!data) return null;
 
   return (
     <div className="page-fixed" style={{

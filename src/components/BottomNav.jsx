@@ -24,7 +24,7 @@ export default function BottomNav({ active = 'casharo' }) {
       marginRight: 'auto',
       zIndex: 50,
     }}>
-      <nav style={{
+      <nav role="navigation" aria-label="Main" style={{
         background: 'rgba(15, 23, 42, 0.94)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
@@ -43,6 +43,9 @@ export default function BottomNav({ active = 'casharo' }) {
           return (
             <button
               key={item.key}
+              type="button"
+              aria-current={isActive ? 'page' : undefined}
+              aria-label={lang === 'en' ? item.label : item.labelSo}
               onClick={() => { if (item.path && !isActive) navigate(item.path); }}
               style={{
                 display: 'flex',

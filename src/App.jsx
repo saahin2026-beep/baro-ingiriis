@@ -1,5 +1,5 @@
-import { Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
-import { useEffect, lazy, Suspense } from 'react';
+import { Routes, Route, Navigate, useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useRef, lazy, Suspense } from 'react';
 import { storage } from './utils/storage';
 import { supabase } from './utils/supabase';
 
@@ -39,6 +39,7 @@ function LessonGuard({ children }) {
 
 export default function App() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     storage.checkStreak();
@@ -48,6 +49,21 @@ export default function App() {
     document.addEventListener('visibilitychange', onVisible);
     return () => document.removeEventListener('visibilitychange', onVisible);
   }, []);
+
+  // Move focus to the page's main heading on route change so screen-reader
+  // users hear the new page context. Skip on initial mount.
+  const initialMount = useRef(true);
+  useEffect(() => {
+    if (initialMount.current) { initialMount.current = false; return; }
+    const t = setTimeout(() => {
+      const heading = document.querySelector('h1, h2, [role="heading"]');
+      if (heading) {
+        heading.setAttribute('tabindex', '-1');
+        heading.focus({ preventScroll: true });
+      }
+    }, 50);
+    return () => clearTimeout(t);
+  }, [location.pathname]);
 
   // Handle email-confirmation return: when supabase-js detects the session
   // (INITIAL_SESSION on page load, or SIGNED_IN), if the awaiting flag is set

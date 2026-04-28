@@ -65,6 +65,7 @@ export default function PhraseManager() {
         {CATEGORIES.map((cat) => (
           <button
             key={cat}
+            type="button"
             onClick={() => setCategory(cat)}
             style={{
               padding: '6px 14px', borderRadius: 20, border: 'none',
@@ -80,7 +81,7 @@ export default function PhraseManager() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
-        <button onClick={() => setEditing({
+        <button type="button" onClick={() => setEditing({
           category, text_so: '', emoji: '', sort_order: filtered.length + 1, is_active: true,
         })} style={{
           background: '#0891B2', border: 'none', borderRadius: 6, padding: '6px 14px',
@@ -100,11 +101,11 @@ export default function PhraseManager() {
           <span style={{ flex: 1, fontSize: 13, color: '#333', fontFamily: 'Nunito, sans-serif' }}>
             {phrase.text_so}
           </span>
-          <button onClick={() => setEditing({ ...phrase })} style={miniBtn('#1E88E5')}>Edit</button>
-          <button onClick={() => toggleActive(phrase)} style={miniBtn(phrase.is_active ? '#FF9800' : '#0891B2')}>
+          <button type="button" onClick={() => setEditing({ ...phrase })} style={miniBtn('#1E88E5')}>Edit</button>
+          <button type="button" onClick={() => toggleActive(phrase)} style={miniBtn(phrase.is_active ? '#FF9800' : '#0891B2')}>
             {phrase.is_active ? 'Hide' : 'Show'}
           </button>
-          <button onClick={() => handleDelete(phrase.id)} style={miniBtn('#E53935')}>Del</button>
+          <button type="button" onClick={() => handleDelete(phrase.id)} style={miniBtn('#E53935')}>Del</button>
         </div>
       ))}
 

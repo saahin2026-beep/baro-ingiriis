@@ -92,7 +92,7 @@ export default function PracticeManager() {
   // Exercise list + editor for selected feature
   return (
     <div>
-      <button onClick={() => { setSelectedFeature(null); setEditingExercise(null); }} style={{
+      <button type="button" onClick={() => { setSelectedFeature(null); setEditingExercise(null); }} style={{
         background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700,
         color: '#0891B2', fontFamily: 'Nunito, sans-serif', padding: 0, marginBottom: 12,
       }}>
@@ -119,7 +119,7 @@ export default function PracticeManager() {
         <h3 style={{ fontSize: 15, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', margin: 0 }}>
           Exercises ({exercises.length})
         </h3>
-        <button onClick={() => setEditingExercise({ type: 'choose', sort_order: exercises.length })} style={{
+        <button type="button" onClick={() => setEditingExercise({ type: 'choose', sort_order: exercises.length })} style={{
           background: selectedFeature.color, color: 'white', border: 'none', borderRadius: 10,
           padding: '8px 16px', fontSize: 13, fontWeight: 800, cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
         }}>
@@ -148,7 +148,7 @@ export default function PracticeManager() {
               Type: {ex.type}
             </p>
           </div>
-          <button onClick={(e) => { e.stopPropagation(); deleteExercise(ex.id); }} style={{
+          <button type="button" onClick={(e) => { e.stopPropagation(); deleteExercise(ex.id); }} style={{
             background: '#FFEBEE', border: 'none', borderRadius: 8, padding: '4px 10px',
             fontSize: 11, fontWeight: 700, color: '#F44336', cursor: 'pointer',
           }}>
@@ -193,7 +193,7 @@ function FeatureEditor({ feature, onSave }) {
       </div>
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         <input type="color" value={color} onChange={(e) => setColor(e.target.value)} style={{ width: 40, height: 32, border: 'none', borderRadius: 6, cursor: 'pointer' }} />
-        <button onClick={handleSave} disabled={saving} style={{
+        <button type="button" onClick={handleSave} disabled={saving} style={{
           background: '#0891B2', color: 'white', border: 'none', borderRadius: 8, padding: '8px 16px',
           fontSize: 12, fontWeight: 800, cursor: 'pointer', fontFamily: 'Nunito, sans-serif', opacity: saving ? 0.6 : 1,
         }}>
@@ -349,14 +349,14 @@ function PracticeExerciseEditor({ exercise, featureColor, onSave, onCancel }) {
 
       {/* Actions */}
       <div style={{ display: 'flex', gap: 8 }}>
-        <button onClick={handleSave} disabled={saving} style={{
+        <button type="button" onClick={handleSave} disabled={saving} style={{
           flex: 1, padding: '12px', borderRadius: 10, border: 'none', background: featureColor,
           color: 'white', fontSize: 14, fontWeight: 800, cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
           opacity: saving ? 0.6 : 1,
         }}>
           {saving ? 'SAVING...' : 'SAVE EXERCISE'}
         </button>
-        <button onClick={onCancel} style={{
+        <button type="button" onClick={onCancel} style={{
           padding: '12px 20px', borderRadius: 10, border: '1px solid #E0E0E0', background: 'white',
           color: '#757575', fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
         }}>

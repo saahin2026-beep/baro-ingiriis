@@ -179,7 +179,7 @@ export default function OnboardingManager() {
         )}
 
         <div style={{ marginTop: 20 }}>
-          <button onClick={() => saveScreen(activeScreen)} disabled={saving} style={greenBtn}>
+          <button type="button" onClick={() => saveScreen(activeScreen)} disabled={saving} style={greenBtn}>
             {saving ? 'Saving...' : 'SAVE'}
           </button>
         </div>

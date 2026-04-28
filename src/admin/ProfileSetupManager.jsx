@@ -37,7 +37,7 @@ export default function ProfileSetupManager() {
         <h2 style={{ fontSize: 18, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', margin: 0 }}>
           Profile Setup Steps ({steps.length})
         </h2>
-        <button onClick={() => setEditing({ step: steps.length, field_type: 'text', required: false })} style={{
+        <button type="button" onClick={() => setEditing({ step: steps.length, field_type: 'text', required: false })} style={{
           background: '#0891B2', color: 'white', border: 'none', borderRadius: 10,
           padding: '8px 16px', fontSize: 13, fontWeight: 800, cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
         }}>
@@ -64,7 +64,7 @@ export default function ProfileSetupManager() {
               {s.title_en} — {s.field_type} — {s.field_key} {s.required ? '(required)' : ''}
             </p>
           </div>
-          <button onClick={(e) => { e.stopPropagation(); deleteStep(s.id); }} style={{
+          <button type="button" onClick={(e) => { e.stopPropagation(); deleteStep(s.id); }} style={{
             background: '#FFEBEE', border: 'none', borderRadius: 8, padding: '4px 10px',
             fontSize: 11, fontWeight: 700, color: '#F44336', cursor: 'pointer',
           }}>
@@ -155,14 +155,14 @@ function ProfileStepEditor({ step, onSave, onCancel }) {
       </div>
 
       <div style={{ display: 'flex', gap: 8 }}>
-        <button onClick={handleSave} disabled={saving} style={{
+        <button type="button" onClick={handleSave} disabled={saving} style={{
           flex: 1, padding: '12px', borderRadius: 10, border: 'none', background: '#0891B2',
           color: 'white', fontSize: 14, fontWeight: 800, cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
           opacity: saving ? 0.6 : 1,
         }}>
           {saving ? 'SAVING...' : 'SAVE STEP'}
         </button>
-        <button onClick={onCancel} style={{
+        <button type="button" onClick={onCancel} style={{
           padding: '12px 20px', borderRadius: 10, border: '1px solid #E0E0E0', background: 'white',
           color: '#757575', fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
         }}>

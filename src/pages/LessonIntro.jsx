@@ -34,7 +34,7 @@ export default function LessonIntro() {
 
       {/* Header — fixed at top */}
       <div style={{ padding: 'clamp(8px, 2vh, 14px) clamp(12px, 2.5vh, 20px)', display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)', position: 'relative', zIndex: 2, flexShrink: 0 }}>
-        <button onClick={() => navigate('/home')} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 'clamp(8px, 2vw, 12px)', padding: 'clamp(6px, 1.2vh, 10px)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <button type="button" aria-label="Back" onClick={() => navigate('/home')} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 'clamp(8px, 2vw, 12px)', padding: 'clamp(6px, 1.2vh, 10px)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <ArrowLeft size={18} weight="bold" color="white" />
         </button>
         <span style={{ fontSize: 'clamp(14px, 3.5vw, 16px)', fontWeight: 700, color: 'white', fontFamily: 'Nunito, sans-serif' }}>

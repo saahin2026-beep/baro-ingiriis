@@ -80,6 +80,7 @@ export default function WordOfDayManager() {
 
       <div style={{ display: 'flex', gap: 6, marginBottom: 16, flexWrap: 'wrap' }}>
         <button
+          type="button"
           onClick={() => setCategory('all')}
           style={{
             padding: '6px 14px', borderRadius: 20, border: 'none',
@@ -93,6 +94,7 @@ export default function WordOfDayManager() {
         {CATEGORIES.map((cat) => (
           <button
             key={cat}
+            type="button"
             onClick={() => setCategory(cat)}
             style={{
               padding: '6px 14px', borderRadius: 20, border: 'none',
@@ -111,7 +113,7 @@ export default function WordOfDayManager() {
         <span style={{ fontSize: 12, color: '#666', fontFamily: 'Nunito, sans-serif' }}>
           {filtered.length} words
         </span>
-        <button onClick={() => setEditing({
+        <button type="button" onClick={() => setEditing({
           english: '', somali: '', category: 'greetings', is_active: true, sort_order: words.length + 1,
         })} style={{
           background: '#0891B2', border: 'none', borderRadius: 6, padding: '6px 14px',
@@ -147,11 +149,11 @@ export default function WordOfDayManager() {
           }}>
             {word.category}
           </span>
-          <button onClick={() => setEditing({ ...word })} style={miniBtn('#1E88E5')}>Edit</button>
-          <button onClick={() => toggleActive(word)} style={miniBtn(word.is_active ? '#FF9800' : '#0891B2')}>
+          <button type="button" onClick={() => setEditing({ ...word })} style={miniBtn('#1E88E5')}>Edit</button>
+          <button type="button" onClick={() => toggleActive(word)} style={miniBtn(word.is_active ? '#FF9800' : '#0891B2')}>
             {word.is_active ? 'Hide' : 'Show'}
           </button>
-          <button onClick={() => handleDelete(word.id)} style={miniBtn('#E53935')}>Del</button>
+          <button type="button" onClick={() => handleDelete(word.id)} style={miniBtn('#E53935')}>Del</button>
         </div>
       ))}
 

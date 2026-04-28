@@ -54,7 +54,7 @@ export default function Progress() {
         position: 'relative',
         zIndex: 2,
       }}>
-        <button onClick={() => navigate(-1)} style={{
+        <button type="button" aria-label="Back" onClick={() => navigate(-1)} style={{
           background: 'rgba(255,255,255,0.15)',
           border: 'none',
           cursor: 'pointer',

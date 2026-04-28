@@ -3,10 +3,12 @@ import { X, ShareNetwork, Heart, Users, Star } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
 import { getStreakData, MILESTONES } from '../utils/streak';
 import { useLanguage } from '../utils/useLanguage';
+import { useFocusTrap } from '../utils/useFocusTrap';
 import Geel from './Geel';
 
 export default function ProfilePopup({ onClose }) {
   const navigate = useNavigate();
+  const ref = useFocusTrap(onClose);
   const { lang } = useLanguage();
   const state = storage.get();
   const streakData = getStreakData();
@@ -29,16 +31,21 @@ export default function ProfilePopup({ onClose }) {
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Profile"
       style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(12px, 3vw, 20px)' }}
       onClick={onClose}
     >
       <div
-        style={{ width: '100%', maxWidth: 340, background: 'white', borderRadius: 'clamp(16px, 4vw, 28px)', overflow: 'hidden', boxShadow: '0 25px 80px rgba(0,0,0,0.3)', maxHeight: 'calc(100dvh - 32px)', overflowY: 'auto' }}
+        ref={ref}
+        tabIndex={-1}
+        style={{ width: '100%', maxWidth: 340, background: 'white', borderRadius: 'clamp(16px, 4vw, 28px)', overflow: 'hidden', boxShadow: '0 25px 80px rgba(0,0,0,0.3)', maxHeight: 'calc(100dvh - 32px)', overflowY: 'auto', outline: 'none' }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Cover */}
         <div style={{ position: 'relative', height: 70, background: 'linear-gradient(135deg, #064E5E 0%, #0891B2 50%, #22D3EE 100%)' }}>
-          <button onClick={onClose} style={{ position: 'absolute', top: 'clamp(6px, 1.5vw, 10px)', right: 'clamp(6px, 1.5vw, 10px)', width: 28, height: 28, background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <button type="button" onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 'clamp(6px, 1.5vw, 10px)', right: 'clamp(6px, 1.5vw, 10px)', width: 28, height: 28, background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <X size={14} weight="bold" color="white" />
           </button>
         </div>

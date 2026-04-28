@@ -25,7 +25,7 @@ export default function UpgradePage() {
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', position: 'relative', zIndex: 2 }}>
-        <button onClick={() => navigate(-1)} style={{ width: 44, height: 44, background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <button type="button" aria-label="Back" onClick={() => navigate(-1)} style={{ width: 44, height: 44, background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <ArrowLeft size={20} weight="bold" color="white" />
         </button>
         <p style={{ fontSize: 17, fontWeight: 800, color: 'white', margin: 0, fontFamily: 'Nunito, sans-serif' }}>

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Confetti as ConfettiIcon } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
@@ -26,7 +26,8 @@ export default function PracticeSession() {
     return feature.exercises.map(ex => shuffleOptions(ex));
   }, [feature]);
 
-  if (!feature) { navigate('/progress'); return null; }
+  useEffect(() => { if (!feature) navigate('/progress'); }, [feature, navigate]);
+  if (!feature) return null;
 
   const exercise = shuffledExercises[currentIndex];
 

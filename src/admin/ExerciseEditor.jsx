@@ -64,7 +64,7 @@ export default function ExerciseEditor({ lessonId }) {
         <span style={{ fontSize: 13, fontWeight: 700, color: '#666', fontFamily: 'Nunito, sans-serif' }}>
           Exercises ({exercises.length})
         </span>
-        <button onClick={() => setEditing({
+        <button type="button" onClick={() => setEditing({
           type: 'choose', instruction: '', prompt: '', options: [], correct_index: 0,
           sentence: null, blank_index: null, correct_sentence: null, words: null, scenario: null,
           sort_order: exercises.length + 1, is_active: true,
@@ -91,11 +91,11 @@ export default function ExerciseEditor({ lessonId }) {
           <span style={{ flex: 1, fontSize: 12, color: '#666', fontFamily: 'Nunito, sans-serif', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {ex.instruction}
           </span>
-          <button onClick={() => setEditing({ ...ex })} style={miniBtn('#1E88E5')}>Edit</button>
-          <button onClick={() => toggleActive(ex)} style={miniBtn(ex.is_active ? '#FF9800' : '#0891B2')}>
+          <button type="button" onClick={() => setEditing({ ...ex })} style={miniBtn('#1E88E5')}>Edit</button>
+          <button type="button" onClick={() => toggleActive(ex)} style={miniBtn(ex.is_active ? '#FF9800' : '#0891B2')}>
             {ex.is_active ? 'Hide' : 'Show'}
           </button>
-          <button onClick={() => handleDelete(ex.id)} style={miniBtn('#E53935')}>Del</button>
+          <button type="button" onClick={() => handleDelete(ex.id)} style={miniBtn('#E53935')}>Del</button>
         </div>
       ))}
 

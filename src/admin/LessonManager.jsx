@@ -64,7 +64,7 @@ export default function LessonManager() {
         <h2 style={{ fontSize: 18, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif' }}>
           Lessons ({lessons.length})
         </h2>
-        <button onClick={() => setEditing({
+        <button type="button" onClick={() => setEditing({
           title_so: '', title_en: '', ability: '', explanation: [], chunks: [], sort_order: lessons.length + 1, is_active: true,
         })} style={{
           background: '#0891B2', border: 'none', borderRadius: 8, padding: '8px 16px',
@@ -129,7 +129,7 @@ export default function LessonManager() {
 
 function SmallBtn({ label, onClick, disabled, color = '#666' }) {
   return (
-    <button onClick={onClick} disabled={disabled} style={{
+    <button type="button" onClick={onClick} disabled={disabled} style={{
       background: 'none', border: `1px solid ${disabled ? '#E0E0E0' : color}`,
       borderRadius: 6, padding: '4px 8px', fontSize: 11, fontWeight: 700,
       color: disabled ? '#CCC' : color, fontFamily: 'Nunito, sans-serif',
