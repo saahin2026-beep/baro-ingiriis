@@ -3,7 +3,6 @@ import LessonManager from './LessonManager';
 import PhraseManager from './PhraseManager';
 import OnboardingManager from './OnboardingManager';
 import PracticeManager from './PracticeManager';
-import ProfileSetupManager from './ProfileSetupManager';
 import WordOfDayManager from './WordOfDayManager';
 
 const TABS = [
@@ -12,7 +11,6 @@ const TABS = [
   { key: 'wordofday', label: 'Word of Day' },
   { key: 'onboarding', label: 'Onboarding' },
   { key: 'practice', label: 'Practice' },
-  { key: 'profile', label: 'Profile Setup' },
 ];
 
 export default function AdminDashboard({ onLogout }) {
@@ -49,7 +47,6 @@ export default function AdminDashboard({ onLogout }) {
         {activeTab === 'wordofday' && <WordOfDayManager />}
         {activeTab === 'onboarding' && <OnboardingManager />}
         {activeTab === 'practice' && <PracticeManager />}
-        {activeTab === 'profile' && <ProfileSetupManager />}
       </div>
     </div>
   );
