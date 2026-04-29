@@ -1,3 +1,26 @@
+/**
+ * Supabase fetch functions for content tables.
+ *
+ * Each function:
+ *   - Reads the matching public.* table
+ *   - Transforms snake_case columns to the camelCase shape consumers expect
+ *     (e.g. correct_index -> correctIndex, somali_full -> somaliFull)
+ *   - Caches the result to localStorage as a fallback for offline / first paint
+ *   - Returns cached data if Supabase is unreachable
+ *   - Reports errors via reportError() — never throws upward
+ *
+ * Field-name translations live here, not in components. If you add a new
+ * column that components need, surface it in the relevant fetch transform.
+ * Consumer components never see snake_case.
+ *
+ * Calling pattern: DataContext mounts -> calls each fetch function in
+ * useEffect -> stores results in React state -> useData() exposes them
+ * to consumers.
+ *
+ * See docs/ARCHITECTURE.md §3 (data flow), §7 (exercise system shape
+ * differences between lessons and practice).
+ */
+
 import { supabase } from './supabase';
 import { reportError } from './observability';
 

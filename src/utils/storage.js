@@ -1,3 +1,25 @@
+/**
+ * localStorage wrapper for client-side state.
+ *
+ * One JSON blob lives at the `hadaling:state` key. This module centralizes
+ * default values, JSON serialization, and a one-time migration from the
+ * legacy `hadaling` key. Direct localStorage access skips all that —
+ * always go through this module.
+ *
+ * The state object holds: onboarding answers, lesson progression,
+ * gamification counters (XP, dahab, streak), language preference,
+ * identity (userId/username), pending-confirmation flags, and the
+ * in-progress profile draft.
+ *
+ * Most callers want `storage.get()` or `storage.update({ key: value })`.
+ * Higher-level helpers (`completeLesson`, `completeDailyPractice`,
+ * `checkStreak`) encapsulate state transitions that touch multiple
+ * fields at once.
+ *
+ * See docs/ARCHITECTURE.md §5 for the full picture, docs/CONTRIBUTING.md §3
+ * for the "always use storage wrapper" convention.
+ */
+
 const STORAGE_KEY = 'hadaling:state';
 const LEGACY_STORAGE_KEY = 'hadaling';
 

@@ -1,3 +1,23 @@
+/**
+ * Streak system with milestones, freezes, and XP multipliers.
+ *
+ * IMPORTANT: this is the richer of TWO parallel streak systems in the
+ * codebase. The simpler one lives in storage.js (`completeLesson`,
+ * `checkStreak`) and is invoked directly by lesson completion. This
+ * one is invoked by GeelWorld and AppShell streak modals. They store
+ * to different localStorage keys (`hadaling-streak` vs the main
+ * `hadaling:state` blob) and they don't auto-sync — changes in one
+ * don't propagate to the other.
+ *
+ * Long-term cleanup is to consolidate into a single source of truth.
+ * Don't add new code that mixes the two systems. See docs/ARCHITECTURE.md
+ * §8 for context.
+ *
+ * MILESTONES, freeze pricing, and tier rewards are configured at the
+ * top of this file. Changing any of them is a gameplay change —
+ * update the doc and the tests.
+ */
+
 const STREAK_KEY = 'hadaling-streak';
 
 export const MILESTONES = {

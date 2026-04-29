@@ -1,3 +1,31 @@
+/**
+ * Top-level routing + auth listener for the app.
+ *
+ * Three things happen here:
+ *
+ *   1. Routes — every route in the app is declared in <Routes> below.
+ *      New pages need both a `lazy()` import and a <Route> entry.
+ *
+ *   2. LessonGuard — gates lessons 4+ behind authentication. Lessons
+ *      1–3 are open to guests; lesson 4+ redirects to /auth-gate
+ *      unless `authComplete` is set.
+ *
+ *   3. Auth listener — subscribes to supabase.auth.onAuthStateChange.
+ *      Two events matter:
+ *        - INITIAL_SESSION / SIGNED_IN with `awaitingEmailConfirmation`
+ *          flag set in storage: the user just clicked their confirmation
+ *          email link. Ensure the profiles row exists, sync local state,
+ *          and route to /profile-setup/0 (or /geel-world if profile is
+ *          already complete).
+ *        - PASSWORD_RECOVERY: user clicked a password-reset email link.
+ *          Route to /reset-password regardless of other state.
+ *
+ *   4. Focus management — moves keyboard focus to the page heading on
+ *      every route change so screen-reader users hear the new context.
+ *
+ * See docs/ARCHITECTURE.md §3 (data flow), §4 (auth flow).
+ */
+
 import { Routes, Route, Navigate, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { storage } from './utils/storage';

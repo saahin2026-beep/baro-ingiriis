@@ -1,14 +1,31 @@
+/**
+ * Daily Mix algorithm.
+ *
+ * Generates the 15-exercise daily practice from the user's completed lessons,
+ * weighted toward areas where they need the most reinforcement:
+ *
+ *   - 40% "weak"   — exercises whose chunkId is in storage.weakChunks
+ *                    (chunks the user has gotten wrong recently)
+ *   - 40% "recent" — exercises seen in the last 3 days (drilling the new stuff)
+ *   - 20% "decay"  — exercises not seen in 3+ days (spaced repetition)
+ *
+ * If a category doesn't have enough exercises, the picker fills from any
+ * remaining set so we always return up to 15.
+ *
+ * Chunk stat tracking (saveChunkStats) updates on each daily-practice answer.
+ * 3 consecutive correct → no longer flagged as weak.
+ *
+ * The function takes lessonData as a parameter so callers can pass the live
+ * Supabase content via useData(). Falls back to hardcoded lessonData.js if
+ * not provided — kept for tests / utilities that aren't React components.
+ *
+ * See docs/ARCHITECTURE.md §8 (gamification).
+ */
+
 import hardcodedLessonData from '../data/lessonData';
 import { storage } from './storage';
 
-/**
- * Generate weighted Daily Mix exercises
- * 40% weak (wrong answers), 40% recent (last 3 days), 20% decay (not seen 3+ days)
- *
- * Pass `lessonData` (from useData()) to use live Supabase content. Falls back
- * to hardcoded if not provided — kept for backwards compatibility / utilities
- * that aren't React components.
- */
+
 export function generateDailyMix(lessonData = hardcodedLessonData) {
   const state = storage.get();
   const completedIds = (state.lessonsCompleted || []).map(Number);

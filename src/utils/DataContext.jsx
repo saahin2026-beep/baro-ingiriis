@@ -1,3 +1,23 @@
+/**
+ * Central data hub. Holds server-managed content (lessons, phrases,
+ * practice features, onboarding screens, profile-setup screens) in
+ * React state, exposed via the `useData()` hook.
+ *
+ * Lifecycle on mount:
+ *   1. Hydrate state from localStorage cache OR hardcoded fallback files
+ *      in src/data/. First paint is instant — no loading spinner.
+ *   2. In useEffect, fetch fresh content from Supabase. On success,
+ *      replace state and overwrite the cache.
+ *   3. All consumer components re-render with the fresh data automatically.
+ *
+ * Cache versioning: each data type has a `*_CACHE_VERSION` constant.
+ * Bump it when the *shape* of stored data changes (rename a field, add
+ * a required key) — that invalidates everyone's stale localStorage on
+ * next mount and forces a re-fetch.
+ *
+ * See docs/ARCHITECTURE.md §3 (data flow), §5 (storage layer), §6 (caching).
+ */
+
 import { createContext, useContext, useState, useEffect } from 'react';
 import { fetchLessons, fetchPhrases, fetchOnboardingContent, fetchPracticeFeatures, fetchProfileSetupContent } from './dataService';
 import { reportError } from './observability';

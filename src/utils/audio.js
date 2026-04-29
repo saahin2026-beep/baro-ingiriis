@@ -1,3 +1,19 @@
+/**
+ * Howler.js wrapper for audio playback with a small in-memory LRU cache.
+ *
+ * Keeping recently-loaded audio in memory across exercise navigation is
+ * a perceived-perf win — the same lesson re-uses the same audio instances
+ * instead of re-fetching. We cap at 30 to bound memory; oldest entries
+ * are unloaded on insertion past the limit.
+ *
+ * Audio errors are intentionally silent (resolve with no value). Audio
+ * failure shouldn't crash a lesson — the user just doesn't hear the
+ * prompt, and the exercise still works.
+ *
+ * Audio file paths are static (/audio/lessons/<n>/<n>-<a-e>.mp3 etc.)
+ * and precached by the service worker — see public/sw.js.
+ */
+
 import { Howl } from 'howler';
 
 const MAX_CACHE_SIZE = 30;
