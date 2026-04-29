@@ -128,6 +128,60 @@ onboardingComplete, intent, comfort, guestMode, currentLesson, lessonsCompleted,
 
 6 practice features (10 exercises each): Vocabulary, Plurals, Opposites, Word Formation, Verb Conjugation, Sentence Builder
 
+## Documentation maintenance (READ BEFORE EVERY CHANGE)
+
+`docs/ARCHITECTURE.md` is the source of truth for how this system works. It must stay current. Two rules — one proactive, one reactive — keep it that way.
+
+### Rule 1 (proactive — before editing)
+
+Before you edit a file that ARCHITECTURE.md references, **briefly verify the relevant section still matches the code**. If you find drift, fix the doc *before* you make the new change so the diff is clean. This is a targeted check — only the section(s) related to the file you're about to touch, not the whole doc.
+
+The mapping below tells you which doc section each kind of file relates to. If the file you're editing isn't in this table, the doc probably doesn't reference it and no proactive check is needed.
+
+| You're editing… | Verify these sections first |
+|---|---|
+| `src/App.jsx` | §3 Data flow, §4 Authentication flow |
+| `src/utils/DataContext.jsx` | §3 Data flow, §5 Storage layer, §6 Caching |
+| `src/utils/dataService.js` | §3 Data flow, §7 Exercise system |
+| `src/utils/storage.js` | §5 Storage layer |
+| `src/utils/streak.js`, `speedScore.js`, `dailyMix.js` | §8 Gamification |
+| `src/utils/observability.js`, `ErrorBoundary.jsx` | §10 Observability |
+| `src/admin/*Manager.jsx`, `AdminDashboard.jsx`, `adminConfig.js` | §11 Admin panel scope |
+| `src/exercises/*Exercise.jsx`, `LessonPlay.jsx`, `PracticeSession.jsx` | §7 Exercise system |
+| `src/pages/SignupPage.jsx`, `LoginPage.jsx`, `ProfileSetup.jsx`, `AuthGate.jsx`, `*PasswordPage.jsx`, `AccountSecurityPage.jsx` | §4 Authentication flow |
+| `public/sw.js`, `public/manifest.json`, `vite.config.js` | §9 Service worker / PWA |
+| `supabase/migrations/*` | §3 Data flow, §5 Storage layer |
+| `vitest.setup.js`, `src/**/__tests__/*` | §12 Testing strategy |
+
+### Rule 2 (reactive — same commit)
+
+When you make a change that affects architecture, update the relevant section of ARCHITECTURE.md **in the same commit**. Not as a follow-up. Not as a TODO. Same commit.
+
+| Change | Update section |
+|---|---|
+| New / removed file in `src/` | File map (bottom of doc) |
+| New / removed `useData()` field, fetch function, or DB table | §3 Data flow + §5 Storage layer + §11 Admin scope |
+| Auth flow change (signup, login, password reset, gating) | §4 Authentication flow |
+| New `localStorage` key, cache version bump, storage migration | §5 Storage layer + §6 Caching |
+| New exercise type, change to exercise schema, change to dispatch | §7 Exercise system |
+| Change to XP / dahab / streak math, new milestone, new freeze rule | §8 Gamification |
+| Service worker behavior change, manifest change | §9 Service worker / PWA |
+| New tracked event, new error report path, Sentry / analytics change | §10 Observability |
+| New admin tab, new admin-editable field, new design lock | §11 Admin panel scope |
+| New test pattern, new mocking convention | §12 Testing strategy |
+| New gotcha discovered (especially silent footguns) | §13 Common pitfalls |
+| New common task that isn't obvious | "Where to make changes" table at the bottom |
+
+If a change spans multiple sections, update all of them. If in doubt, update — a slightly-stale doc is better than a doc that's lost trust.
+
+When you write a commit message for an architectural change, mention the doc update in the body so reviewers can confirm.
+
+### What "verify" means in Rule 1 (concretely)
+
+Open ARCHITECTURE.md, jump to the relevant section, scan it (≤2 minutes), ask: "is anything here outdated or contradicted by the current state of the code I'm about to edit?" If yes, fix the doc. If no, proceed with the edit.
+
+This is not "re-read the whole doc every session" — that's overkill. It's a 30-second check on the 1–2 sections that touch the file you're working in.
+
 ## Common Tasks
 - **Add a new lesson:** Use /admin → Lessons tab → + Add Lesson. No code deploy needed.
 - **Edit exercise:** /admin → Lessons → click Exercises on a lesson → Edit
