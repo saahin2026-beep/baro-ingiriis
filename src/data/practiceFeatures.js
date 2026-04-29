@@ -65,7 +65,7 @@ const practiceFeatures = {
     ]
   },
 
-  wordFormation: {
+  wordformation: {
     title: 'Dhis Erey',
     titleEn: 'Word Formation',
     icon: 'PuzzlePiece',
@@ -87,7 +87,7 @@ const practiceFeatures = {
     ]
   },
 
-  verbConjugation: {
+  conjugation: {
     title: 'Af-celinta Falka',
     titleEn: 'Verb Conjugation',
     icon: 'Shuffle',
@@ -109,7 +109,7 @@ const practiceFeatures = {
     ]
   },
 
-  sentenceBuilder: {
+  sentencebuilder: {
     title: 'Dhis Jumlad',
     titleEn: 'Sentence Builder',
     icon: 'Stack',
