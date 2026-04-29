@@ -116,6 +116,10 @@ export const storage = {
   completeLesson(lessonId, dahabEarned = 0) {
     const current = this.get();
     const completed = current.lessonsCompleted || [];
+    // The lessonsCompleted list is deduped (the user's progress card can't
+    // show the same lesson twice) but XP and dahab below accrue on every
+    // call — replaying a lesson is rewarded, just not double-counted in
+    // progress. The regression test in storage.test.js pins this contract.
     if (!completed.includes(lessonId)) {
       completed.push(lessonId);
     }

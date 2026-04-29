@@ -108,6 +108,13 @@ export default function App() {
         navigate('/reset-password');
         return;
       }
+      // Don't filter on event type. supabase-js fires INITIAL_SESSION for
+      // listeners registered AFTER it parsed a session from the URL hash
+      // (which happens on the email-confirmation return), and SIGNED_IN
+      // for fresh sign-ins. Either can carry the just-confirmed session,
+      // so we accept any event with a session and gate on the awaiting
+      // flag below. Filtering on `event === 'SIGNED_IN'` would silently
+      // break the email-confirmation flow.
       if (!session) return;
       const state = storage.get();
       if (!state.awaitingEmailConfirmation) return;

@@ -88,6 +88,14 @@ export default function DailyPractice() {
       if (exercise.chunkId) finalResults.push({ chunkId: exercise.chunkId, correct: wasCorrect });
       saveChunkStats(finalResults);
 
+      // Dahab has two reward streams that BOTH credit the user's balance:
+      //   sessionTotal       — per-exercise speed bonuses accumulated this session
+      //   result.dahabEarned — the random tier bonus (jackpot/mid/normal)
+      //
+      // completeDailyPractice() already credits dahabEarned to the balance
+      // internally, so we only add sessionTotal here to avoid double-counting
+      // the bonus. The UI shows grandTotal so users see what actually landed
+      // in their balance — the regression test in storage.test.js pins this.
       const sessionTotal = sessionDahab + reward.total;
       const result = storage.completeDailyPractice(newCorrect);
       const grandTotal = sessionTotal + result.dahabEarned;
